@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 
 function App() {
-  console.log(process.env.REACT_APP_MODE)
   return (
     <div className="App">
-      Hello
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
     </div>
   );
 }

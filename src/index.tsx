@@ -1,3 +1,5 @@
+import './assets/style/styles.scss'
+
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -12,6 +14,7 @@ const config: Config = {
     [NETWORK.CHAIN_ID]: NETWORK.RPC_URL,
   },
 };
+
 
 ReactDOM.render(
   <React.StrictMode>
