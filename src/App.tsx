@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold underline text-red-400">
+      <h1 className="text-3xl font-bold underline text-[primary]">
         Hello world!
       </h1>
       <button onClick={handleConnect}>{account ? shortenAddress(account) : 'Connect'}</button>
