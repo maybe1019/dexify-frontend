@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const links: Array<Record<string, string>> = [
-  { path: "/dexfund", name: "Dexfund" },
+  { path: "/", name: "Dexfund" },
   { path: "/manage", name: "Manage" },
   { path: "/profile", name: "Profile" },
 ];
