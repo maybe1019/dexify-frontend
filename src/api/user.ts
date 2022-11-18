@@ -1,11 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
+const baseUri: string = process.env.REACT_APP_SERVER_URL as string;
 const baseUri: string = process.env.REACT_APP_SERVER_URL as string;
 
 export const getUser = (signature: string, address: string): Promise<User> =>
   new Promise(async (resolve, reject) => {
     try {
-      let res = await axios.post(`${baseUri}/user`, {
+      const res = await axios.post(`${baseUri}/user`, {
         address,
         signature,
       });
@@ -44,6 +45,6 @@ export const patchUser = (
       let res = await axios.patch(`${baseUri}/user`, data)
       resolve(res.data as string)
     } catch (error) {
-      reject(error)
+      reject(error);
     }
   });
