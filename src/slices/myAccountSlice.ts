@@ -4,6 +4,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 const initialState: User = {
   title: "New User",
   image: "/images/default-user.png",
+  id: "",
+  name: "",
+  bio: "",
+  address: "",
+  email: "",
 } as User;
 
 export const myAccountSlice = createSlice({
