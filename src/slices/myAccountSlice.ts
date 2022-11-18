@@ -1,23 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: User = {
-  title: "New User",
-  image: "/images/default-user.png",
+  title: 'New User',
+  image: '/images/default-user.png',
 } as User;
 
 export const myAccountSlice = createSlice({
-  name: "counter",
+  name: 'counter',
   initialState,
   reducers: {
     setMyAccountAsDevault: (state) => {
       state = initialState;
-      return state
+      return state;
     },
     setMyAccount: (state, action: PayloadAction<User>) => {
-      state = action.payload
-      return state
-    }
+      state = action.payload;
+      return state;
+    },
   },
 });
 

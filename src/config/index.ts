@@ -1,7 +1,7 @@
-import { BSC, BSCTestnet } from "@usedapp/core";
+import { BSC, BSCTestnet } from '@usedapp/core';
 
 let NETWORK: any;
-if (process.env.REACT_APP_MODE === "prod") {
+if (process.env.REACT_APP_MODE === 'prod') {
   NETWORK = {
     RPC_URL: `https://bsc-dataseed1.binance.org/${process.env.REACT_APP_INFURA_ID}`,
     ...BSC,
