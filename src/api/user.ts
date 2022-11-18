@@ -1,23 +1,27 @@
 import axios from 'axios';
 
 const baseUri: string = process.env.REACT_APP_SERVER_URL as string;
-const baseUri: string = process.env.REACT_APP_SERVER_URL as string;
 
 export const getUser = (signature: string, address: string): Promise<User> =>
   new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.post(`${baseUri}/user`, {
-        address,
-        signature,
+      const res = await axios.get(`${baseUri}/user`, {
+        params: {
+          address,
+          signature,
+        },
       });
-      let fields: string[] = ["bio", "email", "name", "image", "title"];
+      if (!res.data.id) {
+        return reject('no user');
+      }
+      const fields: string[] = ['bio', 'email', 'name', 'image', 'title'];
       fields.forEach((element) => {
         if (res.data[element] === null) {
-          res.data[element] = "";
+          res.data[element] = '';
         }
       });
       res.data.address = address;
-      let user: User = res.data;
+      const user: User = res.data;
       console.log(user);
       resolve(user);
     } catch (error) {
@@ -25,25 +29,25 @@ export const getUser = (signature: string, address: string): Promise<User> =>
     }
   });
 
-export const patchUser = (
+export const postUser = (
   signature: string,
   address: string,
   file: File,
-  newAccount: User
-): Promise<string> =>
+  newAccount: User,
+): Promise<User> =>
   new Promise(async (resolve, reject) => {
     try {
       const data = new FormData();
-      data.append("address", address);
-      data.append("signature", signature);
-      data.append("email", newAccount.email)
-      data.append("bio", newAccount.bio)
-      data.append("name", newAccount.name)
-      data.append("title", newAccount.title)
+      data.append('address', address);
+      data.append('signature', signature);
+      data.append('email', newAccount.email);
+      data.append('bio', newAccount.bio);
+      data.append('name', newAccount.name);
+      data.append('title', newAccount.title);
       // data.append("file", file)
 
-      let res = await axios.patch(`${baseUri}/user`, data)
-      resolve(res.data as string)
+      const res = await axios.post(`${baseUri}/user`, data);
+      resolve(res.data as User);
     } catch (error) {
       reject(error);
     }

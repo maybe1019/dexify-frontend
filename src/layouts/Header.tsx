@@ -1,26 +1,27 @@
-import { shortenAddress, useEthers } from "@usedapp/core";
-import React, { Fragment, useEffect } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { Link, useLocation } from "react-router-dom";
-import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
-import { ethers } from "ethers";
-import { getUser } from "../api/user";
-import { useSelector, useDispatch } from "react-redux";
-
-import type { RootState } from "../store";
-import { setMyAccount, setMyAccountAsDevault } from "../slices/myAccountSlice";
+import { shortenAddress, useEthers } from '@usedapp/core';
+import React, { Fragment, useEffect } from 'react';
+import { Popover, Transition } from '@headlessui/react';
+import { Link, useLocation } from 'react-router-dom';
+import { ClipboardDocumentIcon } from '@heroicons/react/24/solid';
+import { ethers } from 'ethers';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../store';
+import {
+  getMyAccount,
+  setMyAccountAsDevault,
+} from '../store/reducers/myAccountSlice';
 
 const links: Array<Record<string, string>> = [
-  { path: "/", name: "Dexfund" },
-  { path: "/manage", name: "Manage" },
-  { path: "/profile", name: "Profile" },
+  { path: '/', name: 'Dexfund' },
+  { path: '/manage', name: 'Manage' },
+  { path: '/profile', name: 'Profile' },
 ];
 
 export const Header = (): JSX.Element => {
   const { account, library, activateBrowserWallet, deactivate } = useEthers();
-  const myAccount = useSelector((state: RootState) => state.myAccount);
+  const myAccount = useSelector((state: RootState) => state.myAccount.value);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const location = useLocation();
 
@@ -34,18 +35,7 @@ export const Header = (): JSX.Element => {
 
   const initAccount = async () => {
     try {
-      const provider: ethers.providers.JsonRpcProvider =
-        library as ethers.providers.JsonRpcProvider;
-      const signer = await provider.getSigner();
-      const signature = await signer.signMessage(account as string);
-      console.log(signature, account);
-      let res = await getUser(signature, account as string);
-
-      if (res.title) {
-        dispatch(setMyAccount(res));
-      } else {
-        dispatch(setMyAccountAsDevault());
-      }
+      dispatch(getMyAccount(library as ethers.providers.JsonRpcProvider));
     } catch (error) {
       throw error;
     }
@@ -74,8 +64,8 @@ export const Header = (): JSX.Element => {
               <Link
                 to={link.path}
                 className={
-                  "nav-item" +
-                  (link.path === location.pathname ? " active" : "")
+                  'nav-item' +
+                  (link.path === location.pathname ? ' active' : '')
                 }
               >
                 {link.name}
@@ -94,7 +84,15 @@ export const Header = (): JSX.Element => {
                   aria-expanded="true"
                   aria-haspopup="true"
                 >
-                  <img src={myAccount.image} alt="avatar" className=" w-11" />
+                  <img
+                    src={
+                      myAccount.image !== ''
+                        ? myAccount.image
+                        : '/images/default-user.png'
+                    }
+                    alt="avatar"
+                    className=" w-11 h-11 block overflow-hidden rounded-full"
+                  />
                   <div className="text-[18px] font-[500]">
                     {myAccount.title}
                   </div>
@@ -118,21 +116,42 @@ export const Header = (): JSX.Element => {
                   <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-white p-4">
                     {myAccount.name ? (
                       <div className="pt-2">
-                        <div className="py-2">
+                        <div className="py-2 flex justify-between">
                           {myAccount.name}
-                          <ClipboardDocumentIcon />
+                          <ClipboardDocumentIcon
+                            color="gray"
+                            width={22}
+                            className="hover:opacity-70 cursor-pointer"
+                            onClick={() =>
+                              navigator.clipboard.writeText(myAccount.name)
+                            }
+                          />
                         </div>
-                        <div className="py-2">
+                        <div className="py-2 flex justify-between">
                           {myAccount.email}
-                          <ClipboardDocumentIcon />
+                          <ClipboardDocumentIcon
+                            color="gray"
+                            width={22}
+                            className="hover:opacity-70 cursor-pointer"
+                            onClick={() =>
+                              navigator.clipboard.writeText(myAccount.email)
+                            }
+                          />
                         </div>
-                        <div className="py-2">
+                        <div className="py-2 flex justify-between">
                           {shortenAddress(account)}
-                          <ClipboardDocumentIcon />
+                          <ClipboardDocumentIcon
+                            color="gray"
+                            width={22}
+                            className="hover:opacity-70 cursor-pointer"
+                            onClick={() =>
+                              navigator.clipboard.writeText(account)
+                            }
+                          />
                         </div>
                         <Link
-                          to={"/account"}
-                          className="mt-4 rounded-lg p-2 bg-secondary text-center text-white"
+                          to={'/account'}
+                          className=" block w-full mt-4 rounded-lg p-2 bg-secondary text-center text-white hover:opacity-90"
                         >
                           Edit Account
                         </Link>
@@ -151,7 +170,7 @@ export const Header = (): JSX.Element => {
                           />
                         </div>
                         <Link
-                          to={"/account"}
+                          to={'/account'}
                           className=" block w-full mt-4 rounded-lg p-2 bg-secondary text-center text-white hover:opacity-90"
                         >
                           Create Account
@@ -174,7 +193,7 @@ export const Header = (): JSX.Element => {
             className="ml-auto font-bold bg-primary text-white px-8 py-2 rounded-lg hover:opacity-90"
             onClick={handleConnect}
           >
-            {account ? shortenAddress(account) : "CONNECT"}
+            {account ? shortenAddress(account) : 'CONNECT'}
           </button>
         )}
       </div>

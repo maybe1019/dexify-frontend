@@ -1,38 +1,39 @@
-import { useEthers } from "@usedapp/core";
-import { ethers } from "ethers";
-import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { patchUser } from "../api/user";
-import type { RootState } from "../store";
+import { useEthers } from '@usedapp/core';
+import { ethers } from 'ethers';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { RootState, useAppDispatch } from '../store';
+import { createOrUpdateMyAccount } from '../store/reducers/myAccountSlice';
 
 const Account = () => {
-  const myAccount = useSelector((state: RootState) => state.myAccount);
+  const myAccount = useSelector((state: RootState) => state.myAccount.value);
   const { account, library } = useEthers();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const imageFileRef = useRef<HTMLInputElement | null>(null);
 
   const [newAccount, setNewAccount] = useState<User>(myAccount);
   const [dragActive, setDragActive] = useState<boolean>(false);
 
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>('');
   let imageFile: File;
 
   useEffect(() => {
     if (!account) {
-      navigate("/");
+      navigate('/');
     }
   }, [account]); //eslint-disable-line
 
   const onChangeValue = (
     e:
       | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    let value = e.target.value;
-    let name = e.target.name;
-    let newValue: any = { ...newAccount };
+    const value = e.target.value;
+    const name = e.target.name;
+    const newValue: any = { ...newAccount };
     newValue[name] = value;
     setNewAccount(newValue as User);
   };
@@ -40,9 +41,9 @@ const Account = () => {
   const handleDrag = function (e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
+    if (e.type === 'dragenter' || e.type === 'dragover') {
       setDragActive(true);
-    } else if (e.type === "dragleave") {
+    } else if (e.type === 'dragleave') {
       setDragActive(false);
     }
   };
@@ -63,29 +64,29 @@ const Account = () => {
     if (e.target.files && e.target.files[0]) {
       handleFile(e.target.files);
     } else {
-      setImageUrl("");
+      setImageUrl('');
     }
   };
 
   const handleFile = (files: FileList) => {
     if (files && files[0]) {
-      imageFile = files[0]
+      imageFile = files[0];
       setImageUrl(URL.createObjectURL(files[0]));
     }
   };
 
   const handleUpload = async () => {
-    if (newAccount.title === "") {
+    if (newAccount.title === '') {
     }
 
     try {
-      const provider: ethers.providers.JsonRpcProvider =
-        library as ethers.providers.JsonRpcProvider;
-      const signer = await provider.getSigner();
-      const signature = await signer.signMessage(account as string);
-
-      await patchUser(signature, account as string, imageFile, newAccount)
-      
+      dispatch(
+        createOrUpdateMyAccount({
+          library: library as ethers.providers.JsonRpcProvider,
+          file: imageFile,
+          newAccount,
+        }),
+      );
     } catch (error) {}
   };
 
@@ -99,7 +100,7 @@ const Account = () => {
           imageFileRef.current?.click();
         }}
       >
-        {imageUrl !== "" && (
+        {imageUrl !== '' && (
           <img
             src={imageUrl}
             alt="avatar"
@@ -168,7 +169,7 @@ const Account = () => {
         className=" mt-2 p-2 w-full bg-primary rounded-lg text-white hover:opacity-90"
         onClick={handleUpload}
       >
-        {myAccount.id ? "Update Account" : "Create Account"}
+        {myAccount.id ? 'Update Account' : 'Create Account'}
       </button>
     </div>
   );

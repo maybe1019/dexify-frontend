@@ -1,32 +1,92 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import Backend from '../../api';
+import utils from '../../utils';
+import { ethers } from 'ethers';
 
-const initialState: User = {
-  title: "New User",
-  image: "/images/default-user.png",
-  id: "",
-  name: "",
-  bio: "",
-  address: "",
-  email: "",
-} as User;
+const initialUser: User = {
+  title: 'New User',
+  image: '/images/default-user.png',
+  id: '',
+  name: '',
+  bio: '',
+  address: '',
+  email: '',
+};
+
+export const getMyAccount = createAsyncThunk(
+  'user/get',
+  async (library: ethers.providers.JsonRpcProvider, { rejectWithValue }) => {
+    try {
+      const { signature, address } = await utils.ethers.signMessage(library);
+      const result = await Backend.user.getUser(signature, address);
+      return result;
+    } catch (error) {
+      return rejectWithValue('');
+    }
+  },
+);
+
+export const createOrUpdateMyAccount = createAsyncThunk(
+  'user/post',
+  async (
+    postInfo: {
+      library: ethers.providers.JsonRpcProvider;
+      file: File;
+      newAccount: User;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const { signature, address } = await utils.ethers.signMessage(
+        postInfo.library,
+      );
+      const result = await Backend.user.postUser(
+        signature,
+        address,
+        postInfo.file,
+        postInfo.newAccount,
+      );
+      return result;
+    } catch (error) {
+      return rejectWithValue('');
+    }
+  },
+);
 
 export const myAccountSlice = createSlice({
-  name: 'counter',
-  initialState,
+  name: 'myAccount',
+  initialState: {
+    value: initialUser,
+    status: 'ready',
+  },
   reducers: {
     setMyAccountAsDevault: (state) => {
-      state = initialState;
+      state.value = initialUser;
       return state;
     },
-    setMyAccount: (state, action: PayloadAction<User>) => {
-      state = action.payload;
+  },
+  extraReducers(builder) {
+    builder.addCase(
+      getMyAccount.fulfilled,
+      (state, action: PayloadAction<User>) => {
+        state.value = action.payload;
+        return state;
+      },
+    );
+    builder.addCase(getMyAccount.rejected, (state) => {
+      state.value = initialUser;
       return state;
-    },
+    });
+
+    builder.addCase(createOrUpdateMyAccount.fulfilled, (state, action) => {
+      state.value = action.payload;
+      return state;
+    });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setMyAccountAsDevault, setMyAccount } = myAccountSlice.actions;
+export const { setMyAccountAsDevault } = myAccountSlice.actions;
 
 export default myAccountSlice.reducer;
