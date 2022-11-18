@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { patchUser } from "../api/user";
 import type { RootState } from "../store";
 
 const Account = () => {
@@ -16,6 +17,7 @@ const Account = () => {
   const [dragActive, setDragActive] = useState<boolean>(false);
 
   const [imageUrl, setImageUrl] = useState<string>("");
+  let imageFile: File;
 
   useEffect(() => {
     if (!account) {
@@ -67,6 +69,7 @@ const Account = () => {
 
   const handleFile = (files: FileList) => {
     if (files && files[0]) {
+      imageFile = files[0]
       setImageUrl(URL.createObjectURL(files[0]));
     }
   };
@@ -81,13 +84,8 @@ const Account = () => {
       const signer = await provider.getSigner();
       const signature = await signer.signMessage(account as string);
 
-      const data = new FormData();
-      data.append("address", account as string);
-      data.append("signature", signature);
-      data.append("email", newAccount.email)
-      data.append("bio", newAccount.bio)
-      data.append("name", newAccount.name)
-      data.append("title", newAccount.title)
+      await patchUser(signature, account as string, imageFile, newAccount)
+      
     } catch (error) {}
   };
 

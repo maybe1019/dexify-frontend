@@ -23,3 +23,27 @@ export const getUser = (signature: string, address: string): Promise<User> =>
       reject(error);
     }
   });
+
+export const patchUser = (
+  signature: string,
+  address: string,
+  file: File,
+  newAccount: User
+): Promise<string> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const data = new FormData();
+      data.append("address", address);
+      data.append("signature", signature);
+      data.append("email", newAccount.email)
+      data.append("bio", newAccount.bio)
+      data.append("name", newAccount.name)
+      data.append("title", newAccount.title)
+      // data.append("file", file)
+
+      let res = await axios.patch(`${baseUri}/user`, data)
+      resolve(res.data as string)
+    } catch (error) {
+      reject(error)
+    }
+  });
