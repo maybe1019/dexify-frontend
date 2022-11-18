@@ -1,23 +1,36 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import { DAppProvider } from "@usedapp/core";
+import { DAppProvider, Config } from "@usedapp/core";
 import { BrowserRouter } from "react-router-dom";
+
+import { store } from "./store";
+import { Provider } from "react-redux";
+import { NETWORK } from "./config";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const config: Config = {
+  readOnlyChainId: NETWORK.chainId,
+  readOnlyUrls: {
+    [NETWORK.chainId]: NETWORK.RPC_URL,
+  },
+};
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <DAppProvider config={{}}>
-        <App />
-      </DAppProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <DAppProvider config={config}>
+          <App />
+        </DAppProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 
