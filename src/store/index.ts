@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import myAccountReducer from './slices/myAccountSlice'
+import myAccountReducer from './reducers/myAccountSlice'
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     myAccount: myAccountReducer
   },
@@ -11,3 +11,5 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
+
+export default store
