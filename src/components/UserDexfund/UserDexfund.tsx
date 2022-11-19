@@ -9,7 +9,7 @@ const UserDexfund = () => {
 
   return (
     <div className="card overflow-hidden">
-      <div className=" px-8 py-6 flex gap-4 items-center">
+      <div className="px-2 sm:px-8 py-6 flex gap-2 sm:gap-4 items-center">
         <img
           src="/images/default-user.png"
           alt="default-user"
@@ -18,7 +18,7 @@ const UserDexfund = () => {
         <div>
           <p className="text-lg font-[500]">New User</p>
           <p className=" text-text-2 dark:text-text-2-dark text-xs">
-            adasd5456dfdsfdf4dsf4646ddsg
+            adasd5456dfdsfdf4dsf4646d
           </p>
         </div>
         <div className="ml-auto">
@@ -28,8 +28,8 @@ const UserDexfund = () => {
           </p>
         </div>
       </div>
-      <div className="card p-2 flex gap-2">
-        <div className="p-2 flex flex-col gap-3 w-1/2">
+      <div className="card p-2 flex gap-2 flex-col md:flex-row">
+        <div className="p-2 flex flex-col gap-3 w-full md:w-1/2">
           <div className="flex justify-between items-center">
             <span className="rounded-xl bg-purple-300 dark:bg-purple-800 px-3 py-2 font-[500] text-sm">
               Users
@@ -94,6 +94,7 @@ const UserDexfund = () => {
                           <div
                             className=" cursor-pointer hover:bg-bg-2 dark:hover:bg-bg-2-dark px-2 py-1 rounded"
                             onClick={() => setSelectedPeriod(text)}
+                            key={text}
                           >
                             {text}
                           </div>
@@ -105,7 +106,7 @@ const UserDexfund = () => {
               </Popover>
             </div>
           </div>
-          <div className="flex-grow text-xs transition-none">
+          <div className="flex-grow text-xs transition-none min-h-[200px] h-60 md:h-auto">
             <FundChart xAxis={true} yAxis={false} data={data} />
           </div>
         </div>
