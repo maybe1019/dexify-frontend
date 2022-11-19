@@ -29,7 +29,7 @@ module.exports = {
         'bg-2': {
           DEFAULT: colors.gray[200],
           dark: colors.slate[800],
-        }
+        },
       },
     },
   },

@@ -75,8 +75,9 @@ const Account = () => {
     }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = () => {
     if (newAccount.title === '') {
+      return;
     }
 
     try {

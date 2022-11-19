@@ -1,5 +1,5 @@
 {
-  "**/*.{js,jsx,ts,tsx}": [
+  "**/*.{jsx,ts,tsx}": [
     "eslint",
     "prettier --write"
   ],

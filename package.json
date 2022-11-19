@@ -37,7 +37,7 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/{*.ts,*.tsx}\"",
-    "lint": "eslint \"{src,apps,libs,test}/**/{*.ts,*.tsx}\" --fix",
+    "lint": "eslint \"src/**/{*.ts,*.tsx,*.js}\" --fix",
     "pre-commit": "lint-staged",
     "prepare": "husky install"
   },
