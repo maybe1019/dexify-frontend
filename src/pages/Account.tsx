@@ -3,6 +3,8 @@ import { ethers } from 'ethers';
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ConfirmDialogModal from '../components/ConfirmDialogModal';
+import { DialogType } from '../helpers/enums';
 import { RootState, useAppDispatch } from '../store';
 import { createOrUpdateMyAccount } from '../store/reducers/myAccountSlice';
 
@@ -16,6 +18,7 @@ const Account = () => {
 
   const [newAccount, setNewAccount] = useState<User>(myAccount);
   const [dragActive, setDragActive] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const [imageUrl, setImageUrl] = useState<string>('');
   let imageFile: File;
@@ -75,7 +78,7 @@ const Account = () => {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpdate = () => {
     if (newAccount.title === '') {
       return;
     }
@@ -168,10 +171,18 @@ const Account = () => {
       />
       <button
         className=" mt-2 p-2 w-full bg-primary rounded-lg text-white hover:opacity-90"
-        onClick={handleUpload}
+        onClick={() => setIsDialogOpen(true)}
       >
         {myAccount.id ? 'Update Account' : 'Create Account'}
       </button>
+      <ConfirmDialogModal
+        isOpen={isDialogOpen}
+        dialogType={
+          myAccount.id ? DialogType.UPDATE_ACCOUNT : DialogType.CREATE_ACCOUNT
+        }
+        onCancel={() => setIsDialogOpen(false)}
+        onConfirm={handleUpdate}
+      />
     </div>
   );
 };
