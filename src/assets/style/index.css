@@ -46,4 +46,26 @@ body {
 .card {
   @apply bg-white shadow-[0_0_12px_0_primary] shadow-[#C96AE488] rounded-2xl
     dark:bg-bg-2-dark;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-slate-600
+    opacity-20;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-primary
+   rounded-full;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }/*# sourceMappingURL=index.css.map */
