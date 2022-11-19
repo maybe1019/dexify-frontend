@@ -5,7 +5,7 @@ import { Layout } from './layouts';
 import Account from './pages/Account';
 import Dexfund from './pages/Dexfund';
 import Manage from './pages/Manage';
-import Profile from './pages/Profile';
+import Portfolio from './pages/Portfolio';
 import { useAppSelector } from './store';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Dexfund />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/manage" element={<Manage />} />
             <Route path="/account" element={<Account />} />
           </Routes>
