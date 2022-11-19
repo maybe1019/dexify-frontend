@@ -1,5 +1,5 @@
 import React from 'react';
-import UserDexfund from '../components/UserDexfund';
+import UserDexfund from '../../components/UserDexfund';
 
 const Dexfund = () => {
   return (

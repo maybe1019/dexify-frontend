@@ -18,7 +18,7 @@ import ThemeModeToggle from '../components/ThemeModeToggle';
 const links: Array<Record<string, string>> = [
   { path: '/', name: 'Dexfund' },
   { path: '/manage', name: 'Manage' },
-  { path: '/profile', name: 'Profile' },
+  { path: '/portfolio', name: 'Portfolio' },
 ];
 
 export const Header = (): JSX.Element => {

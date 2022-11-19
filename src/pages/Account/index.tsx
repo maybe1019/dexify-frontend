@@ -3,10 +3,10 @@ import { ethers } from 'ethers';
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import ConfirmDialogModal from '../components/ConfirmDialogModal';
-import { DialogType } from '../helpers/enums';
-import { RootState, useAppDispatch } from '../store';
-import { createOrUpdateMyAccount } from '../store/reducers/myAccountSlice';
+import ConfirmDialogModal from '../../components/ConfirmDialogModal';
+import { DialogType } from '../../helpers/enums';
+import { RootState, useAppDispatch } from '../../store';
+import { createOrUpdateMyAccount } from '../../store/reducers/myAccountSlice';
 
 const Account = () => {
   const myAccount = useSelector((state: RootState) => state.myAccount.value);
