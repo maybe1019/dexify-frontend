@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+
 import myAccountReducer from './reducers/myAccountSlice';
+import themeModeReducer from './reducers/themeModeSlice';
 
 const store = configureStore({
   reducer: {
     myAccount: myAccountReducer,
+    themeMode: themeModeReducer,
   },
 });
 

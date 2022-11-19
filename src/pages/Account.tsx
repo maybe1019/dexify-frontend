@@ -91,7 +91,7 @@ const Account = () => {
   };
 
   return (
-    <div className="bg-white shadow-lg max-w-2xl mx-auto rounded-xl p-6">
+    <div className="bg-bg-2 shadow-lg max-w-2xl mx-auto rounded-xl p-6 dark:bg-bg-2-dark">
       <h3 className="text-2xl font-[500] py-2">My Account</h3>
       <div
         className="account-avatar m-2 relative overflow-hidden"
@@ -131,7 +131,7 @@ const Account = () => {
       <input
         type="text"
         readOnly
-        className="p-2 outline-none border-2 w-full my-3 rounded text-gray-600"
+        className="p-2 outline-none border-2 w-full my-3 rounded text-gray-600 dark:bg-bg-2-dark dark:text-gray-400 dark:border-gray-600"
         value={account}
       />
       <input
