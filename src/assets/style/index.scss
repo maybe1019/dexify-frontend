@@ -46,3 +46,13 @@ body {
 .theme-toggle * {
   transition: none;
 }
+
+
+
+// components
+
+.card {
+  @apply
+    bg-white shadow-[0_0_12px_0_primary] shadow-[#C96AE488] rounded-2xl
+    dark:bg-bg-2-dark
+}
