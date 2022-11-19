@@ -1,15 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import {
-  AreaChart,
-  XAxis,
-  Area,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
-import data from '../helpers/data/chartInitData.json';
+import data from '../../helpers/data/chartInitData.json';
 import { Popover, Transition } from '@headlessui/react';
+import FundChart from '../FundChart';
 
 const UserDexfund = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('Last 7 Days');
@@ -113,41 +106,7 @@ const UserDexfund = () => {
             </div>
           </div>
           <div className="flex-grow text-xs transition-none">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                width={600}
-                height={400}
-                data={data}
-                margin={{
-                  top: 0,
-                  right: 0,
-                  left: 0,
-                  bottom: 0,
-                }}
-              >
-                <defs>
-                  <linearGradient id="colorView" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#C96AE4" stopOpacity={0.7} />
-                    <stop
-                      offset="75%"
-                      stopColor="#ff9bff81"
-                      stopOpacity={0.3}
-                    />
-                    <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.1} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" height={20} />
-                <Tooltip />
-                <Area
-                  type="monotone"
-                  dataKey="uv"
-                  stroke="#C96AE4"
-                  strokeWidth="3"
-                  fill="url(#colorView)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <FundChart xAxis={true} yAxis={false} data={data} />
           </div>
         </div>
       </div>
