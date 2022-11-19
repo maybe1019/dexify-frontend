@@ -10,6 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 import { Provider } from 'react-redux';
 import { NETWORK } from './config';
+import { ReactNotifications } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -27,6 +29,7 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <DAppProvider config={config}>
+          <ReactNotifications />
           <App />
         </DAppProvider>
       </BrowserRouter>
