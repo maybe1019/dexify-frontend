@@ -1,0 +1,5 @@
+[
+  { "path": "/", "name": "Dexfund" },
+  { "path": "/manage", "name": "Manage" },
+  { "path": "/portfolio", "name": "Portfolio" }
+]
