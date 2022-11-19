@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import Backend from '../../api';
-import utils from '../../utils';
+import serverAPIs from '../../api';
+import utils from '../../helpers/utils';
 import { ethers } from 'ethers';
-import helpers from '../../helpers';
 
 const initialUser: User = {
   title: 'New User',
@@ -20,10 +19,10 @@ export const getMyAccount = createAsyncThunk(
   async (library: ethers.providers.JsonRpcProvider, { rejectWithValue }) => {
     try {
       const { signature, address } = await utils.ethers.signMessage(library);
-      const result = await Backend.user.getUser(signature, address);
+      const result = await serverAPIs.user.getUser(signature, address);
       return result;
     } catch (error) {
-      helpers.notification.danger('ERROR', 'This is error.');
+      utils.notification.danger('ERROR', (error as any).message);
       return rejectWithValue('');
     }
   },
@@ -43,7 +42,7 @@ export const createOrUpdateMyAccount = createAsyncThunk(
       const { signature, address } = await utils.ethers.signMessage(
         postInfo.library,
       );
-      const result = await Backend.user.postUser(
+      const result = await serverAPIs.user.postUser(
         signature,
         address,
         postInfo.file,
