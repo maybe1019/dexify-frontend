@@ -2,7 +2,10 @@ import { shortenAddress, useEthers } from '@usedapp/core';
 import React, { Fragment, useEffect } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { Link, useLocation } from 'react-router-dom';
-import { ClipboardDocumentIcon } from '@heroicons/react/24/solid';
+import {
+  ClipboardDocumentIcon,
+  ChevronDownIcon,
+} from '@heroicons/react/24/solid';
 import { ethers } from 'ethers';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../store';
@@ -10,6 +13,7 @@ import {
   getMyAccount,
   setMyAccountAsDevault,
 } from '../store/reducers/myAccountSlice';
+import ThemeModeToggle from '../components/ThemeModeToggle';
 
 const links: Array<Record<string, string>> = [
   { path: '/', name: 'Dexfund' },
@@ -50,12 +54,14 @@ export const Header = (): JSX.Element => {
   };
 
   return (
-    <header className=" bg-white shadow-lg">
+    <header className=" bg-bg-1 shadow-lg dark:bg-black dark:bg-bg-1-dark">
       <div className="container mx-auto px-2 py-3 text flex items-center">
         <Link to="/" className="flex items-center">
           <img src="/images/logo.png" alt="logo" className="w-[48px] mr-2" />
           <span className=" text-[22px] font-bold text-primary">DEX</span>
-          <span className=" text-[22px] font-bold">IFY</span>
+          <span className=" text-[22px] font-bold text-black dark:text-white">
+            IFY
+          </span>
         </Link>
 
         <nav className="flex items-center gap-10 ml-24">
@@ -74,8 +80,12 @@ export const Header = (): JSX.Element => {
           ))}
         </nav>
 
+        <div className="ml-auto mr-4">
+          <ThemeModeToggle />
+        </div>
+
         {account ? (
-          <div className="ml-auto">
+          <div>
             <Popover className="relative h-[44px]">
               <Popover.Button>
                 <div
@@ -96,10 +106,12 @@ export const Header = (): JSX.Element => {
                   <div className="text-[18px] font-[500]">
                     {myAccount.title}
                   </div>
-                  <img
-                    src="/images/icon-angle-down.svg"
-                    alt="angle down"
-                    className=" ml-3 w-[10px]"
+                  <ChevronDownIcon
+                    width={10}
+                    className="hover:opacity-70 cursor-pointer text-text-1 dark:text-text-1-dark"
+                    onClick={() =>
+                      navigator.clipboard.writeText(myAccount.name)
+                    }
                   />
                 </div>
               </Popover.Button>
@@ -113,7 +125,7 @@ export const Header = (): JSX.Element => {
                 leaveTo="opacity-0 translate-y-1"
               >
                 <Popover.Panel className="absolute right-[-10px] z-10 mt-4 w-[300px] px-4 sm:px-0">
-                  <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-white p-4">
+                  <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-bg-1 dark:bg-bg-1-dark p-4">
                     {myAccount.name ? (
                       <div className="pt-2">
                         <div className="py-2 flex justify-between">
@@ -190,7 +202,7 @@ export const Header = (): JSX.Element => {
           </div>
         ) : (
           <button
-            className="ml-auto font-bold bg-primary text-white px-8 py-2 rounded-lg hover:opacity-90"
+            className="font-bold bg-primary text-white px-8 py-2 rounded-lg hover:opacity-90"
             onClick={handleConnect}
           >
             {account ? shortenAddress(account) : 'CONNECT'}
