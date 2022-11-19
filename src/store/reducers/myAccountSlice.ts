@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import Backend from '../../api';
 import utils from '../../utils';
 import { ethers } from 'ethers';
+import helpers from '../../helpers';
 
 const initialUser: User = {
   title: 'New User',
@@ -22,6 +23,7 @@ export const getMyAccount = createAsyncThunk(
       const result = await Backend.user.getUser(signature, address);
       return result;
     } catch (error) {
+      helpers.notification.danger('ERROR', 'This is error.');
       return rejectWithValue('');
     }
   },
