@@ -1,7 +1,7 @@
 import React from 'react';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
-import { useAppDispatch, useAppSelector } from '../store';
-import { toggleThemeMode } from '../store/reducers/themeModeSlice';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { toggleThemeMode } from '../../store/reducers/themeModeSlice';
 
 const ThemeModeToggle = () => {
   const themeMode = useAppSelector((state) => state.themeMode.value);

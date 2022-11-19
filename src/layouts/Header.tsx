@@ -54,7 +54,7 @@ export const Header = (): JSX.Element => {
   };
 
   return (
-    <header className=" bg-bg-1 shadow-lg dark:bg-black dark:bg-bg-1-dark">
+    <header className="bg-bg-1 shadow-lg dark:bg-black">
       <div className="container mx-auto px-2 py-3 text flex items-center">
         <Link to="/" className="flex items-center">
           <img src="/images/logo.png" alt="logo" className="w-[48px] mr-2" />

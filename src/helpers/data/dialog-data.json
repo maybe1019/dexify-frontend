@@ -1,0 +1,20 @@
+{
+  "confirm": {
+    "title": "Are you sure?",
+    "content": "",
+    "cancelButton": "No",
+    "confirmButton": "Yes"
+  },
+  "create-account": {
+    "title": "Are you sure?",
+    "content": "",
+    "cancelButton": "Cancel",
+    "confirmButton": "Create Account"
+  },
+  "update-account": {
+    "title": "Are you sure to update your account?",
+    "content": "",
+    "cancelButton": "Cancel",
+    "confirmButton": "Update Account"
+  }
+}
