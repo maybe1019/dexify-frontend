@@ -91,7 +91,9 @@ const Account = () => {
           newAccount,
         }),
       );
-    } catch (error) {}
+    } catch (error) {
+      setIsDialogOpen(false);
+    }
   };
 
   return (

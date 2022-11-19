@@ -38,7 +38,7 @@ const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         {xAxis && <XAxis dataKey="name" height={20} />}
-        {yAxis && <YAxis dataKey="name" />}
+        {yAxis && <YAxis />}
         <Tooltip />
         <Area
           type="monotone"

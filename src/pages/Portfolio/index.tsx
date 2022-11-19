@@ -6,14 +6,16 @@ import TotoalAUM from './components/TotoalAUM';
 
 const Portfolio = () => {
   return (
-    <div>
-      <h1 className="text-[22px] font-[500] mb-5">Top Dexfunds</h1>
-      <div className="flex flex-wrap justify-around mx-4">
+    <div className="p-4">
+      <div className="flex flex-wrap justify-around">
         <TotoalAUM />
         <DexfundSplit />
         <TotalROI />
       </div>
-      <div className="flex flex-wrap justify-around mx-8 lg:mx-6 md:mx-4">
+      <h1 className="text-[22px] font-[500] mt-12 mb-6 sm:text-center">
+        My Dexfunds
+      </h1>
+      <div className="flex flex-wrap justify-around gap-4">
         <UserDexfund />
         <UserDexfund />
         <UserDexfund />
