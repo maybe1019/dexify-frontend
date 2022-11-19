@@ -94,6 +94,7 @@ const UserDexfund = () => {
                           <div
                             className=" cursor-pointer hover:bg-bg-2 dark:hover:bg-bg-2-dark px-2 py-1 rounded"
                             onClick={() => setSelectedPeriod(text)}
+                            key={text}
                           >
                             {text}
                           </div>
