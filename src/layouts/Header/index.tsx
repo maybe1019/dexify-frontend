@@ -39,7 +39,7 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <header className="bg-bg-1 shadow-lg dark:bg-black">
+    <header className="bg-bg-1 shadow-lg dark:bg-black sticky top-0 z-50">
       <div className="container mx-auto px-2 py-3 text flex items-center gap-4">
         <Logo />
 
@@ -59,11 +59,11 @@ const Header = (): JSX.Element => {
           ))}
         </nav>
 
-        <div className="ml-auto">
+        <div className="hidden ml-auto md:block">
           <ThemeModeToggle />
         </div>
 
-        <div>
+        <div className="ml-auto md:ml-0">
           <ProfileDropdown />
         </div>
 
