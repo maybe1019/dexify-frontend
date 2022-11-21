@@ -1,6 +1,10 @@
 export const handelTitle = (pathName: string) => {
   pathName = pathName.split('/')[1];
-  if (!pathName) return;
+  console.log(!pathName.length);
+  if (!pathName.length) {
+    document.title = 'Dexify';
+    return;
+  }
   document.title =
-    'Dexify - ' + pathName.charAt(0).toUpperCase() + pathName.slice(1);
+    pathName.charAt(0).toUpperCase() + pathName.slice(1) + ' | Dexify';
 };
