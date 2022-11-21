@@ -1,0 +1,17 @@
+{
+  "default": {
+    "title": "Dexify",
+    "image": "",
+    "description": "Accessible algorithmic trading"
+  },
+  "account": {
+    "title": "Account | Dexify",
+    "image": "",
+    "description": ""
+  },
+  "portfolio": {
+    "title": "Portfolio | Dexify",
+    "image": "",
+    "description": ""
+  }
+}

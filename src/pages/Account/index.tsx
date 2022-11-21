@@ -2,10 +2,9 @@ import { useEthers } from '@usedapp/core';
 import { ethers } from 'ethers';
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ConfirmDialogModal from '../../components/ConfirmDialogModal';
 import { DialogType } from '../../helpers/enums';
-import utils from '../../helpers/utils';
 import { RootState, useAppDispatch } from '../../store';
 import { createOrUpdateMyAccount } from '../../store/reducers/myAccountSlice';
 
@@ -14,10 +13,6 @@ const Account = () => {
   const { account, library } = useEthers();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { pathname } = useLocation();
-  useEffect(() => {
-    utils.pageMeta.handelTitle(pathname);
-  }, [pathname]);
 
   const imageFileRef = useRef<HTMLInputElement | null>(null);
 
