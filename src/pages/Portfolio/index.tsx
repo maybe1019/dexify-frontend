@@ -10,15 +10,17 @@ const Portfolio = () => {
   return (
     <div>
       <PageMeta pageName={PageName.PORTFOLIO} />
-      <div className="flex flex-wrap justify-around gap-2 sm:gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         <TotoalAUM />
         <DexfundSplit />
-        <TotalROI />
+        <div className="lg:col-span-2 xl:col-span-1">
+          <TotalROI />
+        </div>
       </div>
       <h1 className="text-[22px] font-[500] m-12 mb-6 text-center lg:text-left">
         My Dexfunds
       </h1>
-      <div className="sm:flex sm:flex-wrap sm:justify-around gap-2 sm:gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         <UserDexfund />
         <UserDexfund />
         <UserDexfund />
