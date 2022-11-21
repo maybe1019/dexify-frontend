@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import UserDexfund from '../../components/UserDexfund';
+import utils from '../../helpers/utils';
 import DexfundSplit from './components/DexfundSplit';
 import TotalROI from './components/TotalROI';
 import TotoalAUM from './components/TotoalAUM';
 
 const Portfolio = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    utils.pageMeta.handelTitle(pathname);
+  }, [pathname]);
+
   return (
     <div>
       <div className="flex flex-wrap justify-around gap-2 sm:gap-4">
