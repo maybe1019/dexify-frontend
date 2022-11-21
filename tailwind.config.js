@@ -31,12 +31,6 @@ module.exports = {
           dark: colors.slate[800],
         },
       },
-      screens: {
-        sm: { max: '768px', min: '350px' },
-        md: '768px',
-        lg: '1080px',
-        xl: { min: '1440px' },
-      },
     },
   },
   plugins: [],

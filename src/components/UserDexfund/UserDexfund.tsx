@@ -9,7 +9,7 @@ const UserDexfund = () => {
 
   return (
     <div className="card overflow-hidden">
-      <div className="px-8 sm:px-2 py-6 flex gap-4 sm:gap-2 items-center">
+      <div className="px-2 sm:px-8 py-6 flex gap-2 sm:gap-4 items-center">
         <img
           src="/images/default-user.png"
           alt="default-user"
@@ -31,34 +31,34 @@ const UserDexfund = () => {
       <div className="card p-2 flex gap-2 flex-col md:flex-row">
         <div className="p-2 flex flex-col gap-3 w-full md:w-1/2">
           <div className="flex justify-between items-center">
-            <span className="rounded-lg bg-purple-300 dark:bg-purple-800 px-3 py-2 font-[500] text-sm">
+            <span className="rounded-lg bg-purple-300 dark:bg-purple-800 p-2 font-[500] text-xs">
               Users
             </span>
-            <span>32,000</span>
+            <span className="text-sm">32,000</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="rounded-lg bg-pink-200 dark:bg-pink-900 px-3 py-2 font-[500] text-sm">
+            <span className="rounded-lg bg-pink-200 dark:bg-pink-900 p-2 font-[500] text-xs">
               Risk
             </span>
-            <span>3</span>
+            <span className="text-sm">3</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="rounded-lg bg-amber-200 dark:bg-amber-900 px-3 py-2 font-[500] text-sm">
+            <span className="rounded-lg bg-amber-200 dark:bg-amber-900 p-2 font-[500] text-xs">
               Min Investment
             </span>
-            <span>250</span>
+            <span className="text-sm">250</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="rounded-lg bg-green-200 dark:bg-green-900 px-3 py-2 font-[500] text-sm">
+            <span className="rounded-lg bg-green-200 dark:bg-green-900 p-2 font-[500] text-xs">
               Age(days)
             </span>
-            <span>75</span>
+            <span className="text-sm">75</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="rounded-lg bg-orange-200 dark:bg-orange-900 px-3 py-2 font-[500] text-sm">
+            <span className="rounded-lg bg-orange-200 dark:bg-orange-900 p-2 font-[500] text-xs">
               Biggest Holding
             </span>
-            <span>BTC 50%</span>
+            <span className="text-sm">BTC 50%</span>
           </div>
         </div>
         <div className="grow overflow-hidden p-2 shadow-[0_0_2px_0_primary] shadow-[#C96AE488] rounded-xl flex flex-col gap-3">
@@ -106,7 +106,7 @@ const UserDexfund = () => {
               </Popover>
             </div>
           </div>
-          <div className="flex-grow text-xs transition-none min-h-[200px] h-60 md:h-auto">
+          <div className="flex-grow text-xs transition-none h-[160px] md:h-auto">
             <FundChart xAxis={true} yAxis={false} data={data} />
           </div>
         </div>

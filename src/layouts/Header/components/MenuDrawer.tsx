@@ -48,7 +48,7 @@ const MenuDrawer = () => {
 
       {isDrawerOpen && (
         <div
-          className="w-screen h-screen fixed left-0 top-0 z-20"
+          className="w-screen h-screen fixed left-0 top-0 z-20 bg-gray-500 opacity-50"
           onClick={closeDrawer}
         ></div>
       )}
