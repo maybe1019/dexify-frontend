@@ -60,12 +60,12 @@ body {
 /* width */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  @apply bg-slate-600
-    opacity-20;
+  opacity: 0;
 }
 
 /* Handle */
@@ -76,5 +76,5 @@ body {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background-color: rgb(168, 75, 180);
 }
