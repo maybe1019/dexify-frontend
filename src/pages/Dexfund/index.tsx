@@ -1,20 +1,13 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
 import DataTable from '../../components/DataTable';
 import UserDexfund from '../../components/UserDexfund';
-import utils from '../../helpers/utils';
 
 import untypedDexifyData from './data/dexifyData.json';
 import untypedFields from './data/fields.json';
 
 const Dexfund = () => {
-  const { pathname } = useLocation();
   const [filteredData, setFilteredData] = useState<any[]>(untypedDexifyData);
-
-  useEffect(() => {
-    utils.pageMeta.handelTitle(pathname);
-  }, [pathname]);
 
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchBy: string = e.target.value;
