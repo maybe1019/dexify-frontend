@@ -39,11 +39,11 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <header className="bg-bg-1 shadow-lg dark:bg-black">
-      <div className="container mx-auto px-2 py-3 text flex items-center gap-4">
+    <header className="bg-bg-1 shadow-lg dark:bg-black sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-3 text flex items-center gap-4">
         <Logo />
 
-        <nav className="items-center gap-10 ml-20 hidden md:flex">
+        <nav className="items-center gap-10 ml-auto lg:ml-20 hidden md:flex">
           {links.map((link) => (
             <div className="w-[80px]" key={link.name}>
               <Link
@@ -59,11 +59,11 @@ const Header = (): JSX.Element => {
           ))}
         </nav>
 
-        <div className="ml-auto">
+        <div className="hidden ml-auto md:block">
           <ThemeModeToggle />
         </div>
 
-        <div>
+        <div className="ml-auto md:ml-0">
           <ProfileDropdown />
         </div>
 
