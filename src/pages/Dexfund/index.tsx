@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DataTable from '../../components/DataTable';
 import UserDexfund from '../../components/UserDexfund';
 
@@ -12,10 +12,16 @@ const Dexfund = () => {
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchBy: string = e.target.value;
     const tmp: any[] = untypedDexifyData.filter(
-      (d) => d.dexfund.includes(searchBy) || d.manager.includes(searchBy),
+      (d) =>
+        d.dexfund.toLowerCase().includes(searchBy) ||
+        d.manager.toLowerCase().includes(searchBy),
     );
     setFilteredData(tmp);
   };
+
+  useEffect(() => {
+    console.log(filteredData);
+  }, [filteredData]);
 
   return (
     <div>
