@@ -16,11 +16,11 @@ module.exports = {
         },
         'text-2': {
           DEFAULT: colors.gray[900],
-          dark: colors.gray[300],
+          dark: colors.gray[200],
         },
         'text-3': {
-          DEFAULT: colors.gray[800],
-          dark: colors.gray[500],
+          DEFAULT: colors.gray[700],
+          dark: colors.gray[400],
         },
         'bg-1': {
           DEFAULT: colors.white,

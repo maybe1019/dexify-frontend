@@ -1,0 +1,82 @@
+[
+  {
+    "name": "manager",
+    "title": "Manager",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "dexfund",
+    "title": "Dexfund Name",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "aum",
+    "title": "AUM",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "topAssets",
+    "title": "Top Assets",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "investorId",
+    "title": "No. of investors",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "age",
+    "title": "Age",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "volume24H",
+    "title": "24H",
+    "prefix": "",
+    "suffix": "%",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "volume7D",
+    "title": "7 days",
+    "prefix": "",
+    "suffix": "%",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "inception",
+    "title": "Inception",
+    "prefix": "",
+    "suffix": "%",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "risk",
+    "title": "Risk",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": true
+  }
+]
