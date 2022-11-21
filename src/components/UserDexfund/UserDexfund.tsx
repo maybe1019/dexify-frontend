@@ -8,7 +8,7 @@ const UserDexfund = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('Last 7 Days');
 
   return (
-    <div className="card overflow-hidden">
+    <div className="card overflow-hidden hover:cursor-pointer transition ease-in-out delay-150 hover:-translate-y-2">
       <div className="px-2 sm:px-8 py-6 flex gap-2 sm:gap-4 items-center">
         <img
           src="/images/default-user.png"
