@@ -1,13 +1,7 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import UserDexfund from '../../components/UserDexfund';
-import utils from '../../helpers/utils';
 
 const Dexfund = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    utils.pageMeta.handelTitle(pathname);
-  }, [pathname]);
   return (
     <div>
       <h1 className="text-[22px] font-[500] mb-5">Top Dexfunds</h1>
