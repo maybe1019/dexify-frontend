@@ -5,7 +5,7 @@ import data from '../../../helpers/data/chartInitData.json';
 
 function TotalROI() {
   return (
-    <div className="card overflow-hidden pt-7 w-[448px] min-h-[340px]">
+    <div className="card overflow-hidden pt-7 min-h-[340px]">
       <div className="ml-8 text-text-1 dark:text-text-1-dark text-xl">
         Total ROI
       </div>

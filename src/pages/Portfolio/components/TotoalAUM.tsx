@@ -2,7 +2,7 @@ import React from 'react';
 
 function TotoalAUM() {
   return (
-    <div className="card overflow-hidden w-[448px] min-h-[340px]">
+    <div className="card overflow-hidden min-h-[340px]">
       <div className="p-7 text-text-1 dark:text-text-1-dark text-xl">
         Totoal AUM
       </div>

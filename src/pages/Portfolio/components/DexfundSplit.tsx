@@ -5,11 +5,11 @@ import fundUsersData from '../../../helpers/data/funded-users.json';
 
 function DexfundSplit() {
   return (
-    <div className="card overflow-hidden p-7 w-[448px] min-h-[340px] flex flex-col justify-between">
+    <div className="card overflow-hidden p-7 min-h-[340px] flex flex-col justify-between">
       <div className=" text-text-1 dark:text-text-1-dark text-xl">
         Dexfund Split
       </div>
-      <div className="sm:flex sm:justify-between">
+      <div className="sm:flex sm:justify-around">
         <div className="flex relative text-center">
           <div className="mx-auto">
             <PieChart width={270} height={270}>

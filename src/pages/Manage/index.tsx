@@ -1,12 +1,6 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import utils from '../../helpers/utils';
+import React from 'react';
 
 const Manage = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    utils.pageMeta.handelTitle(pathname);
-  }, [pathname]);
   return <div>Manage</div>;
 };
 
