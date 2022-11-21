@@ -1,0 +1,26 @@
+[
+  {
+    "name": "data",
+    "title": "Data",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "amount",
+    "title": "Amount",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "transaction",
+    "title": "Withdrawal/Deposit",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  }
+]

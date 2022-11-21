@@ -2,6 +2,7 @@ import React from 'react';
 import { Tab } from '@headlessui/react';
 import Bio from './Bio';
 import Fees from './Fees';
+import TotalHistory from './TotalHistory';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -37,7 +38,9 @@ export default function FondInfo() {
           <Tab.Panel>
             <Fees />
           </Tab.Panel>
-          <Tab.Panel>3</Tab.Panel>
+          <Tab.Panel>
+            <TotalHistory />
+          </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
     </div>

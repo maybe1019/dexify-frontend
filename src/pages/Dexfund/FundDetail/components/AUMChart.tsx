@@ -17,9 +17,7 @@ const AUMChart = () => {
           <p className="text-base font-bold sm:text-xl mx-4">Ryan’s Dexfund</p>
         </div>
         <div className="twitter-button">
-          <span className="text-[8px] leading-[11px] text-[#03A9F4]">
-            Twitter
-          </span>
+          <span className="text-xs leading-[12px] text-[#03A9F4]">Twitter</span>
           <TwitterIcon />
         </div>
       </div>
@@ -36,7 +34,7 @@ const AUMChart = () => {
           <ChevronUpIcon width={12} strokeWidth={4} />
         </span>
       </div>
-      <div className="flex-grow text-xs transition-none h-[375px]">
+      <div className="flex-grow text-xs transition-none h-[375px] mr-3">
         <FundChart xAxis={true} yAxis={true} data={data} />
       </div>
     </div>
