@@ -3,3 +3,10 @@ export enum DialogType {
   CREATE_ACCOUNT = 'create-account',
   UPDATE_ACCOUNT = 'update-account',
 }
+
+export enum PageName {
+  DEFAULT = 'home',
+  ACCOUNT = 'account',
+  PORTFOLIO = 'portfolio',
+  MANAGE = 'manage',
+}
