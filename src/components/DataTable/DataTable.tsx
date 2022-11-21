@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 
-import colors from './colors.json';
+import colors from '../../helpers/data/color-array.json';
 
 type DataType = {
   name: string;
@@ -24,6 +24,12 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
   const [sortBy, setSortBy] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<number>(1);
   const [showList, setShowList] = useState<any[]>(data);
+
+  useEffect(() => {
+    setShowList(data);
+    setSortBy('');
+    setSortDirection(1);
+  }, [data]);
 
   const sort = (sortName: string) => {
     let dir = sortDirection;
@@ -59,24 +65,37 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
             </tr>
           </thead>
           <tbody>
-            {showList.slice((page - 1) * 10, page * 10).map((d, index) => (
-              <tr
-                key={index}
-                className=" border-b border-b-[#8881] last:border-b-0"
-              >
+            {data.length > 0 ? (
+              showList.slice((page - 1) * 10, page * 10).map((d, index) => (
+                <tr
+                  key={index}
+                  className=" border-b border-b-[#8881] last:border-b-0"
+                >
+                  {fields.map((field) => (
+                    <td
+                      key={field.title}
+                      className="px-3 py-3 md:py-4 font-[300]"
+                      style={
+                        field.colorful ? { color: colors[d[field.name]] } : {}
+                      }
+                    >
+                      {field.prefix} {d[field.name]} {field.suffix}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
                 {fields.map((field) => (
                   <td
                     key={field.title}
-                    className="px-3 py-3 md:py-4 font-[300]"
-                    style={
-                      field.colorful ? { color: colors[d[field.name]] } : {}
-                    }
+                    className="px-3 py-3 md:py-4 font-[300] pl-6"
                   >
-                    {field.prefix} {d[field.name]} {field.suffix}
+                    -
                   </td>
                 ))}
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
