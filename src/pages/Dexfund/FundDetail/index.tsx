@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import AUMChart from './components/AUMChart';
 import AssetsInfo from './components/AssetsInfo';
-import FontInfo from './components/FondInfo';
+import FondInfo from './components/FondInfo';
 import Tweets from './components/Tweets';
 import './index.css';
 
@@ -25,7 +25,7 @@ const FundDetail = () => {
       </div>
       <div className="col-span-8 lg:col-span-3 hidden lg:flex flex-col gap-4">
         <Tweets />
-        <FontInfo />
+        <FondInfo />
       </div>
     </div>
   );
