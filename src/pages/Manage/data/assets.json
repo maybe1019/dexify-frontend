@@ -1,0 +1,58 @@
+[
+  {
+    "name": "BTC",
+    "color": "rgba(242, 201, 76, 0.2)"
+  },
+  {
+    "name": "ETH",
+    "color": "rgba(73, 233, 255, 0.2)"
+  },
+  {
+    "name": "BNB",
+    "color": "rgba(109, 133, 255, 0.2)"
+  },
+  {
+    "name": "DXFY",
+    "color": "#FFDCC988"
+  },
+  {
+    "name": "CAKE",
+    "color": "#FFE1B588"
+  },
+  {
+    "name": "1INCH",
+    "color": "#FFFBD288"
+  },
+  {
+    "name": "UNI",
+    "color": "#E9FFCC88"
+  },
+  {
+    "name": "ADA",
+    "color": "#DDFFE088"
+  },
+  {
+    "name": "CRP",
+    "color": "#CAFFF288"
+  },
+  {
+    "name": "LINK",
+    "color": "#C8E4FF88"
+  },
+  {
+    "name": "SNX",
+    "color": "#C9E5FF88"
+  },
+  {
+    "name": "RUNE",
+    "color": "#EED3FF88"
+  },
+  {
+    "name": "BAKE",
+    "color": "#FFCED788"
+  },
+  {
+    "name": "ZRX",
+    "color": "#FFE7EB88"
+  }
+]
