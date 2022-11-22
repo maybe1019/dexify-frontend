@@ -5,8 +5,10 @@ import DexfundSplit from './components/DexfundSplit';
 import TotalROI from './components/TotalROI';
 import TotoalAUM from './components/TotoalAUM';
 import { PageName } from '../../helpers/enums';
+import { useNavigate } from 'react-router-dom';
 
 const Portfolio = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <PageMeta pageName={PageName.PORTFOLIO} />
@@ -21,9 +23,18 @@ const Portfolio = () => {
         My Dexfunds
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <UserDexfund />
-        <UserDexfund />
-        <UserDexfund />
+        {Array(3)
+          .fill(1)
+          .map((item, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                navigate(`/funds/${i}`);
+              }}
+            >
+              <UserDexfund />
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "assets",
+    "title": "Assets",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "aum",
+    "title": "AUM",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "price",
+    "title": "Price",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "daily",
+    "title": "Daily%",
+    "prefix": "",
+    "suffix": "%",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "allocation",
+    "title": "Allocation",
+    "prefix": "",
+    "suffix": "%",
+    "type": "number",
+    "colorful": false
+  }
+]

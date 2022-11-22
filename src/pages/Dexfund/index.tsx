@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react';
 import DataTable from '../../components/DataTable';
@@ -7,6 +8,7 @@ import untypedDexifyData from './data/dexifyData.json';
 import untypedFields from './data/fields.json';
 
 const Dexfund = () => {
+  const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState<any[]>(untypedDexifyData);
 
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,12 +23,18 @@ const Dexfund = () => {
     <div>
       <h1 className="text-[22px] font-[500] mb-5">Top Dexfunds</h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <UserDexfund />
-        <UserDexfund />
-        <UserDexfund />
-        <UserDexfund />
-        <UserDexfund />
-        <UserDexfund />
+        {Array(6)
+          .fill(1)
+          .map((item, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                navigate(`/funds/${i}`);
+              }}
+            >
+              <UserDexfund />
+            </div>
+          ))}
       </div>
       <h1 className="text-[22px] font-[500] mt-12">Browse Dexify</h1>
       <div className="w-full relative bg-[#8881] rounded-lg my-8 md:w-[300px]">

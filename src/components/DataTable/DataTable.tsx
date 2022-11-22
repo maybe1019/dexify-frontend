@@ -39,7 +39,7 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
   };
 
   return (
-    <div className="px-2 py-4">
+    <div className="p-2">
       <div className="pb-2 overflow-auto text-sm">
         <table
           className={`w-full border-collapse`}

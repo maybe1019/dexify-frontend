@@ -1,0 +1,3 @@
+.twitter-button {
+  @apply bg-white shadow-[0_0_3px_0_primary] shadow-[#C96AE488] rounded-[3px] dark:bg-bg-2-dark flex items-center gap-1 p-1 hover:cursor-pointer;
+}
