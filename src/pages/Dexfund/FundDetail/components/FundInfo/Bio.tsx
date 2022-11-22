@@ -22,7 +22,7 @@ function Bio() {
           more robust and fair financial system for all.
         </p>
       </div>
-      <div className="grid grid-cols-5 gap-4 pt-5">
+      <div className="grid grid-cols-5 gap-4 py-5">
         <p className="text-sm text-right">Fund:</p>
         <p className="text-xs col-span-4 pt-0.5">
           This fund focuses on the DeFi gods. The Dexify portfolio rebalancing
