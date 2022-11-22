@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DataTable from '../../components/DataTable';
 import UserDexfund from '../../components/UserDexfund';
 
@@ -18,10 +18,6 @@ const Dexfund = () => {
     );
     setFilteredData(tmp);
   };
-
-  useEffect(() => {
-    console.log(filteredData);
-  }, [filteredData]);
 
   return (
     <div>
