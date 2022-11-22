@@ -1,13 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
 import data from '../../helpers/data/chartInitData.json';
 import FundChart from '../FundChart';
 import DatePeriodDropDown from '../DatePeriodDropDown';
 
 const UserDexfund = () => {
+  const navigate = useNavigate();
   return (
-    <div className="card overflow-hidden hover:cursor-pointer transition ease-in-out delay-150 hover:-translate-y-2">
-      <div className="px-2 sm:px-8 py-6 flex gap-2 sm:gap-4 items-center">
+    <div className="card overflow-hidden hover:cursor-pointer transition ease-in-out delay-150">
+      <div
+        className="px-2 sm:px-8 py-6 flex gap-2 sm:gap-4 items-center"
+        onClick={() => {
+          navigate(`/funds/adasd5456dfdsfdf4dsf4646d`);
+        }}
+      >
         <img
           src="/images/default-user.png"
           alt="default-user"
