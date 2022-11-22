@@ -14,7 +14,9 @@ const Dexfund = () => {
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchBy: string = e.target.value;
     const tmp: any[] = untypedDexifyData.filter(
-      (d) => d.dexfund.includes(searchBy) || d.manager.includes(searchBy),
+      (d) =>
+        d.dexfund.toLowerCase().includes(searchBy) ||
+        d.manager.toLowerCase().includes(searchBy),
     );
     setFilteredData(tmp);
   };

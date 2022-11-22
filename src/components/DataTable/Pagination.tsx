@@ -9,6 +9,10 @@ const Pagination = ({ totalPage, onChange }: PaginationProps) => {
   const [page, setPage] = useState<number>(1);
   const [buttonList, setButtonList] = useState<number[]>([]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [totalPage]);
+
   const onClickPage = (p: number) => {
     setPage(p);
     if (onChange) {
@@ -35,7 +39,7 @@ const Pagination = ({ totalPage, onChange }: PaginationProps) => {
       list.push(totalPage);
     }
     setButtonList(list);
-  }, [page]);
+  }, [page, totalPage]);
 
   return (
     <div className="flex gap-2">
