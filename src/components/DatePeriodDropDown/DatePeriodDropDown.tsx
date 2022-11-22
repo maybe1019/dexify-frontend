@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
 
-function DropDown() {
+function DatePeriodDropDown() {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('Last 7 Days');
   return (
     <div>
@@ -47,4 +47,4 @@ function DropDown() {
   );
 }
 
-export default DropDown;
+export default DatePeriodDropDown;

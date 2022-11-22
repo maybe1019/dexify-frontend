@@ -2,7 +2,7 @@ import React from 'react';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
 import data from '../../helpers/data/chartInitData.json';
 import FundChart from '../FundChart';
-import DropDown from '../DropDown';
+import DatePeriodDropDown from '../DatePeriodDropDown';
 
 const UserDexfund = () => {
   return (
@@ -64,7 +64,7 @@ const UserDexfund = () => {
             <span className=" text-green-500 flex text-sm gap-1">
               +45% <ChevronUpIcon width={12} strokeWidth={4} />
             </span>
-            <DropDown />
+            <DatePeriodDropDown />
           </div>
           <div className="flex-grow text-xs transition-none h-[160px] md:h-auto">
             <FundChart xAxis={true} yAxis={false} data={data} />
