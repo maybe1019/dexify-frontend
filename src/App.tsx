@@ -9,6 +9,7 @@ import Manage from './pages/Manage';
 import Portfolio from './pages/Portfolio';
 import { useAppSelector } from './store';
 import metadata from './helpers/data/page-metadata.json';
+import FundDetail from './pages/Dexfund/FundDetail';
 
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
@@ -28,6 +29,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Dexfund />} />
+            <Route path="/funds/:fundAddress" element={<FundDetail />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/manage" element={<Manage />} />
             <Route path="/account" element={<Account />} />
