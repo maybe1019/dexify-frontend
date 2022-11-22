@@ -8,8 +8,8 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+const tabList = ['Bio', 'Fees', 'Total History'];
 export default function FundInfo() {
-  const tabList = ['Bio', 'Fees', 'Total History'];
   return (
     <div className="card overflow-hidden p-2">
       <Tab.Group>
