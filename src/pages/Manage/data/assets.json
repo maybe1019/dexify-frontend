@@ -1,58 +1,84 @@
 [
   {
-    "name": "BTC",
-    "color": "rgba(242, 201, 76, 0.2)"
+    "name": "Bitcoin",
+    "symbol": "BTC",
+    "color": "rgba(242, 201, 76, 0.2)",
+    "address": ""
   },
   {
-    "name": "ETH",
-    "color": "rgba(73, 233, 255, 0.2)"
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "color": "rgba(73, 233, 255, 0.2)",
+    "address": ""
   },
   {
-    "name": "BNB",
-    "color": "rgba(109, 133, 255, 0.2)"
+    "name": "Binance",
+    "symbol": "BNB",
+    "color": "rgba(109, 133, 255, 0.2)",
+    "address": ""
   },
   {
-    "name": "DXFY",
-    "color": "#FFDCC988"
+    "name": "Dexify",
+    "symbol": "DXFY",
+    "color": "#FFDCC988",
+    "address": ""
   },
   {
-    "name": "CAKE",
-    "color": "#FFE1B588"
+    "name": "Pancake",
+    "symbol": "CAKE",
+    "color": "#FFE1B588",
+    "address": ""
   },
   {
-    "name": "1INCH",
-    "color": "#FFFBD288"
+    "name": "1Inch",
+    "symbol": "1INCH",
+    "color": "#FFFBD288",
+    "address": ""
   },
   {
-    "name": "UNI",
-    "color": "#E9FFCC88"
+    "name": "Uniswap",
+    "symbol": "UNI",
+    "color": "#E9FFCC88",
+    "address": ""
   },
   {
-    "name": "ADA",
-    "color": "#DDFFE088"
+    "name": "Cardano",
+    "symbol": "ADA",
+    "color": "#DDFFE088",
+    "address": ""
   },
   {
-    "name": "CRP",
-    "color": "#CAFFF288"
+    "name": "CropperFinance",
+    "symbol": "CRP",
+    "color": "#CAFFF288",
+    "address": ""
   },
   {
-    "name": "LINK",
-    "color": "#C8E4FF88"
+    "symbol": "LINK",
+    "color": "#C8E4FF88",
+    "address": ""
   },
   {
-    "name": "SNX",
-    "color": "#C9E5FF88"
+    "name": "Chainlink",
+    "symbol": "SNX",
+    "color": "#C9E5FF88",
+    "address": ""
   },
   {
-    "name": "RUNE",
-    "color": "#EED3FF88"
+    "name": "THORChain",
+    "symbol": "RUNE",
+    "color": "#EED3FF88",
+    "address": ""
   },
   {
-    "name": "BAKE",
-    "color": "#FFCED788"
+    "symbol": "BAKE",
+    "color": "#FFCED788",
+    "address": ""
   },
   {
-    "name": "ZRX",
-    "color": "#FFE7EB88"
+    "name": "0x",
+    "symbol": "ZRX",
+    "color": "#FFE7EB88",
+    "address": ""
   }
 ]

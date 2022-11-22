@@ -42,11 +42,11 @@ const Manage = () => {
         <div className="grid grid-cols-4 sm:grid-cols-7 grow gap-2">
           {assets.map((asset) => (
             <div
-              key={asset.name}
+              key={asset.symbol}
               className="rounded py-1 text-center text-sm"
               style={{ backgroundColor: asset.color }}
             >
-              {asset.name}
+              {asset.symbol}
             </div>
           ))}
         </div>
