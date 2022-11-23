@@ -3,17 +3,15 @@ import UserDexfund from '../../components/UserDexfund';
 import PageMeta from '../../layouts/PageMeta';
 import DexfundSplit from './components/DexfundSplit';
 import TotalROI from './components/TotalROI';
-import TotoalAUM from './components/TotoalAUM';
+import TotalAUM from './components/TotalAUM';
 import { PageName } from '../../helpers/enums';
-import { useNavigate } from 'react-router-dom';
 
 const Portfolio = () => {
-  const navigate = useNavigate();
   return (
     <div>
       <PageMeta pageName={PageName.PORTFOLIO} />
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <TotoalAUM />
+        <TotalAUM />
         <DexfundSplit />
         <div className="lg:col-span-2 xl:col-span-1">
           <TotalROI />
@@ -26,12 +24,7 @@ const Portfolio = () => {
         {Array(3)
           .fill(1)
           .map((item, i) => (
-            <div
-              key={i}
-              onClick={() => {
-                navigate(`/funds/${i}`);
-              }}
-            >
+            <div key={i}>
               <UserDexfund />
             </div>
           ))}

@@ -1,15 +1,14 @@
 import React from 'react';
 
-function TotoalAUM() {
+function TotalAUM() {
   return (
-    <div className="card overflow-hidden min-h-[340px]">
-      <div className="p-7 text-text-1 dark:text-text-1-dark text-xl">
+    <div className="card overflow-hidden min-h-[340px] flex flex-col justify-between">
+      <div className="text-text-1 dark:text-text-1-dark text-xl header p-6 font-bold">
         Totoal AUM
       </div>
       <div>
-        <hr className="border-[#F3F5F9] dark:border-text-3-dark" />
-        <div className="flex flex-col gap-y-3 mx-7 my-3">
-          <div className="flex">
+        <div className="flex flex-col my-3">
+          <div className="flex py-3 px-6 border-b border-[#8882]">
             <span className="text-sm text-text-3 dark:text-text-3-dark">
               Total AUM
             </span>
@@ -17,8 +16,7 @@ function TotoalAUM() {
               $12.542
             </span>
           </div>
-          <hr className="border-[#F3F5F9] dark:border-text-3-dark" />
-          <div className="flex">
+          <div className="flex py-3 px-6 border-b border-[#8882]">
             <span className="text-sm text-text-3 dark:text-text-3-dark">
               7 Day %
             </span>
@@ -26,8 +24,7 @@ function TotoalAUM() {
               34%
             </span>
           </div>
-          <hr className="border-[#F3F5F9] dark:border-text-3-dark" />
-          <div className="flex">
+          <div className="flex py-3 px-6 border-b border-[#8882]">
             <span className="text-sm text-text-3 dark:text-text-3-dark">
               Total %
             </span>
@@ -36,7 +33,6 @@ function TotoalAUM() {
             </span>
           </div>
         </div>
-        <hr className="border-[#F3F5F9] dark:border-text-3-dark" />
       </div>
       <div className="flex flex-col justify-around p-7 gap-y-3">
         <div className="flex items-center">
@@ -66,4 +62,4 @@ function TotoalAUM() {
   );
 }
 
-export default TotoalAUM;
+export default TotalAUM;

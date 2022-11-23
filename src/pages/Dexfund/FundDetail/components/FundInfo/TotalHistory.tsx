@@ -13,11 +13,11 @@ function TotalHistory() {
         data={data}
         fields={fields}
         pagination={false}
-        minWidth={400}
+        minWidth={375}
       />
-      <div className="xl:grid xl:grid-cols-2 mx-4">
-        <p className="text-xl">Total PNL: 34% </p>
-        <p className="text-xl">Total Invested: 9,000</p>
+      <div className="xl:grid xl:grid-cols-2 mx-4 py-2">
+        <p className="sm:text-xl text-center">Total PNL: 34% </p>
+        <p className="sm:text-xl text-center">Total Invested: 9,000</p>
       </div>
     </div>
   );
