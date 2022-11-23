@@ -8,9 +8,9 @@ import DatePeriodDropDown from '../DatePeriodDropDown';
 const UserDexfund = () => {
   const navigate = useNavigate();
   return (
-    <div className="card overflow-hidden hover:cursor-pointer transition ease-in-out delay-150">
+    <div className="card overflow-hidden transition ease-in-out delay-150">
       <div
-        className="px-2 sm:px-8 py-6 flex gap-2 sm:gap-4 items-center"
+        className="header px-2 sm:px-8 py-5 flex gap-2 sm:gap-4 items-center cursor-pointer"
         onClick={() => {
           navigate(`/funds/adasd5456dfdsfdf4dsf4646d`);
         }}
@@ -33,7 +33,8 @@ const UserDexfund = () => {
           </p>
         </div>
       </div>
-      <div className="card p-2 flex gap-2 flex-col md:flex-row">
+
+      <div className="card px-2 py-4 flex gap-2 flex-col md:flex-row">
         <div className="p-2 flex flex-col gap-3 w-full md:w-1/2">
           <div className="flex justify-between items-center">
             <span className="rounded-lg bg-purple-300 dark:bg-purple-800 p-2 font-[500] text-xs">
@@ -66,7 +67,8 @@ const UserDexfund = () => {
             <span className="text-sm">BTC 50%</span>
           </div>
         </div>
-        <div className="grow overflow-hidden p-2 shadow-[0_0_2px_0_primary] shadow-[#C96AE488] rounded-xl flex flex-col gap-3">
+
+        <div className="grow overflow-hidden p-2 rounded-xl flex flex-col gap-3 shadow">
           <div className="flex justify-between items-center p-2">
             <span className=" text-green-500 flex text-sm gap-1">
               +45% <ChevronUpIcon width={12} strokeWidth={4} />

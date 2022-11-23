@@ -2,83 +2,71 @@
   {
     "name": "Bitcoin",
     "symbol": "BTC",
-    "color": "rgba(242, 201, 76, 0.2)",
     "address": ""
   },
   {
     "name": "Ethereum",
     "symbol": "ETH",
-    "color": "rgba(73, 233, 255, 0.2)",
     "address": ""
   },
   {
     "name": "Binance",
     "symbol": "BNB",
-    "color": "rgba(109, 133, 255, 0.2)",
     "address": ""
   },
   {
     "name": "Dexify",
     "symbol": "DXFY",
-    "color": "#FFDCC988",
     "address": ""
   },
   {
     "name": "Pancake",
     "symbol": "CAKE",
-    "color": "#FFE1B588",
     "address": ""
   },
   {
     "name": "1Inch",
     "symbol": "1INCH",
-    "color": "#FFFBD288",
     "address": ""
   },
   {
     "name": "Uniswap",
     "symbol": "UNI",
-    "color": "#E9FFCC88",
     "address": ""
   },
   {
     "name": "Cardano",
     "symbol": "ADA",
-    "color": "#DDFFE088",
     "address": ""
   },
   {
     "name": "CropperFinance",
     "symbol": "CRP",
-    "color": "#CAFFF288",
-    "address": ""
-  },
-  {
-    "symbol": "LINK",
-    "color": "#C8E4FF88",
     "address": ""
   },
   {
     "name": "Chainlink",
+    "symbol": "LINK",
+    "address": ""
+  },
+  {
+    "name": "Synthetix",
     "symbol": "SNX",
-    "color": "#C9E5FF88",
     "address": ""
   },
   {
     "name": "THORChain",
     "symbol": "RUNE",
-    "color": "#EED3FF88",
     "address": ""
   },
   {
+    "name": "Bakery",
     "symbol": "BAKE",
-    "color": "#FFCED788",
     "address": ""
   },
   {
     "name": "0x",
     "symbol": "ZRX",
-    "color": "#FFE7EB88",
     "address": ""
   }
 ]
