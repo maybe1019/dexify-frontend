@@ -1,10 +1,10 @@
 import React from 'react';
 
-function TotoalAUM() {
+function TotalAUM() {
   return (
     <div className="card overflow-hidden min-h-[340px]">
       <div className="p-7 text-text-1 dark:text-text-1-dark text-xl">
-        Totoal AUM
+        Total AUM
       </div>
       <div>
         <hr className="border-[#F3F5F9] dark:border-text-3-dark" />
@@ -66,4 +66,4 @@ function TotoalAUM() {
   );
 }
 
-export default TotoalAUM;
+export default TotalAUM;

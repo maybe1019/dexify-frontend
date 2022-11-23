@@ -3,7 +3,7 @@ import UserDexfund from '../../components/UserDexfund';
 import PageMeta from '../../layouts/PageMeta';
 import DexfundSplit from './components/DexfundSplit';
 import TotalROI from './components/TotalROI';
-import TotoalAUM from './components/TotoalAUM';
+import TotalAUM from './components/TotalAUM';
 import { PageName } from '../../helpers/enums';
 
 const Portfolio = () => {
@@ -11,7 +11,7 @@ const Portfolio = () => {
     <div>
       <PageMeta pageName={PageName.PORTFOLIO} />
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <TotoalAUM />
+        <TotalAUM />
         <DexfundSplit />
         <div className="lg:col-span-2 xl:col-span-1">
           <TotalROI />
