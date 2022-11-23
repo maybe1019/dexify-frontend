@@ -22,18 +22,18 @@ const AUMChart = () => {
           <TwitterIcon />
         </div>
       </div>
-      <div className="grid grid-cols-4 mt-4 mb-2 text-center">
+      <div className="flex items-center justify-center my-4 mx-6 gap-4 md:mx-12 md:gap-12 text-center ">
         <span className="text-text-2 dark:text-text-2-dark text-xs">AUM</span>
         <span className="text-text-2 dark:text-text-2-dark text-xs">
           12,542
         </span>
         <DatePeriodDropDown />
-        <span className="text-green-500 flex text-sm m-auto">
+        <span className="text-green-500 flex text-sm ml-auto">
           <span className="mr-1">+45%</span>
           <ChevronUpIcon width={12} strokeWidth={4} />
         </span>
       </div>
-      <div className="flex-grow text-xs transition-none h-[375px] mr-3">
+      <div className="flex-grow text-xs transition-none h-52 md:h-[375px] mr-3">
         <FundChart xAxis={true} yAxis={true} data={data} />
       </div>
     </div>

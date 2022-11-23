@@ -19,8 +19,8 @@ module.exports = {
           dark: colors.white,
         },
         'text-2': {
-          DEFAULT: colors.gray[900],
-          dark: colors.gray[200],
+          DEFAULT: colors.gray[800],
+          dark: colors.gray[300],
         },
         'text-3': {
           DEFAULT: colors.gray[700],
@@ -39,8 +39,8 @@ module.exports = {
           dark: '#162231',
         },
         'bg-4': {
-          DEFAULT: '#FFFFFF',
-          dark: '#0B1727',
+          DEFAULT: '#e5e8ed',
+          dark: '#122944',
         },
       },
     },
