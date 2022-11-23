@@ -1,9 +1,9 @@
 import React from 'react';
-const UserDexfund = React.lazy(() => import('../../components/UserDexfund'));
+import UserDexfund from '../../components/UserDexfund';
 import PageMeta from '../../layouts/PageMeta';
-const TotalAUM = React.lazy(() => import('./components/TotalAUM'));
-const TotalROI = React.lazy(() => import('./components/TotalROI'));
-const DexfundSplit = React.lazy(() => import('./components/DexfundSplit'));
+import TotalAUM from './components/TotalAUM';
+import TotalROI from './components/TotalROI';
+import DexfundSplit from './components/DexfundSplit';
 import { PageName } from '../../helpers/enums';
 
 const Portfolio = () => {

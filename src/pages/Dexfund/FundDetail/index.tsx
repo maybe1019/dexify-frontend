@@ -10,11 +10,9 @@ import { useOutsideHandler } from '../../../helpers/hooks/useOutsideHandler';
 import Swap from './components/FundManage/Swap';
 import PriceChart from './components/FundManage/PriceChart';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
-const AssetsInfo = React.lazy(
-  () => import('./components/AssetsInfo/AssetsInfo'),
-);
-const Tweets = React.lazy(() => import('./components/Tweets/Tweets'));
-const AUMChart = React.lazy(() => import('./components/AUMChart/AUMChart'));
+import AssetsInfo from './components/AssetsInfo';
+import Tweets from './components/Tweets';
+import AUMChart from './components/AUMChart';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

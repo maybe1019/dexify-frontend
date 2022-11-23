@@ -1,7 +1,7 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react';
-const DataTable = React.lazy(() => import('../../components/DataTable'));
-const UserDexfund = React.lazy(() => import('../../components/UserDexfund'));
+import DataTable from '../../components/DataTable';
+import UserDexfund from '../../components/UserDexfund';
 
 import untypedDexifyData from './data/dexifyData.json';
 import untypedFields from './data/fields.json';

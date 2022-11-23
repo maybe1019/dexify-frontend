@@ -3,13 +3,13 @@ import { Helmet } from 'react-helmet';
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from './layouts';
-import Account from './pages/Account';
-import Dexfund from './pages/Dexfund';
-import Manage from './pages/Manage';
-import Portfolio from './pages/Portfolio';
 import { useAppSelector } from './store';
 import metadata from './helpers/data/page-metadata.json';
-import FundDetail from './pages/Dexfund/FundDetail';
+const Portfolio = React.lazy(() => import('./pages/Portfolio'));
+const Account = React.lazy(() => import('./pages/Account'));
+const Dexfund = React.lazy(() => import('./pages/Dexfund'));
+const Manage = React.lazy(() => import('./pages/Manage'));
+const FundDetail = React.lazy(() => import('./pages/Dexfund/FundDetail'));
 
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
