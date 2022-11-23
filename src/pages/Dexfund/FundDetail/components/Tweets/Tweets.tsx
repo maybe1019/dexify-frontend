@@ -2,15 +2,15 @@ import React from 'react';
 
 const Tweets = () => {
   return (
-    <div className="card h-[595px]">
-      <div className="p-7 text-text-1 dark:text-text-1-dark text-xl border-b dark:border-text-3-dark">
+    <div className="card overflow-hidden">
+      <div className="p-7 text-text-1 dark:text-text-1-dark text-xl header">
         Tweets
       </div>
-      <div className="overflow-auto h-[510px]">
+      <div className="overflow-auto h-[460px] flex flex-col gap-3 p-4 m-2">
         {Array(5)
           .fill(1)
           .map((item, i) => (
-            <div className="flex mt-7 mx-7" key={i}>
+            <div className="flex" key={i}>
               <img
                 src="/images/default-user.png"
                 alt="default-user"

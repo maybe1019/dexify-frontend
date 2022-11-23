@@ -39,27 +39,25 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <header className="bg-bg-1 shadow-lg dark:bg-black sticky top-0 z-50">
+    <header className="bg-bg-2 shadow-lg dark:bg-bg-2-dark sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 text flex items-center gap-4">
         <Logo />
 
-        <nav className="items-center gap-10 ml-auto lg:ml-20 hidden md:flex">
+        <nav className="items-center gap-6 ml-auto lg:ml-20 hidden md:flex">
           {links.map((link) => (
-            <div className="w-[80px]" key={link.name}>
-              <Link
-                to={link.path}
-                className={
-                  'nav-item' +
-                  (link.path === location.pathname ? ' active' : '')
-                }
-              >
-                {link.name}
-              </Link>
-            </div>
+            <Link
+              to={link.path}
+              className={
+                'nav-item' + (link.path === location.pathname ? ' active' : '')
+              }
+              key={link.name}
+            >
+              {link.name}
+            </Link>
           ))}
         </nav>
 
-        <div className="hidden ml-auto md:block">
+        <div className="hidden ml-auto md:flex items-center justify-center opacity-70 hover:opacity-90 w-10 h-10 rounded-lg hover:bg-bg-1 hover:dark:bg-bg-1-dark cursor-pointer">
           <ThemeModeToggle />
         </div>
 
