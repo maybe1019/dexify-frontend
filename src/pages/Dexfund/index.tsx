@@ -32,7 +32,7 @@ const Dexfund = () => {
           ))}
       </div>
       <h1 className="text-[22px] font-[500] mt-12">Browse Dexify</h1>
-      <div className="w-full relative bg-[#8881] rounded-lg my-8 md:w-[300px]">
+      <div className="w-full relative bg-bg-2 dark:bg-bg-2-dark rounded-lg my-8 md:w-[300px]">
         <input
           type="text"
           className="bg-transparent outline-none py-4 pl-12 pr-4 w-full"

@@ -18,7 +18,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const fundInfoTabList = ['Bio', 'Fees', 'Total History'];
+const fundInfoTabList = ['Bio', 'Fees', 'History'];
 
 const FundDetail = () => {
   const [fundInfoStep, setFundInfoStep] = useState('');
@@ -44,13 +44,13 @@ const FundDetail = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="w-full flex bg-[#720790] shadow-[0_0_12px_0_primary] shadow-[#72079088] rounded-2xl dark:bg-[#430f52] p-7">
+                <Disclosure.Button className="w-full flex bg-secondary rounded-2xl p-5">
                   <div className="flex m-auto items-center gap-3 text-text-1-dark">
                     <span>Swap</span>
                     <ChevronUpIcon
                       className={`${
                         open ? 'rotate-180 transform' : ''
-                      } h-5 w-5 text-purple-500`}
+                      } h-5 w-5`}
                     />
                   </div>
                 </Disclosure.Button>
@@ -66,39 +66,42 @@ const FundDetail = () => {
         </div>
       </div>
       <Tab.Group>
-        <Tab.List className="flex lg:hidden card space-x-1 bg-primary dark:bg-bg-2-dark p-2 mb-4">
+        <Tab.List className="flex lg:hidden card bg-primary dark:bg-bg-2-dark p-2 mb-4">
           <Tab
             key={'Tweets'}
             className={({ selected }) =>
               classNames(
-                'w-full rounded-lg py-5 text-sm font-medium leading-5',
-                ' focus:outline-none focus:text-black',
+                ' w-1/4 rounded-lg py-5 text-sm leading-5 font-bold',
+                ' focus:outline-none mr-2',
+                ' shadow-[2px_2px_4px_1px_rgba(100,100,100,0.5)] dark:shadow-[2px_2px_4px_1px_rgba(20,20,20,1)]',
                 selected
-                  ? 'bg-primary shadow text-black'
-                  : 'bg-[#F7F7F7] dark:bg-[#2e3e58] text-[#636677] hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
+                  ? 'bg-primary text-white'
+                  : 'bg-[white] dark:bg-[#2e3e58]',
               )
             }
             onClick={(e: any) => handleStep(e)}
           >
             Tweets
           </Tab>
-          {fundInfoTabList.map((title) => (
-            <Tab
-              key={title}
-              className={({ selected }) =>
-                classNames(
-                  'w-full rounded-lg py-5 text-sm font-medium leading-5',
-                  ' focus:outline-none focus:text-black',
-                  selected
-                    ? 'bg-[#F9E1FD] shadow text-black'
-                    : 'bg-[#F7F7F7] dark:bg-[#2e3e58] text-[#636677] hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
-                )
-              }
-              onClick={(e: any) => handleStep(e)}
-            >
-              {title}
-            </Tab>
-          ))}
+          <div className="flex grow">
+            {fundInfoTabList.map((title) => (
+              <Tab
+                key={title}
+                className={({ selected }) =>
+                  classNames(
+                    'w-full py-5 text-sm font-medium leading-5 grow border-none outline-none',
+                    'first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg',
+                    selected
+                      ? 'bg-primary text-white'
+                      : 'bg-transparent text-[#636677] hover:bg-white/[0.12] hover:text-black dark:hover:text-white  bg-bg-3 dark:bg-bg-3-dark',
+                  )
+                }
+                onClick={(e: any) => handleStep(e)}
+              >
+                {title}
+              </Tab>
+            ))}
+          </div>
         </Tab.List>
       </Tab.Group>
 
@@ -141,16 +144,16 @@ const FundDetail = () => {
 
       <div className="lg:col-span-3 hidden lg:flex flex-col gap-4 mt-4">
         <Tab.Group>
-          <Tab.List className="hidden lg:flex card space-x-1 bg-primary dark:bg-bg-2-dark p-2 mb-4">
+          <Tab.List className="hidden lg:flex bg-primary bg-transparent w-[calc(100%-24px)] mx-auto">
             <Tab
-              key={'Tweets'}
               className={({ selected }) =>
                 classNames(
-                  'w-full rounded-lg py-5 text-lg font-medium leading-5',
-                  ' focus:outline-none focus:text-black',
+                  'w-full py-4 text-lg font-mediu rounded-tl-lg rounded-tr-lg',
+                  ' focus:outline-none',
+                  'border-b-2 border-b-gray-500/50',
                   selected
-                    ? 'bg-primary shadow text-black'
-                    : 'bg-[#F7F7F7] dark:bg-[#2e3e58] text-[#636677] hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
+                    ? 'text-primary border-b-primary'
+                    : 'text-text-3 dark:text-text-3-dark hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
                 )
               }
               onClick={() => setManageStep(false)}
@@ -158,14 +161,14 @@ const FundDetail = () => {
               Fund Info
             </Tab>
             <Tab
-              key={'Tweets'}
               className={({ selected }) =>
                 classNames(
-                  'w-full rounded-lg py-5 text-lg font-medium leading-5',
-                  ' focus:outline-none focus:text-black',
+                  'w-full py-4 text-lg font-medium rounded-tl-lg rounded-tr-lg',
+                  ' focus:outline-none',
+                  'border-b-2 border-b-gray-500/50',
                   selected
-                    ? 'bg-primary shadow text-black'
-                    : 'bg-[#F7F7F7] dark:bg-[#2e3e58] text-[#636677] hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
+                    ? 'text-primary border-b-primary'
+                    : 'text-text-3 dark:text-text-3-dark hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
                 )
               }
               onClick={() => setManageStep(true)}

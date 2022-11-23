@@ -1,23 +1,23 @@
 [
   {
     "name": "Sunday",
-    "uv": 4000
+    "uv": 1500
   },
   {
     "name": "Monday",
-    "uv": 3000
-  },
-  {
-    "name": "Tuesday",
     "uv": 2000
   },
   {
+    "name": "Tuesday",
+    "uv": 1700
+  },
+  {
     "name": "Wednesday",
-    "uv": 2780
+    "uv": 2500
   },
   {
     "name": "Thursday",
-    "uv": 1890
+    "uv": 3000
   },
   {
     "name": "Friday",
@@ -25,6 +25,6 @@
   },
   {
     "name": "Saturday",
-    "uv": 3490
+    "uv": 3690
   }
 ]
