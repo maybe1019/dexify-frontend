@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/style/index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { DAppProvider, Config } from '@usedapp/core';
@@ -12,6 +11,8 @@ import { Provider } from 'react-redux';
 import { NETWORK } from './config';
 import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
+import LazyLoadingSpinner from './components/LazyLoadingSpinner';
+const App = React.lazy(() => import('./App'));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -28,10 +29,12 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <DAppProvider config={config}>
-          <ReactNotifications />
-          <App />
-        </DAppProvider>
+        <Suspense fallback={<LazyLoadingSpinner />}>
+          <DAppProvider config={config}>
+            <ReactNotifications />
+            <App />
+          </DAppProvider>
+        </Suspense>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
