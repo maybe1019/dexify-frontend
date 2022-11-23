@@ -1,11 +1,7 @@
 {
   "name": "Dexify Default List",
   "timestamp": "2022-01-26T11:45:09Z",
-  "version": {
-    "major": 4,
-    "minor": 0,
-    "patch": 0
-  },
+  "version": {},
   "tags": {},
   "logoURI": "https://dexify.finance/images/logo.png",
   "keywords": ["dexify", "default"],
@@ -105,22 +101,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xA7f552078dcC247C2684336020c03648500C6d9F.png"
-    },
-    {
-      "name": "BUSD Token",
-      "symbol": "BUSD",
-      "address": "0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814",
-      "chainId": 97,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
-    },
-    {
-      "name": "Wrapped BNB",
-      "symbol": "WBNB",
-      "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
-      "chainId": 97,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
     }
   ]
 }

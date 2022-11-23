@@ -1,9 +1,9 @@
 import React from 'react';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
-import FundChart from '../../../../components/FundChart';
-import data from '../../../../helpers/data/chartInitData.json';
-import { ReactComponent as TwitterIcon } from '../../../../assets/images/svg/twitter-icon.svg';
-import DatePeriodDropDown from '../../../../components/DatePeriodDropDown';
+import FundChart from '../../../../../components/FundChart';
+import data from '../../../../../helpers/data/chartInitData.json';
+import { ReactComponent as TwitterIcon } from '../../../../../assets/images/svg/twitter-icon.svg';
+import DatePeriodDropDown from '../../../../../components/DatePeriodDropDown';
 
 const AUMChart = () => {
   return (

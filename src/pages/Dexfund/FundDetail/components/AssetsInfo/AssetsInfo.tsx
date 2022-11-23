@@ -1,7 +1,7 @@
 import React from 'react';
-import DataTable from '../../../../components/DataTable';
-import untypedData from '../../data/fund-detail-data.json';
-import untypedField from '../../data/fund-detail-fields.json';
+import DataTable from '../../../../../components/DataTable';
+import untypedData from '../../../data/fund-detail-data.json';
+import untypedField from '../../../data/fund-detail-fields.json';
 
 const fields: any = untypedField;
 const data: any = untypedData;
