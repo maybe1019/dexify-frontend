@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Bitcoin",
+    "symbol": "BTC",
+    "address": ""
+  },
+  {
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "address": ""
+  },
+  {
+    "name": "Binance",
+    "symbol": "BNB",
+    "address": ""
+  },
+  {
+    "name": "Dexify",
+    "symbol": "DXFY",
+    "address": ""
+  },
+  {
+    "name": "Pancake",
+    "symbol": "CAKE",
+    "address": ""
+  },
+  {
+    "name": "1Inch",
+    "symbol": "1INCH",
+    "address": ""
+  },
+  {
+    "name": "Uniswap",
+    "symbol": "UNI",
+    "address": ""
+  },
+  {
+    "name": "Cardano",
+    "symbol": "ADA",
+    "address": ""
+  },
+  {
+    "name": "CropperFinance",
+    "symbol": "CRP",
+    "address": ""
+  },
+  {
+    "name": "Chainlink",
+    "symbol": "LINK",
+    "address": ""
+  },
+  {
+    "name": "Synthetix",
+    "symbol": "SNX",
+    "address": ""
+  },
+  {
+    "name": "THORChain",
+    "symbol": "RUNE",
+    "address": ""
+  },
+  {
+    "name": "Bakery",
+    "symbol": "BAKE",
+    "address": ""
+  },
+  {
+    "name": "0x",
+    "symbol": "ZRX",
+    "address": ""
+  }
+]
