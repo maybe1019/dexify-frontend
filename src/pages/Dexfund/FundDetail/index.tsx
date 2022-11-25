@@ -1,9 +1,5 @@
 import React, { useState, createRef } from 'react';
-import { useParams } from 'react-router-dom';
-import AUMChart from './components/AUMChart/AUMChart';
-import AssetsInfo from './components/AssetsInfo/AssetsInfo';
 import FundInfo from './components/FundInfo';
-import Tweets from './components/Tweets/Tweets';
 import { Disclosure, Tab } from '@headlessui/react';
 import './index.css';
 import Bio from './components/FundInfo/Bio';
@@ -13,6 +9,9 @@ import { useOutsideHandler } from '../../../helpers/hooks/useOutsideHandler';
 import Swap from './components/FundManage/Swap';
 import PriceChart from './components/FundManage/PriceChart';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
+import AssetsInfo from './components/AssetsInfo';
+import Tweets from './components/Tweets';
+import AUMChart from './components/AUMChart';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -23,8 +22,6 @@ const fundInfoTabList = ['Bio', 'Fees', 'History'];
 const FundDetail = () => {
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
-  const { fundAddress } = useParams();
-  console.log(fundAddress);
   const targetDom = createRef<HTMLDivElement>();
 
   const handleStep = (e?: any) => {

@@ -117,7 +117,7 @@ const ProfileDropdown = () => {
                       to={'/account'}
                       className=" block w-full mt-4 rounded-lg p-2 bg-secondary text-center text-white hover:opacity-90"
                     >
-                      Create Account
+                      {myAccount.id ? 'Update Account' : 'Create Account'}
                     </Link>
                   </div>
                 )}

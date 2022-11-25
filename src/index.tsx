@@ -1,38 +1,48 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/style/index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { DAppProvider, Config } from '@usedapp/core';
+import { DAppProvider, Config, BSC } from '@usedapp/core';
 import { BrowserRouter } from 'react-router-dom';
 
 import store from './store';
 import { Provider } from 'react-redux';
-import { NETWORK } from './config';
 import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import LazyLoadingSpinner from './components/LazyLoadingSpinner';
+const App = React.lazy(() => import('./App'));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
 const config: Config = {
-  readOnlyChainId: NETWORK.chainId,
+  readOnlyChainId: BSC.chainId,
   readOnlyUrls: {
-    [NETWORK.chainId]: NETWORK.RPC_URL,
+    [BSC.chainId]: BSC.rpcUrl as string,
   },
 };
+
+const client = new ApolloClient({
+  uri: 'https://api.thegraph.com/subgraphs/name/trust0212/dexify-finance-subgraph',
+  cache: new InMemoryCache(),
+});
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <DAppProvider config={config}>
-          <ReactNotifications />
-          <App />
-        </DAppProvider>
-      </BrowserRouter>
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <Suspense fallback={<LazyLoadingSpinner />}>
+            <DAppProvider config={config}>
+              <ReactNotifications />
+              <App />
+            </DAppProvider>
+          </Suspense>
+        </BrowserRouter>
+      </ApolloProvider>
     </Provider>
   </React.StrictMode>,
 );

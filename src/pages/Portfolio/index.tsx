@@ -1,9 +1,9 @@
 import React from 'react';
 import UserDexfund from '../../components/UserDexfund';
 import PageMeta from '../../layouts/PageMeta';
-import DexfundSplit from './components/DexfundSplit';
-import TotalROI from './components/TotalROI';
 import TotalAUM from './components/TotalAUM';
+import TotalROI from './components/TotalROI';
+import DexfundSplit from './components/DexfundSplit';
 import { PageName } from '../../helpers/enums';
 
 const Portfolio = () => {
