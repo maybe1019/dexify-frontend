@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { NETWORK } from './config';
 import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -24,15 +25,22 @@ const config: Config = {
   },
 };
 
+const client = new ApolloClient({
+  uri: 'https://api.thegraph.com/subgraphs/name/trust0212/dexify-finance-subgraph',
+  cache: new InMemoryCache(),
+});
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <DAppProvider config={config}>
-          <ReactNotifications />
-          <App />
-        </DAppProvider>
-      </BrowserRouter>
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <DAppProvider config={config}>
+            <ReactNotifications />
+            <App />
+          </DAppProvider>
+        </BrowserRouter>
+      </ApolloProvider>
     </Provider>
   </React.StrictMode>,
 );

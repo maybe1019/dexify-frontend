@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { RootState } from '../index';
 
 // Define the initial state using that type
 const initialState: { value: string } = {
@@ -20,6 +19,4 @@ export const themeModeSlice = createSlice({
 export const { toggleThemeMode } = themeModeSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.themeMode.value;
-
 export default themeModeSlice.reducer;

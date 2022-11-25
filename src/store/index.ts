@@ -3,11 +3,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import myAccountReducer from './reducers/myAccountSlice';
 import themeModeReducer from './reducers/themeModeSlice';
+import allFundsReducer from './reducers/allFundsSlice';
 
 const store = configureStore({
   reducer: {
     myAccount: myAccountReducer,
     themeMode: themeModeReducer,
+    allFunds: allFundsReducer,
   },
 });
 

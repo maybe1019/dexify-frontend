@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Routes } from 'react-router-dom';
 
@@ -10,9 +10,21 @@ import Portfolio from './pages/Portfolio';
 import { useAppSelector } from './store';
 import metadata from './helpers/data/page-metadata.json';
 import FundDetail from './pages/Dexfund/FundDetail';
+import { useQuery } from '@apollo/client';
+import { setAllFunds } from './store/reducers/allFundsSlice';
+import { useDispatch } from 'react-redux';
+import queries from './graphql';
 
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
+  const dispatch = useDispatch();
+
+  const { loading, error, data } = useQuery(queries.getAllFunds);
+  useEffect(() => {
+    if (!loading && !error) {
+      dispatch(setAllFunds(data?.funds));
+    }
+  }, [loading, error, data]);
 
   return (
     <div className={`${themeMode}`}>
