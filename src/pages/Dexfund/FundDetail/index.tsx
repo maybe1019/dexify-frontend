@@ -1,5 +1,4 @@
 import React, { useState, createRef } from 'react';
-import { useParams } from 'react-router-dom';
 import FundInfo from './components/FundInfo';
 import { Disclosure, Tab } from '@headlessui/react';
 import './index.css';
@@ -23,8 +22,6 @@ const fundInfoTabList = ['Bio', 'Fees', 'History'];
 const FundDetail = () => {
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
-  const { fundAddress } = useParams();
-  console.log(fundAddress);
   const targetDom = createRef<HTMLDivElement>();
 
   const handleStep = (e?: any) => {

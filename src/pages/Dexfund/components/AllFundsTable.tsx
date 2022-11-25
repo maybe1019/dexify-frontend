@@ -15,7 +15,6 @@ const AllFundsTable = () => {
 
   useEffect(() => {
     if (allFunds.length > 0) {
-      console.log(allFunds);
       const tmpData: any[] = allFunds.map((fund: any) =>
         utils.fund.formatFundData(fund),
       );
