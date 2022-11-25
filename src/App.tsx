@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/client';
 import { setAllFunds } from './store/reducers/allFundsSlice';
 import { useDispatch } from 'react-redux';
 import queries from './graphql';
+import LazyLoadingSpinner from './components/LazyLoadingSpinner';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -39,15 +40,19 @@ function App() {
         <link rel="icon" type="image/png" href="favicon.ico" />
       </Helmet>
       <div className="text-text-1 dark:text-text-1-dark">
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dexfund />} />
-            <Route path="/funds/:fundAddress" element={<FundDetail />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/manage" element={<Manage />} />
-            <Route path="/account" element={<Account />} />
-          </Routes>
-        </Layout>
+        {loading ? (
+          <LazyLoadingSpinner />
+        ) : (
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Dexfund />} />
+              <Route path="/funds/:fundAddress" element={<FundDetail />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/manage" element={<Manage />} />
+              <Route path="/account" element={<Account />} />
+            </Routes>
+          </Layout>
+        )}
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ function DexfundSplit() {
       <div className=" text-text-1 dark:text-text-1-dark text-xl header p-6 font-bold">
         Dexfund Split
       </div>
-      <div className="sm:flex sm:justify-around p-6 pr-8 my-auto">
+      <div className="sm:flex sm:justify-around py-6 px-2 my-auto">
         <div className="flex relative text-center">
           <div className="mx-auto">
             <PieChart width={270} height={270}>

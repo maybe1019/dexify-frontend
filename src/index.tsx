@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './assets/style/index.css';
 import reportWebVitals from './reportWebVitals';
 
-import { DAppProvider, Config } from '@usedapp/core';
+import { DAppProvider, Config, BSC } from '@usedapp/core';
 import { BrowserRouter } from 'react-router-dom';
 
 import store from './store';
 import { Provider } from 'react-redux';
-import { NETWORK } from './config';
 import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
@@ -20,9 +19,9 @@ const root = ReactDOM.createRoot(
 );
 
 const config: Config = {
-  readOnlyChainId: NETWORK.chainId,
+  readOnlyChainId: BSC.chainId,
   readOnlyUrls: {
-    [NETWORK.chainId]: NETWORK.RPC_URL,
+    [BSC.chainId]: BSC.rpcUrl as string,
   },
 };
 
