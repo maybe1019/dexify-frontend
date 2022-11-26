@@ -86,4 +86,47 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.skeleton {
+  -webkit-animation-name: skeleton-frame;
+          animation-name: skeleton-frame;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+}
+
+.dark .skeleton {
+  background-color: white;
+}
+
+.light .skeleton {
+  background-color: black;
+}
+
+@-webkit-keyframes skeleton-frame {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes skeleton-frame {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.1;
+  }
 }/*# sourceMappingURL=index.css.map */

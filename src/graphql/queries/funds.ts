@@ -1,6 +1,6 @@
 import { DocumentNode, gql } from '@apollo/client';
 
-const getAllFunds: DocumentNode = gql`
+const funds = (): DocumentNode => gql`
   query getAllFunds {
     funds {
       id
@@ -11,6 +11,9 @@ const getAllFunds: DocumentNode = gql`
         timestamp
         activationTime
         destructionTime
+        denominationAsset {
+          symbol
+        }
       }
       creator {
         id
@@ -33,29 +36,18 @@ const getAllFunds: DocumentNode = gql`
         name
         symbol
         decimals
-        price {
-          price
-        }
       }
       investmentCount
       portfolio {
-        id
         holdings {
-          id
           amount
           asset {
             name
             symbol
-            price {
-              price
-            }
           }
         }
       }
-      shares {
-        totalSupply
-      }
-      dailyStates(first: 10, orderBy: start, orderDirection: desc) {
+      volume7D: dailyStates(first: 7, orderBy: start, orderDirection: desc) {
         id
         start
         end
@@ -64,6 +56,8 @@ const getAllFunds: DocumentNode = gql`
             holdings {
               amount
               asset {
+                name
+                symbol
                 price {
                   price
                 }
@@ -76,6 +70,41 @@ const getAllFunds: DocumentNode = gql`
             holdings {
               amount
               asset {
+                name
+                symbol
+                price {
+                  price
+                }
+              }
+            }
+          }
+        }
+      }
+      volumeAll: dailyStates(first: 1, orderBy: start, orderDirection: asc) {
+        id
+        start
+        end
+        first {
+          portfolio {
+            holdings {
+              amount
+              asset {
+                name
+                symbol
+                price {
+                  price
+                }
+              }
+            }
+          }
+        }
+        last {
+          portfolio {
+            holdings {
+              amount
+              asset {
+                name
+                symbol
                 price {
                   price
                 }
@@ -88,4 +117,4 @@ const getAllFunds: DocumentNode = gql`
   }
 `;
 
-export default getAllFunds;
+export default funds;

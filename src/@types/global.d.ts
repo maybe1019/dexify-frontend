@@ -17,56 +17,21 @@ type Token = {
   logoURI: string;
 };
 
-type ComptrollerProxy = {
-  id: string;
-  timestamp: string;
-  activationTime: string;
-  destructionTime: string;
-};
-
-type Account = {
-  id: string;
-  firstSeen: string;
-  manager: boolean;
-  managerSince: string;
-  investor: boolean;
-  investorSince: string;
-};
-
-type Asset = {
+type FundData = {
   id: string;
   name: string;
-  symbol: string;
-  decimals: number;
-  price: {
-    price: string;
-  };
-};
-
-type HoldingState = {
-  id: string;
-  asset: Asset;
-  amount: string;
-};
-
-type PortfolioState = {
-  id: string;
-  holdings: HoldingState[];
-};
-
-type ShareState = {
-  totalSupply: string;
-};
-
-type Fund = {
-  id: string;
-  name: string;
-  inception: string;
-  migrator: string;
-  accessor: ComptrollerProxy;
-  creator: Account;
-  manager: Account;
-  trackedAssets: Asset[];
-  portfolio: PortfolioState;
-  share: ShareState;
+  manager: string;
+  aum: number;
+  topAsset: string;
+  topAssetAUM: number;
+  investorId: number;
+  age: number;
+  volume24H: number;
+  volume7D: number;
+  volumeAll: number;
+  minInvestment: number;
+  maxInvestment: number;
+  risk: number;
+  denominationAsset: string;
+  startTimestamp: number;
 };

@@ -37,12 +37,12 @@ const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        {xAxis && <XAxis dataKey="name" height={20} />}
+        {xAxis && <XAxis dataKey="title" height={20} />}
         {yAxis && <YAxis width={45} />}
         <Tooltip />
         <Area
           type="monotone"
-          dataKey="uv"
+          dataKey="value"
           stroke="#d946ef"
           strokeWidth="2"
           fill="url(#colorView)"

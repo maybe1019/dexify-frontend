@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from './layouts';
 import { useAppSelector } from './store';
 import metadata from './helpers/data/page-metadata.json';
-import { useQuery } from '@apollo/client';
 import { setAllFunds } from './store/reducers/allFundsSlice';
 import { useDispatch } from 'react-redux';
-import queries from './graphql';
 import LazyLoadingSpinner from './components/LazyLoadingSpinner';
+import utils from './helpers/utils';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -21,12 +20,23 @@ function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
   const dispatch = useDispatch();
 
-  const { loading, error, data } = useQuery(queries.getAllFunds);
+  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
-    if (!loading && !error) {
-      dispatch(setAllFunds(data?.funds));
+    initFundData();
+  }, []);
+
+  const initFundData = async () => {
+    const funds = await utils.graphql.getFunds();
+    console.log(funds);
+    const tmpData: any[] = [];
+    for (let i = 0; i < funds.length; i++) {
+      const fundData = await utils.fund.formatFundData(funds[i]);
+      tmpData.push(fundData);
     }
-  }, [loading, error, data]);
+    dispatch(setAllFunds(tmpData));
+    setLoading(false);
+  };
 
   return (
     <div className={`${themeMode}`}>

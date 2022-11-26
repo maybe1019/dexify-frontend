@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import DataTable from '../../../components/DataTable';
 import untypedFields from '../data/fields.json';
-import utils from '../../../helpers/utils';
 
 const AllFundsTable = () => {
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
@@ -15,11 +14,8 @@ const AllFundsTable = () => {
 
   useEffect(() => {
     if (allFunds.length > 0) {
-      const tmpData: any[] = allFunds.map((fund: any) =>
-        utils.fund.formatFundData(fund),
-      );
-      setDexifyData(tmpData);
-      setFilteredData(tmpData);
+      setDexifyData(allFunds.map((f) => f));
+      setFilteredData(allFunds.map((f) => f));
     }
   }, [allFunds]);
 

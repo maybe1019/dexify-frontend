@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 
 import colors from '../../helpers/data/color-array.json';
+import { shortenAddress } from '@usedapp/core';
+import { formatFloatFixed } from '../../helpers/utils/utils';
 
 type DataType = {
   name: string;
@@ -79,7 +81,13 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
                         field.colorful ? { color: colors[d[field.name]] } : {}
                       }
                     >
-                      {field.prefix} {d[field.name]} {field.suffix}
+                      {field.prefix}{' '}
+                      {field.type === 'address'
+                        ? shortenAddress(d[field.name])
+                        : field.type === 'number'
+                        ? formatFloatFixed(d[field.name])
+                        : d[field.name]}{' '}
+                      {field.suffix}
                     </td>
                   ))}
                 </tr>

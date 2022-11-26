@@ -1,5 +1,5 @@
 import React from 'react';
-import UserDexfund from '../../components/UserDexfund';
+// import UserDexfund from '../../components/UserDexfund';
 import PageMeta from '../../layouts/PageMeta';
 import TotalAUM from './components/TotalAUM';
 import TotalROI from './components/TotalROI';
@@ -24,9 +24,7 @@ const Portfolio = () => {
         {Array(3)
           .fill(1)
           .map((item, i) => (
-            <div key={i}>
-              <UserDexfund />
-            </div>
+            <div key={i}>{/* <UserDexfund dexfund={'sd'} /> */}</div>
           ))}
       </div>
     </div>

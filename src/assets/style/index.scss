@@ -100,3 +100,24 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+
+.skeleton {
+  animation-name: skeleton-frame;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.dark .skeleton {
+  background-color: white;
+}
+.light .skeleton {
+  background-color: black;
+}
+
+@keyframes skeleton-frame {
+  0% {opacity: 0.1}
+  50% {opacity: 0.2}
+  100% {opacity: 0.1}
+}
