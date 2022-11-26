@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 
 import colors from '../../helpers/data/color-array.json';
+import { shortenAddress } from '@usedapp/core';
+import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
 
 type DataType = {
   name: string;
@@ -46,7 +48,7 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
 
   return (
     <div className="p-2">
-      <div className="pb-2 overflow-auto text-sm">
+      <div className="pb-6 overflow-x-auto overflow-y-hidden text-sm">
         <table
           className={`w-full border-collapse`}
           style={{ minWidth: `${minWidth}px` }}
@@ -74,12 +76,35 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
                   {fields.map((field) => (
                     <td
                       key={field.title}
-                      className="px-3 py-3 md:py-4 font-[300]"
+                      className="px-3 py-3 md:py-4 font-[300] tooltip"
                       style={
                         field.colorful ? { color: colors[d[field.name]] } : {}
                       }
                     >
-                      {field.prefix} {d[field.name]} {field.suffix}
+                      {field.prefix}{' '}
+                      {field.type === 'address' ? (
+                        shortenAddress(d[field.name])
+                      ) : field.type === 'number' ? (
+                        formatFloatFixed(d[field.name])
+                      ) : field.type === 'token' ? (
+                        getTokenInfo(d[field.name]) ? (
+                          <img
+                            src={getTokenInfo(d[field.name])?.logoURI}
+                            alt="top asset"
+                            className=" w-6 block rounded-full"
+                          />
+                        ) : (
+                          ''
+                        )
+                      ) : (
+                        d[field.name]
+                      )}{' '}
+                      {field.suffix}
+                      <div className="tooltiptext">
+                        {field.prefix}
+                        {d[field.name]}
+                        {field.suffix}
+                      </div>
                     </td>
                   ))}
                 </tr>

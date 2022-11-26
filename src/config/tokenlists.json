@@ -1,106 +1,146 @@
-{
-  "name": "Dexify Default List",
-  "timestamp": "2022-01-26T11:45:09Z",
-  "version": {},
-  "tags": {},
-  "logoURI": "https://dexify.finance/images/logo.png",
-  "keywords": ["dexify", "default"],
-  "tokens": [
-    {
-      "name": "Wrapped BNB",
-      "symbol": "WBNB",
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
-    },
-    {
-      "name": "BUSD Token",
-      "symbol": "BUSD",
-      "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
-    },
-    {
-      "name": "Ethereum Token",
-      "symbol": "ETH",
-      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
-    },
-    {
-      "name": "BTCB Token",
-      "symbol": "BTCB",
-      "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
-    },
-    {
-      "name": "Tether USD",
-      "symbol": "USDT",
-      "address": "0x55d398326f99059fF775485246999027B3197955",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
-    },
-    {
-      "name": "Venus",
-      "symbol": "XVS",
-      "address": "0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63.png"
-    },
-    {
-      "name": "VAI Stablecoin",
-      "symbol": "VAI",
-      "address": "0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7.png"
-    },
-    {
-      "name": "Alpaca",
-      "symbol": "ALPACA",
-      "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F.png"
-    },
-    {
-      "name": "Belt",
-      "symbol": "BELT",
-      "address": "0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f.png"
-    },
-    {
-      "name": "TokoCrypto",
-      "symbol": "TKO",
-      "address": "0x9f589e3eabe42ebC94A44727b3f3531C0c877809",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x9f589e3eabe42ebC94A44727b3f3531C0c877809.png"
-    },
-    {
-      "name": "Nerve Finance",
-      "symbol": "NRV",
-      "address": "0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096.png"
-    },
-    {
-      "name": "Ellipsis",
-      "symbol": "EPS",
-      "address": "0xA7f552078dcC247C2684336020c03648500C6d9F",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xA7f552078dcC247C2684336020c03648500C6d9F.png"
-    }
-  ]
-}
+[
+  {
+    "name": "Wrapped BNB",
+    "symbol": "WBNB",
+    "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png",
+    "coingeckoId": "wbnb"
+  },
+  {
+    "name": "BUSD Token",
+    "symbol": "BUSD",
+    "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png",
+    "coingeckoId": "binancecoin"
+  },
+  {
+    "name": "Ethereum Token",
+    "symbol": "ETH",
+    "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+    "decimals": 18,
+    "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png",
+    "coingeckoId": "ethereum"
+  },
+  {
+    "name": "Tether USD",
+    "symbol": "USDT",
+    "address": "0x55d398326f99059fF775485246999027B3197955",
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png",
+    "coingeckoId": "tether"
+  },
+  {
+    "name": "AlphaToken",
+    "symbol": "ALPHA",
+    "address": "0xa1faa113cbe53436df28ff0aee54275c13b40975",
+    "decimals": 18,
+    "logoURI": "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xa1faa113cbE53436Df28FF0aEe54275c13B40975/logo.png",
+    "coingeckoId": "alpha-finance"
+  },
+  {
+    "name": "Band Protocol Token",
+    "symbol": "BAND",
+    "address": "0xad6caeb32cd2c308980a548bd0bc5aa4306c6c18",
+    "decimals": 18,
+    "logoURI": "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xAD6cAEb32CD2c308980a548bD0Bc5AA4306c6c18/logo.png",
+    "coingeckoId": "band-protocol"
+  },
+  {
+    "name": "bZx Protocol Token",
+    "symbol": "BZRX",
+    "address": "0x4b87642aedf10b642be4663db842ecc5a88bf5ba",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5810.png",
+    "coingeckoId": "bzx-protocol"
+  },
+  {
+    "name": "Compound Coin",
+    "symbol": "COMP",
+    "address": "0x52ce071bd9b1c4b00a0b92d298c512478cad67e8",
+    "decimals": 18,
+    "logoURI": "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x52CE071Bd9b1C4B00A0b92D298c512478CaD67e8/logo.png",
+    "coingeckoId": "compound-governance-token"
+  },
+  {
+    "name": "Dai Token",
+    "symbol": "DAI",
+    "address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3",
+    "decimals": 18,
+    "logoURI": "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3/logo.png",
+    "coingeckoId": "dai"
+  },
+  {
+    "name": "DPI Token",
+    "symbol": "DPI",
+    "address": "0x564d4a58fd000aa7b3e80f8a1f2a8e67f759151d",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/7055.png",
+    "coingeckoId": "defipulse-index"
+  },
+  {
+    "name": "Chinlink",
+    "symbol": "LINK",
+    "address": "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/1975.png",
+    "coingeckoId": "chainlink"
+  },
+  {
+    "name": "SushiSwap",
+    "symbol": "SUSHI",
+    "address": "0x947950bcc74888a40ffa2593c5798f11fc9124c4",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/6758.png",
+    "coingeckoId": "sushi"
+  },
+  {
+    "name": "Swipe",
+    "symbol": "SXP",
+    "address": "0x47bead2563dcbf3bf2c9407fea4dc236faba485a",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/4279.png",
+    "coingeckoId": "swipe"
+  },
+  {
+    "name": "Uniswap",
+    "symbol": "UNI",
+    "address": "0xBf5140A22578168FD562DCcF235E5D43A02ce9B1",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/7083.png",
+    "coingeckoId": "uniswap"
+  },
+  {
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+    "coingeckoId": "usd-coin"
+  },
+  {
+    "name": "Bitcoin BEP2",
+    "symbol": "BTCB",
+    "address": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/4023.png",
+    "coingeckoId": "binance-bitcoin"
+  },
+  {
+    "name": "yearn.finance",
+    "symbol": "YFI",
+    "address": "0x88f1a5ae2a3bf98aeaf342d26b30a79438c9142e",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5864.png",
+    "coingeckoId": "yearn-finance"
+  },
+  {
+    "name": "ZRX Token",
+    "symbol": "ZRX",
+    "address": "0x0ddc5e539af1753693e9463ca619406b1b06d66e",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/cloud/img/dex/default-icon-dark.svg",
+    "coingeckoId": "0x"
+  }
+]

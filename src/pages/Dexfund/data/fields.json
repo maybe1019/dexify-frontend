@@ -4,11 +4,11 @@
     "title": "Manager",
     "prefix": "",
     "suffix": "",
-    "type": "string",
+    "type": "address",
     "colorful": false
   },
   {
-    "name": "dexfund",
+    "name": "name",
     "title": "Dexfund Name",
     "prefix": "",
     "suffix": "",
@@ -18,17 +18,17 @@
   {
     "name": "aum",
     "title": "AUM",
-    "prefix": "",
+    "prefix": "$ ",
     "suffix": "",
     "type": "number",
     "colorful": false
   },
   {
-    "name": "topAssets",
-    "title": "Top Assets",
+    "name": "topAsset",
+    "title": "Top Asset",
     "prefix": "",
     "suffix": "",
-    "type": "string",
+    "type": "token",
     "colorful": false
   },
   {
@@ -41,7 +41,7 @@
   },
   {
     "name": "age",
-    "title": "Age",
+    "title": "Age(D)",
     "prefix": "",
     "suffix": "",
     "type": "number",
@@ -64,7 +64,7 @@
     "colorful": false
   },
   {
-    "name": "inception",
+    "name": "volumeAll",
     "title": "Inception",
     "prefix": "",
     "suffix": "%",
