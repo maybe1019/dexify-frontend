@@ -35,6 +35,7 @@ function App() {
       tmpData.push(fundData);
     }
     dispatch(setAllFunds(tmpData));
+    console.log(tmpData);
     setLoading(false);
   };
 

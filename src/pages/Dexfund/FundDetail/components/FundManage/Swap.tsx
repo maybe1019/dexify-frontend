@@ -4,8 +4,8 @@ import tokenLists from '../../../../../config/tokenlists.json';
 import TokenListDropdown from './TokenListDropdown';
 
 function Swap() {
-  const [swapToken, setSwapToken] = useState<Token>(tokenLists.tokens[0]);
-  const [receiveToken, setReceiveToken] = useState<Token>(tokenLists.tokens[1]);
+  const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
+  const [receiveToken, setReceiveToken] = useState<Token>(tokenLists[1]);
 
   const swapFromandToTokens = () => {
     const tmpS = { ...swapToken };
@@ -28,7 +28,7 @@ function Swap() {
               />
 
               <TokenListDropdown
-                tokenList={tokenLists.tokens}
+                tokenList={tokenLists}
                 token={swapToken}
                 setToken={setSwapToken}
               ></TokenListDropdown>
@@ -66,7 +66,7 @@ function Swap() {
               </div>
 
               <TokenListDropdown
-                tokenList={tokenLists.tokens}
+                tokenList={tokenLists}
                 token={receiveToken}
                 setToken={setReceiveToken}
               ></TokenListDropdown>

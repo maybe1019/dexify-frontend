@@ -9,6 +9,10 @@ import usdt from '../data/coin-prices/tether.json';
 import uni from '../data/coin-prices/uniswap.json';
 import wbnb from '../data/coin-prices/wbnb.json';
 
+import tokens from '../../config/tokenlists.json';
+
+const tokenList: Token[] = tokens;
+
 const months = [
   'Jan',
   'Feb',
@@ -61,18 +65,22 @@ export const formatFloatFixed = (num: number) => {
 };
 
 export const getTokenPriceAt = (symbol: string, timestamp: number): number => {
-  const prices = coinPrices[symbol.toLowerCase()];
-  if (timestamp < prices[0][0]) {
-    return prices[0][1];
-  }
-  if (timestamp > prices[prices.length - 1][0]) {
-    return prices[prices.length - 1][1];
-  }
-  let i = 0;
-  for (i = 0; i < prices.length - 1; i++) {
-    if (timestamp >= prices[i][0] && timestamp <= prices[i + 1][0]) {
-      return prices[i][1];
+  try {
+    const prices = coinPrices[symbol.toLowerCase()];
+    if (timestamp < prices[0][0]) {
+      return prices[0][1];
     }
+    if (timestamp > prices[prices.length - 1][0]) {
+      return prices[prices.length - 1][1];
+    }
+    let i = 0;
+    for (i = 0; i < prices.length - 1; i++) {
+      if (timestamp >= prices[i][0] && timestamp <= prices[i + 1][0]) {
+        return prices[i][1];
+      }
+    }
+  } catch (error) {
+    console.log(symbol, new Date(timestamp));
   }
   return 0;
 };
@@ -90,4 +98,13 @@ export const formatTimestampToString = (
   } else {
     return `${months[date.getMonth()]} ${date.getDate()}`;
   }
+};
+
+export const getTokenInfo = (symbol: string): Token | undefined => {
+  for (let i = 0; i < tokenList.length; i++) {
+    if (tokenList[i].symbol.toLowerCase() === symbol.toLowerCase()) {
+      return tokenList[i];
+    }
+  }
+  return undefined;
 };

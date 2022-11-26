@@ -129,4 +129,39 @@ input[type=number] {
   100% {
     opacity: 0.1;
   }
+}
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 10px;
+  opacity: 0;
+  transition: opacity 0.5s;
+  text-align: center;
+  @apply bg-bg-4 dark:bg-bg-4-dark;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 10px;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--theme-scroll-bg-color) transparent;
+  @apply border-b-bg-4 dark:border-b-bg-4-dark;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }/*# sourceMappingURL=index.css.map */

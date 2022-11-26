@@ -4,7 +4,7 @@ import { ChevronUpIcon } from '@heroicons/react/24/solid';
 import FundChart from '../FundChart';
 import DatePeriodDropDown from '../DatePeriodDropDown';
 import { shortenAddress } from '@usedapp/core';
-import { formatFloatFixed } from '../../helpers/utils/utils';
+import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
 import { getAumHistoryOf } from '../../helpers/utils/fund';
 
 type UserDexfundProps = {
@@ -38,15 +38,17 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
           alt="default-user"
           className=" w-10 rounded-full"
         />
-        <div>
-          <p className="text-lg font-[500]">{dexfund.name}</p>
+        <div className="grow max-w-[calc(100%-180px)]">
+          <p className="text-lg font-[500] text-ellipsis overflow-hidden whitespace-nowrap">
+            {dexfund.name}
+          </p>
           <p className=" text-text-2 dark:text-text-2-dark text-xs">
             {shortenAddress(dexfund.id)}
           </p>
         </div>
         <div className="ml-auto">
           <p className="text-primary text-lg text-right">
-            {formatFloatFixed(dexfund.aum)}
+            ${formatFloatFixed(dexfund.aum)}
           </p>
           <p className=" text-text-2 dark:text-text-2-dark text-xs text-right">
             Market Cap
@@ -72,8 +74,14 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
             <span className="rounded-lg bg-amber-200 dark:bg-amber-900 p-2 font-[500] text-xs">
               Min Investment
             </span>
-            <span className="text-sm">
-              {dexfund.minInvestment} {dexfund.denominationAsset}
+            <span className="text-sm flex items-center gap-2 tooltip">
+              <img
+                src={getTokenInfo(dexfund.denominationAsset)?.logoURI}
+                alt=""
+                className=" w-5 overflow-hidden rounded-full"
+              />{' '}
+              {dexfund.minInvestment}
+              <div className="tooltiptext">{dexfund.denominationAsset}</div>
             </span>
           </div>
           <div className="flex justify-between items-center">
@@ -86,9 +94,16 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
             <span className="rounded-lg bg-orange-200 dark:bg-orange-900 p-2 font-[500] text-xs">
               Biggest Holding
             </span>
-            <span className="text-sm">
-              {dexfund.topAsset}{' '}
-              {formatFloatFixed((dexfund.topAssetAUM / dexfund.aum) * 100)}%
+            <span className="text-sm flex items-center tooltip gap-1">
+              <img
+                src={getTokenInfo(dexfund.topAsset)?.logoURI}
+                alt=""
+                className="w-5 rounded-full"
+              />
+              {dexfund.aum > 0
+                ? Math.floor((dexfund.topAssetAUM / dexfund.aum) * 100)
+                : 0}
+              %<div className="tooltiptext">{dexfund.topAsset}</div>
             </span>
           </div>
         </div>
