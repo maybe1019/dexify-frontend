@@ -3,6 +3,7 @@ import axios from 'axios';
 const baseUri: string = process.env.REACT_APP_SERVER_URL as string;
 
 import tokens from '../config/tokenlists.json';
+import utils from '../helpers/utils';
 import { miliseconds } from '../helpers/utils/utils';
 
 const tokenList: Token[] = tokens;
@@ -34,8 +35,8 @@ export const getTokenPrice = (id: string): Promise<number> =>
     try {
       const res = await axios.get(`${baseUri}/price?id=${id}`);
       resolve(res.data.price);
-    } catch (error) {
-      console.log('getTokenPrice: ', error);
+    } catch (error: any) {
+      utils.notification.danger('Error', error.message);
       resolve(0);
     }
   });

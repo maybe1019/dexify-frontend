@@ -16,6 +16,8 @@ import { useInvest } from '../../../hooks/contracts/useComptrollerContract';
 import { useEthers } from '@usedapp/core';
 import InvestModal from './components/InvestModal';
 import { useParams } from 'react-router-dom';
+import { InvestableTokenType } from '../../../helpers/enums';
+import utils from '../../../helpers/utils';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -40,6 +42,14 @@ const FundDetail = () => {
   };
   useOutsideHandler(targetDom, handleStep);
 
+  const openInvestModal = () => {
+    if (!account) {
+      utils.notification.danger('Error', 'Please connect wallet first');
+      return;
+    }
+    setIsOpenInvestModal(true);
+  };
+
   const { investFundDenomination, loading, disabled } = useInvest(
     fundAddress as string,
   );
@@ -54,6 +64,7 @@ const FundDetail = () => {
         isOpen={isOpenInvestModal}
         onCancel={() => setIsOpenInvestModal(false)}
         onConfirm={(amount: number) => onInvest(amount)}
+        tokenType={InvestableTokenType.BNB}
       />
       {/* ---------- Mobile only ------------ */}
       <div className="w-full absolute z-20 lg:hidden top-0 sm:top-[-50px]">
@@ -151,7 +162,7 @@ const FundDetail = () => {
         <AssetsInfo />
         <div className="mx-auto">
           <button
-            onClick={() => setIsOpenInvestModal(true)}
+            onClick={openInvestModal}
             className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] text-primary bg-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90 mr-6"
           >
             Invest

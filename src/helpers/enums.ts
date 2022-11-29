@@ -10,3 +10,8 @@ export enum PageName {
   PORTFOLIO = 'portfolio',
   MANAGE = 'manage',
 }
+
+export enum InvestableTokenType {
+  BNB = 'BNB',
+  BUSD = 'BUSD',
+}

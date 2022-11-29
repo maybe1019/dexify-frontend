@@ -31,7 +31,6 @@ export const useInvest = (fundAddr: string) => {
   const investFundDenomination = useCallback(
     async (investor: string | undefined, amount: number) => {
       try {
-        if (library) throw new Error('Please connect wallet first');
         if (isWrongNetwork) throw new Error('Wrong Network');
         setLoading(true);
         const comptrollerLibAddr = await getComptrollerAddr();
