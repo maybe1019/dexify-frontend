@@ -15,9 +15,11 @@ import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
 import { useInvest } from '../../../hooks/contracts/useComptrollerContract';
 import { useEthers } from '@usedapp/core';
 import InvestModal from './components/InvestModal';
-import { useParams } from 'react-router-dom';
 import { InvestableTokenType } from '../../../helpers/enums';
 import utils from '../../../helpers/utils';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -32,6 +34,9 @@ const FundDetail = () => {
   const [manageStep, setManageStep] = useState(false);
   const targetDom = createRef<HTMLDivElement>();
   const [isOpenInvestModal, setIsOpenInvestModal] = useState(false);
+
+  const allFunds = useSelector((state: RootState) => state.allFunds.value);
+  const fund = allFunds.find((value) => value.id === fundAddress);
 
   const handleStep = (e?: any) => {
     if (e) {
@@ -158,7 +163,7 @@ const FundDetail = () => {
         </div>
         {/* ---------- Mobile only ------------ */}
 
-        <AUMChart />
+        <AUMChart fund={fund as FundData} />
         <AssetsInfo />
         <div className="mx-auto">
           <button
