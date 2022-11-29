@@ -1,5 +1,4 @@
 import React, { useState, createRef } from 'react';
-import { useParams } from 'react-router-dom';
 import FundInfo from './components/FundInfo';
 import { Disclosure, Tab } from '@headlessui/react';
 import './index.css';
@@ -16,6 +15,7 @@ import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
 import { useInvest } from '../../../hooks/contracts/useComptrollerContract';
 import { useEthers } from '@usedapp/core';
 import InvestModal from './components/InvestModal';
+import { useParams } from 'react-router-dom';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -24,10 +24,10 @@ function classNames(...classes: string[]) {
 const fundInfoTabList = ['Bio', 'Fees', 'History'];
 
 const FundDetail = () => {
-  const { account, chainId } = useEthers();
+  const { account } = useEthers();
+  const { fundAddress } = useParams();
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
-  const { fundAddress } = useParams();
   const targetDom = createRef<HTMLDivElement>();
   const [isOpenInvestModal, setIsOpenInvestModal] = useState(false);
 
@@ -46,10 +46,8 @@ const FundDetail = () => {
 
   const onInvest = async (amount: number) => {
     setIsOpenInvestModal(false);
-    console.log(loading);
     const a = await investFundDenomination(account, amount);
   };
-
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
       <InvestModal

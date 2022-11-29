@@ -1,30 +1,30 @@
 [
   {
-    "name": "Sunday",
-    "uv": 1500
+    "title": "Sunday",
+    "value": 1500
   },
   {
-    "name": "Monday",
-    "uv": 2000
+    "title": "Monday",
+    "value": 2000
   },
   {
-    "name": "Tuesday",
-    "uv": 1700
+    "title": "Tuesday",
+    "value": 1700
   },
   {
-    "name": "Wednesday",
-    "uv": 2500
+    "title": "Wednesday",
+    "value": 2500
   },
   {
-    "name": "Thursday",
-    "uv": 3000
+    "title": "Thursday",
+    "value": 3000
   },
   {
-    "name": "Friday",
-    "uv": 2390
+    "title": "Friday",
+    "value": 2390
   },
   {
-    "name": "Saturday",
-    "uv": 3690
+    "title": "Saturday",
+    "value": 3690
   }
 ]

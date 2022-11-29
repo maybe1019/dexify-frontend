@@ -1,3 +1,4 @@
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useEthers } from '@usedapp/core';
 import { ethers } from 'ethers';
 import React, { useState, useEffect, useRef } from 'react';
@@ -66,8 +67,6 @@ const Account = () => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       handleFile(e.target.files);
-    } else {
-      setImageUrl('');
     }
   };
 
@@ -97,26 +96,38 @@ const Account = () => {
   };
 
   return (
-    <div className="bg-bg-2 shadow-lg max-w-2xl mx-auto rounded-xl p-6 dark:bg-bg-2-dark">
-      <h3 className="text-2xl font-[500] py-2">My Account</h3>
-      <div
-        className="account-avatar m-2 relative overflow-hidden"
-        onDragEnter={handleDrag}
-        onClick={() => {
-          imageFileRef.current?.click();
-        }}
-      >
+    <div className="md:bg-white dark:md:bg-bg-2-dark rounded-3xl max-w-4xl px-4 lg:px-24 py-0 md:py-12 mx-auto my-20">
+      <h1 className=" text-3xl lg:text-4xl my-8 text-center font-bold">
+        My Account
+      </h1>
+      <div className="account-avatar relative" onDragEnter={handleDrag}>
         {imageUrl !== '' && (
-          <img
-            src={imageUrl}
-            alt="avatar"
-            className=" absolute w-full h-full z-10 left-0 top-0"
-          />
+          <button
+            className="w-6 h-6 flex items-center justify-center rounded-full absolute right-[-10px] top-[-10px] z-20 bg-bg-1 dark:bg-bg-1-dark shadow-lg"
+            onClick={() => setImageUrl('')}
+          >
+            <XMarkIcon width={16} className="hover:text-primary" />
+          </button>
         )}
-        Click or Drag and Drop your image.
+        <div
+          className="w-full h-full account-avatar overflow-hidden"
+          onClick={() => {
+            imageFileRef.current?.click();
+          }}
+        >
+          {imageUrl !== '' ? (
+            <img
+              src={imageUrl}
+              alt="avatar"
+              className="w-full h-full z-10 left-0 top-0"
+            />
+          ) : (
+            'Click or Drag and Drop your image.'
+          )}
+        </div>
         {dragActive && (
           <div
-            className="account-avatar m-2 absolute z-20"
+            className="account-avatar absolute z-10 bg-gray-300 dark:bg-slate-800"
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
@@ -126,53 +137,55 @@ const Account = () => {
           </div>
         )}
       </div>
-      <input
-        type="file"
-        name="image"
-        accept="image/png, image/jpeg"
-        className=" hidden"
-        onChange={handleChange}
-        ref={imageFileRef}
-      />
-      <input
-        type="text"
-        readOnly
-        className="p-2 outline-none border-2 w-full my-3 rounded text-gray-600 dark:bg-bg-2-dark dark:text-gray-400 dark:border-gray-600"
-        value={account}
-      />
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        className="account-input"
-        value={newAccount.title}
-        onChange={onChangeValue}
-      />
-      <input
-        type="text"
-        name="name"
-        placeholder="Name"
-        className="account-input"
-        value={newAccount.name}
-        onChange={onChangeValue}
-      />
-      <input
-        type="text"
-        name="email"
-        placeholder="Email"
-        className="account-input"
-        value={newAccount.email}
-        onChange={onChangeValue}
-      />
-      <textarea
-        name="bio"
-        placeholder="Bio"
-        className="account-input"
-        value={newAccount.bio}
-        onChange={onChangeValue}
-      />
+      <div className="flex flex-col gap-4 my-8">
+        <input
+          type="file"
+          name="image"
+          accept="image/png, image/jpeg"
+          className=" hidden"
+          onChange={handleChange}
+          ref={imageFileRef}
+        />
+        <input
+          type="text"
+          readOnly
+          className="bg-[#8881] rounded-lg p-4 sm:px-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow w-full"
+          value={account}
+        />
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          className="bg-[#8881] rounded-lg p-4 sm:px-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow w-full"
+          value={newAccount.title}
+          onChange={onChangeValue}
+        />
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          className="bg-[#8881] rounded-lg p-4 sm:px-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow w-full"
+          value={newAccount.name}
+          onChange={onChangeValue}
+        />
+        <input
+          type="text"
+          name="email"
+          placeholder="Email"
+          className="bg-[#8881] rounded-lg p-4 sm:px-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow w-full"
+          value={newAccount.email}
+          onChange={onChangeValue}
+        />
+        <textarea
+          name="bio"
+          placeholder="Bio"
+          className=" resize-none bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none w-full h-48 focus:shadow"
+          value={newAccount.bio}
+          onChange={onChangeValue}
+        />
+      </div>
       <button
-        className=" mt-2 p-2 w-full bg-primary rounded-lg text-white hover:opacity-90"
+        className="p-3 w-full bg-primary rounded-lg text-white hover:opacity-90"
         onClick={() => setIsDialogOpen(true)}
       >
         {myAccount.id ? 'Update Account' : 'Create Account'}

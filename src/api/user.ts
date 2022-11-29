@@ -22,7 +22,6 @@ export const getUser = (signature: string, address: string): Promise<User> =>
       });
       res.data.address = address;
       const user: User = res.data;
-      console.log(user);
       resolve(user);
     } catch (error) {
       reject(error);
