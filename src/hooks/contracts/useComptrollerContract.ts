@@ -31,6 +31,8 @@ export const useInvest = (fundAddr: string) => {
   const investFundDenomination = useCallback(
     async (investor: string | undefined, amount: number) => {
       try {
+        if (library) throw new Error('Please connect wallet first');
+        if (isWrongNetwork) throw new Error('Wrong Network');
         setLoading(true);
         const comptrollerLibAddr = await getComptrollerAddr();
         if (!comptrollerLibAddr) throw new Error('Not found fund');
@@ -70,6 +72,8 @@ export const useWithdraw = (fundAddr: string) => {
   const redeemSharesAmount = useCallback(
     async (amount: number) => {
       try {
+        if (library) throw new Error('Please connect wallet first');
+        if (isWrongNetwork) throw new Error('Wrong Network');
         setLoading(true);
         const comptrollerLibAddr = await getComptrollerAddr();
         if (!comptrollerLibAddr) throw new Error('Not found fund');

@@ -15,6 +15,7 @@ import AUMChart from './components/AUMChart';
 import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
 import { useInvest } from '../../../hooks/contracts/useComptrollerContract';
 import { useEthers } from '@usedapp/core';
+import InvestModal from './components/InvestModal';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -28,6 +29,7 @@ const FundDetail = () => {
   const [manageStep, setManageStep] = useState(false);
   const { fundAddress } = useParams();
   const targetDom = createRef<HTMLDivElement>();
+  const [isOpenInvestModal, setIsOpenInvestModal] = useState(false);
 
   const handleStep = (e?: any) => {
     if (e) {
@@ -42,12 +44,19 @@ const FundDetail = () => {
     fundAddress as string,
   );
 
-  const onInvest = async () => {
-    const a = await investFundDenomination(account, 1000);
+  const onInvest = async (amount: number) => {
+    setIsOpenInvestModal(false);
+    console.log(loading);
+    const a = await investFundDenomination(account, amount);
   };
 
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
+      <InvestModal
+        isOpen={isOpenInvestModal}
+        onCancel={() => setIsOpenInvestModal(false)}
+        onConfirm={(amount: number) => onInvest(amount)}
+      />
       {/* ---------- Mobile only ------------ */}
       <div className="w-full absolute z-20 lg:hidden top-0 sm:top-[-50px]">
         <div className="">
@@ -144,7 +153,7 @@ const FundDetail = () => {
         <AssetsInfo />
         <div className="mx-auto">
           <button
-            onClick={() => onInvest()}
+            onClick={() => setIsOpenInvestModal(true)}
             className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] text-primary bg-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90 mr-6"
           >
             Invest
