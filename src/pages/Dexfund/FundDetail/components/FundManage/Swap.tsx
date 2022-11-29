@@ -44,7 +44,10 @@ function Swap() {
           </div>
           <div className="grid grid-cols-4 text-xs gap-2">
             {['25%', '50%', '75%', 'MAX'].map((value) => (
-              <button className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white">
+              <button
+                key={value}
+                className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"
+              >
                 {value}
               </button>
             ))}

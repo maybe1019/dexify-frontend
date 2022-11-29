@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 // Define the initial state using that type
-const initialState: { value: any[]; status: string } = {
+const initialState: { value: FundData[]; status: string } = {
   status: 'loading',
   value: [],
 };

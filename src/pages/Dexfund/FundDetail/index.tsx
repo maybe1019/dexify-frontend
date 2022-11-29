@@ -12,6 +12,9 @@ import AssetsInfo from './components/AssetsInfo';
 import Tweets from './components/Tweets';
 import AUMChart from './components/AUMChart';
 import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -23,6 +26,10 @@ const FundDetail = () => {
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
   const targetDom = createRef<HTMLDivElement>();
+
+  const allFunds = useSelector((state: RootState) => state.allFunds.value);
+  const { fundAddress } = useParams();
+  const fund = allFunds.find((value) => value.id === fundAddress);
 
   const handleStep = (e?: any) => {
     if (e) {
@@ -131,7 +138,7 @@ const FundDetail = () => {
         </div>
         {/* ---------- Mobile only ------------ */}
 
-        <AUMChart />
+        <AUMChart fund={fund as FundData} />
         <AssetsInfo />
         <div className="mx-auto">
           <button
