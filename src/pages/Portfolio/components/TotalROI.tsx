@@ -5,6 +5,10 @@ import data from '../../../helpers/data/chartInitData.json';
 import DatePeriodDropDown from '../../../components/DatePeriodDropDown';
 
 function TotalROI() {
+  const onChangePeriod = (days: number) => {
+    console.log(days);
+  };
+
   return (
     <div className="card overflow-hidden min-h-[340px]">
       <div className="text-text-1 dark:text-text-1-dark text-xl header p-6 font-bold">
@@ -16,7 +20,7 @@ function TotalROI() {
           <span className="text-text-2 dark:text-text-2-dark text-xs">
             12,542
           </span>
-          <DatePeriodDropDown />
+          <DatePeriodDropDown onChange={onChangePeriod} />
           <span className="text-green-500 flex text-sm mx-auto">
             <span className="mr-1">+45%</span>
             <ChevronUpIcon width={12} strokeWidth={4} />

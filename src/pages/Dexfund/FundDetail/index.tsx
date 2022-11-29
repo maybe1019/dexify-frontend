@@ -1,5 +1,4 @@
 import React, { useState, createRef } from 'react';
-import { useParams } from 'react-router-dom';
 import FundInfo from './components/FundInfo';
 import { Disclosure, Tab } from '@headlessui/react';
 import './index.css';
@@ -13,8 +12,6 @@ import AssetsInfo from './components/AssetsInfo';
 import Tweets from './components/Tweets';
 import AUMChart from './components/AUMChart';
 import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
-import { useInvest } from '../../../hooks/contracts/useComptrollerContract';
-import { useEthers } from '@usedapp/core';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -23,10 +20,8 @@ function classNames(...classes: string[]) {
 const fundInfoTabList = ['Bio', 'Fees', 'History'];
 
 const FundDetail = () => {
-  const { account, chainId } = useEthers();
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
-  const { fundAddress } = useParams();
   const targetDom = createRef<HTMLDivElement>();
 
   const handleStep = (e?: any) => {
@@ -38,12 +33,8 @@ const FundDetail = () => {
   };
   useOutsideHandler(targetDom, handleStep);
 
-  const { investFundDenomination, loading, disabled } = useInvest(
-    fundAddress as string,
-  );
-
   const onInvest = async () => {
-    const a = await investFundDenomination(account, 1000);
+    // const a = await investFundDenomination(account, 1000);
   };
 
   return (
