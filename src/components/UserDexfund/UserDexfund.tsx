@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronUpIcon } from '@heroicons/react/24/solid';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import FundChart from '../FundChart';
 import DatePeriodDropDown from '../DatePeriodDropDown';
 import { shortenAddress } from '@usedapp/core';
@@ -14,11 +14,13 @@ type UserDexfundProps = {
 const UserDexfund = ({ dexfund }: UserDexfundProps) => {
   const [chartDays, setChartDays] = useState<number>(7);
   const [chartData, setChartData] = useState<any[]>([]);
+  const [risePercentage, setRisePercentage] = useState<number>(0);
 
   const navigate = useNavigate();
   const onChangeChartsDays = async () => {
     const aumHistory = await getAumHistoryOf(dexfund, chartDays);
     setChartData(aumHistory);
+    setRisePercentage((dexfund.aum / aumHistory[0].value) * 100 - 100);
   };
 
   useEffect(() => {
@@ -109,9 +111,20 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
         </div>
 
         <div className="grow overflow-hidden p-2 rounded-xl flex flex-col gap-3 shadow">
-          <div className="flex justify-between items-center p-2">
-            <span className=" text-green-500 flex text-sm gap-1">
-              +45% <ChevronUpIcon width={12} strokeWidth={4} />
+          <div className="flex justify-between items-center py-2 px-1">
+            <span
+              className={
+                'flex text-sm gap-1 ' +
+                (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
+              }
+            >
+              {risePercentage > 0 && '+'}
+              {risePercentage.toFixed(1)}%
+              {risePercentage >= 0 ? (
+                <ChevronUpIcon width={12} strokeWidth={4} />
+              ) : (
+                <ChevronDownIcon width={12} />
+              )}
             </span>
             <DatePeriodDropDown onChange={setChartDays} />
           </div>

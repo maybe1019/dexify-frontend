@@ -14,6 +14,7 @@ type Token = {
   address: string;
   decimals: number;
   logoURI: string;
+  coingeckoId: string;
 };
 
 type FundData = {

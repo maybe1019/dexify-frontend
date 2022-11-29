@@ -9,6 +9,7 @@ import { setAllFunds } from './store/reducers/allFundsSlice';
 import { useDispatch } from 'react-redux';
 import LazyLoadingSpinner from './components/LazyLoadingSpinner';
 import utils from './helpers/utils';
+import api from './api';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -27,6 +28,8 @@ function App() {
   }, []);
 
   const initFundData = async () => {
+    await api.token.initPricesLast7D();
+
     const funds = await utils.graphql.getFunds();
     console.log(funds);
     const tmpData: any[] = [];

@@ -44,7 +44,7 @@ const AllFundsTable = () => {
           data={filteredData}
           fields={untypedFields}
           pagination={true}
-          minWidth={950}
+          minWidth={1000}
         />
       </div>
     </div>

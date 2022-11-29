@@ -5,7 +5,15 @@
     "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png",
-    "coingeckoId": "wbnb"
+    "coingeckoId": "binancecoin"
+  },
+  {
+    "name": "BNB",
+    "symbol": "BNB",
+    "address": "",
+    "decimals": 18,
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
+    "coingeckoId": "binancecoin"
   },
   {
     "name": "BUSD Token",
@@ -13,7 +21,7 @@
     "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png",
-    "coingeckoId": "binancecoin"
+    "coingeckoId": "binance-usd"
   },
   {
     "name": "Ethereum Token",

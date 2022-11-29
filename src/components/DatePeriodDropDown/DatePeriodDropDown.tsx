@@ -25,7 +25,7 @@ function DatePeriodDropDown({ onChange }: DatePeriodDropDownProps) {
   return (
     <div>
       <Popover className="relative">
-        <Popover.Button className={'outline-none w-[120px]'}>
+        <Popover.Button className={'outline-none w-[110px]'}>
           <div
             className="text-xs px-2 py-1 rounded border border-gray-500 flex gap-1"
             id="menu-button"

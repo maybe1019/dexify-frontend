@@ -85,6 +85,7 @@ const funds = (): DocumentNode => gql`
         start
         end
         first {
+          timestamp
           portfolio {
             holdings {
               amount
@@ -99,6 +100,7 @@ const funds = (): DocumentNode => gql`
           }
         }
         last {
+          timestamp
           portfolio {
             holdings {
               amount
