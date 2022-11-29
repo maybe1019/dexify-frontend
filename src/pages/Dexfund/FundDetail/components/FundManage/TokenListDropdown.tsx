@@ -39,7 +39,7 @@ function TokenListDropdown({ tokenList, token, setToken }: Props) {
         <Popover.Panel className="absolute right-0 z-10 mt-1 w-[200px] min-w-full px-1 text-xs">
           <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-bg-1 dark:bg-bg-1-dark p-2 flex flex-col gap-1">
             {tokenList.map((token) => (
-              <Popover.Button>
+              <Popover.Button key={token.symbol}>
                 <div
                   className=" cursor-pointer hover:bg-bg-2 dark:hover:bg-bg-2-dark px-4 py-2 2xl:px-6 2xl:py-3 rounded flex text-lg gap-3 items-center"
                   onClick={() => setToken(token)}
