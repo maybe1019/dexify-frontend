@@ -1,36 +1,29 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { useEthers, useTokenBalance } from '@usedapp/core';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
-import api from '../../../../../api';
+import { useEthers, useToken, useTokenBalance } from '@usedapp/core';
+import { BigNumberish } from 'ethers';
 
 type Props = {
   isOpen: boolean;
   onCancel(): void;
   onConfirm(amount: number): any;
-  token: Token;
+  fundAddress: string;
 };
 
 export default function WithdrawModal({
   isOpen,
   onCancel,
   onConfirm,
-  token,
+  fundAddress,
 }: Props) {
-  const [investAmount, setInvestAmount] = useState(0);
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
   const { account } = useEthers();
-  const denominationAssetBalance = useTokenBalance(token.address, account);
-  const invest = () => {
-    onConfirm(investAmount);
+  const tokenInfo = useToken(fundAddress);
+  const sharesBalance = useTokenBalance(fundAddress, account);
+  const withdraw = () => {
+    onConfirm(withdrawAmount);
   };
-  const [bnbPrice, setBNBPrice] = useState<number>(1);
-  const getBNBPrice = async () => {
-    const bnbPrice = await api.token.getTokenPrice('binancecoin');
-    setBNBPrice(bnbPrice);
-  };
-  useEffect(() => {
-    if (token.symbol === 'WBNB') getBNBPrice();
-  }, [token]);
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -75,10 +68,43 @@ export default function WithdrawModal({
                     aria-expanded="true"
                     aria-haspopup="true"
                   >
-                    <div className="flex gap-2 mx-2 items-center justify-between">
-                      <p>10</p>
-                      <p>{token.symbol}</p>
+                    <div className="flex gap-2 mx-2 items-center">
+                      <input
+                        type="number"
+                        value={withdrawAmount}
+                        min={0}
+                        onChange={(e: any) => {
+                          if (e.target.value === '') {
+                            setWithdrawAmount(0);
+                            return;
+                          }
+                          if (withdrawAmount === 0) {
+                            setWithdrawAmount(e.target.value.replace('0', ''));
+                            return;
+                          }
+                          setWithdrawAmount(e.target.value);
+                        }}
+                        className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
+                        placeholder="Input Amount"
+                      />
+                      {tokenInfo && <p>{tokenInfo.symbol}</p>}
                     </div>
+                    {sharesBalance && tokenInfo && (
+                      <div className="flex items-center justify-between mt-4 mb-2 mx-2">
+                        <div className=" text-text-3 dark:text-text-3-dark text-sm">
+                          Total:{' '}
+                          {parseFloat(
+                            formatEther(tokenInfo.totalSupply as BigNumberish),
+                          ).toFixed(2)}{' '}
+                          {tokenInfo.symbol}
+                        </div>
+                        <div className=" text-text-3 dark:text-text-3-dark text-sm ml-auto">
+                          Balance:{' '}
+                          {parseFloat(formatEther(sharesBalance)).toFixed(2)}{' '}
+                          {tokenInfo.symbol}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="mt-4 mx-4 flex justify-between">
@@ -92,7 +118,7 @@ export default function WithdrawModal({
                   <button
                     type="button"
                     className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] bg-primary text-white px-3 md:px-6 py-2 rounded-lg hover:opacity-90"
-                    onClick={invest}
+                    onClick={withdraw}
                   >
                     Confirm
                   </button>

@@ -31,10 +31,10 @@ export const useInvest = (fundAddr: string) => {
       try {
         if (isWrongNetwork) throw new Error('Wrong Network');
         if (!investor) throw new Error('Undefined wallet');
+        if (amount <= 0) throw new Error('Amount should be greater than 0');
         setLoading(true);
 
         const accessorAddr = await getAccessorAddr(fundAddr);
-        console.log(accessorAddr, loading);
 
         if (!accessorAddr) throw new Error('Not found fund');
         const assetAddr = await getDenominationAssetAddr(accessorAddr);
@@ -50,11 +50,16 @@ export const useInvest = (fundAddr: string) => {
         await receipt.wait();
 
         const comptrollerLabContract = getComptrollerLibContract(accessorAddr);
-        if (amount <= 0) throw new Error('Amount should be greater than 0');
-        await comptrollerLabContract?.buyShares(
+        if (!comptrollerLabContract) throw new Error('Not found Fund');
+        const buySharesTx = await comptrollerLabContract.buyShares(
           [investor],
           [parseEther(String(amount))],
           [1],
+        );
+        await buySharesTx.wait();
+        utils.notification.success(
+          'Success',
+          'You got some shares. Please check your wallet.',
         );
       } catch (error: any) {
         console.log(error);

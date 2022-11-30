@@ -17,10 +17,12 @@ import { useEthers } from '@usedapp/core';
 import InvestModal from './components/InvestModal';
 import utils from '../../../helpers/utils';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { getTokenInfo } from '../../../helpers/utils/utils';
 import WithdrawMOdal from './components/WithdrawModal';
+import { setPageLoading } from '../../../store/reducers/pageLoadingSlice';
+import { useWithdraw } from '../../../hooks/useWithdraw';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -49,21 +51,48 @@ const FundDetail = () => {
   };
   useOutsideHandler(targetDom, handleStep);
 
-  const { investFundDenomination, loading, disabled } = useInvest(
-    fundAddress as string,
-  );
+  const {
+    investFundDenomination,
+    loading: investLoading,
+    disabled: investDisabled,
+  } = useInvest(fundAddress as string);
+
+  const {
+    redeemSharesDetailed,
+    loading: withdrawLoading,
+    disabled: withdrawDisabled,
+  } = useWithdraw(fundAddress as string);
+
+  // Page loading
+  const dispatch = useDispatch();
+  dispatch(setPageLoading(investLoading || withdrawLoading));
+
   const openActionModal = (step: number) => {
-    if (disabled) {
-      utils.notification.danger('Error', 'Please connect wallet first');
+    if (investDisabled || withdrawDisabled) {
+      utils.notification.warning('Error', 'Please connect wallet first');
       return;
     }
     setIsOpenActionModal(step);
   };
 
   const onInvest = async (amount: number) => {
-    setIsOpenActionModal(0);
+    if (amount <= 0) {
+      utils.notification.warning('Error', 'Amount should be greater than 0');
+      return;
+    }
     await investFundDenomination(account, amount);
+    setIsOpenActionModal(0);
   };
+
+  const onWithdraw = async (amount: number) => {
+    if (amount <= 0) {
+      utils.notification.warning('Error', 'Amount should be greater than 0');
+      return;
+    }
+    await redeemSharesDetailed(amount);
+    setIsOpenActionModal(0);
+  };
+
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
       {denominationAsset && (
@@ -74,12 +103,12 @@ const FundDetail = () => {
           token={denominationAsset}
         />
       )}
-      {denominationAsset && (
+      {fundAddress && (
         <WithdrawMOdal
           isOpen={isOpenActionModal === 2}
           onCancel={() => setIsOpenActionModal(0)}
-          onConfirm={(amount: number) => onInvest(amount)}
-          token={denominationAsset}
+          onConfirm={(amount: number) => onWithdraw(amount)}
+          fundAddress={fundAddress}
         />
       )}
       {/* ---------- Mobile only ------------ */}
