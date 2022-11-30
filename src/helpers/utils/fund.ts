@@ -96,6 +96,7 @@ export const formatFundData = (fund: any): Promise<FundData> =>
       maxInvestment: 0,
       denominationAsset: '',
       startTimestamp: 0,
+      holdings: [],
     };
     try {
       result.id = fund.id;
@@ -124,6 +125,13 @@ export const formatFundData = (fund: any): Promise<FundData> =>
             getTokenInfo(fund.portfolio.holdings[i].asset.symbol)?.coingeckoId,
             Date.now(),
           );
+
+          result.holdings.push({
+            symbol: fund.portfolio.holdings[i].asset.symbol,
+            aum: amount * price,
+            amount: amount,
+          });
+
           if (amount * price > topAssetAUM) {
             topAssetAUM = amount * price;
             topAsset = fund.portfolio.holdings[i].asset.symbol;
