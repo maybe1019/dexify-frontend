@@ -5,6 +5,7 @@ import { ReactComponent as TwitterIcon } from '../../../../../assets/images/svg/
 import DatePeriodDropDown from '../../../../../components/DatePeriodDropDown';
 import { getAumHistoryOf } from '../../../../../helpers/utils/fund';
 import { formatFloatFixed } from '../../../../../helpers/utils/utils';
+import { ComponentSpinner } from '../../../../../components/Spinner';
 
 type AUMChartProps = {
   fund: FundData;
@@ -13,19 +14,22 @@ type AUMChartProps = {
 const AUMChart = ({ fund }: AUMChartProps) => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [risePercentage, setRisePercentage] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     onChangePeriod(7);
   }, []);
 
   const onChangePeriod = async (days: number) => {
+    setLoading(true);
     const aumHistory = await getAumHistoryOf(fund, days);
     setChartData(aumHistory);
     setRisePercentage((fund.aum / aumHistory[0].value) * 100 - 100);
+    setLoading(false);
   };
 
   return (
-    <div className="card overflow-hidden py-7">
+    <div className="card overflow-hidden py-7 relative">
       <div className="flex justify-between items-center mx-10">
         <div className="flex items-center mt-1">
           <img
@@ -63,7 +67,8 @@ const AUMChart = ({ fund }: AUMChartProps) => {
           </span>
         </span>
       </div>
-      <div className="flex-grow text-xs transition-none h-52 md:h-[375px] mr-3">
+      <div className="relative flex-grow text-xs transition-none h-52 md:h-[375px] pr-3 pt-3">
+        {loading && <ComponentSpinner />}
         <FundChart xAxis={true} yAxis={true} data={chartData} />
       </div>
     </div>
