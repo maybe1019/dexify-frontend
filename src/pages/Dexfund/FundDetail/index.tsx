@@ -62,7 +62,7 @@ const FundDetail = () => {
 
   const onInvest = async (amount: number) => {
     setIsOpenInvestModal(false);
-    const a = await investFundDenomination(account, amount);
+    await investFundDenomination(account, amount);
   };
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
