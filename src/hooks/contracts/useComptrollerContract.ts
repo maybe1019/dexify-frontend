@@ -1,10 +1,7 @@
-import { useCallback, useState } from 'react';
-import { useVaultLibContract } from './useVaultLibContract';
-import utils from '../../helpers/utils';
+import { useCallback } from 'react';
 import { useEthers } from '@usedapp/core';
 import { ethers } from 'ethers';
 import { ComptrollerLib__factory } from '../../types';
-import { useCheckNetwork } from './useCheckNetwork';
 
 export const useComptrollerLib = () => {
   const { library } = useEthers();
