@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import LazyLoadingSpinner from './components/LazyLoadingSpinner';
 import utils from './helpers/utils';
 import api from './api';
+import { setThemeMode } from './store/reducers/themeModeSlice';
+import { PageSpinner } from './components/Spinner';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -19,24 +21,27 @@ const FundDetail = React.lazy(() => import('./pages/Dexfund/FundDetail'));
 
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
+  const pageLoading = useAppSelector((state) => state.pageLoading.value);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     initFundData();
+
+    const theme = localStorage.getItem('dexify-finance-theme');
+    if (theme !== null) {
+      dispatch(setThemeMode(theme));
+    }
   }, []);
 
   const initFundData = async () => {
     await api.token.initPricesLast7D();
 
     const funds = await utils.graphql.getFunds();
-    console.log(funds);
-    const tmpData: any[] = [];
-    for (let i = 0; i < funds.length; i++) {
-      const fundData = await utils.fund.formatFundData(funds[i]);
-      tmpData.push(fundData);
-    }
+    const tmpData: any[] = await Promise.all(
+      funds.map((fund) => utils.fund.formatFundData(fund)),
+    );
     dispatch(setAllFunds(tmpData));
     console.log(tmpData);
     setLoading(false);
@@ -68,6 +73,7 @@ function App() {
           </Layout>
         )}
       </div>
+      {pageLoading && <PageSpinner />}
     </div>
   );
 }

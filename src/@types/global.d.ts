@@ -17,6 +17,12 @@ type Token = {
   coingeckoId: string;
 };
 
+type HoldingToken = {
+  symbol: string;
+  aum: number;
+  amount: number;
+};
+
 type FundData = {
   id: string;
   name: string;
@@ -34,4 +40,5 @@ type FundData = {
   risk: number;
   denominationAsset: string;
   startTimestamp: number;
+  holdings: HoldingToken[];
 };

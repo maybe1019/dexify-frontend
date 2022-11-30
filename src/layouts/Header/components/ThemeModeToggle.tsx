@@ -25,6 +25,8 @@ const ThemeModeToggle = () => {
         scrollColors[key],
       );
     }
+
+    localStorage.setItem('dexify-finance-theme', themeMode);
   }, [themeMode]);
 
   return (
