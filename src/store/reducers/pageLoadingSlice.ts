@@ -1,26 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // Define the initial state using that type
-const initialState: { value: string } = {
-  value: 'dark',
+const initialState: { value: boolean } = {
+  value: false,
 };
 
-export const themeModeSlice = createSlice({
+export const pageLoadingSlice = createSlice({
   name: 'themeMode',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    toggleThemeMode: (state) => {
-      state.value = state.value === 'dark' ? 'light' : 'dark';
+    togglePageLoading: (state) => {
+      state.value = !state.value;
     },
-    setThemeMode: (state, action) => {
+    setPageLoading: (state, action) => {
       state.value = action.payload;
       return state;
     },
   },
 });
 
-export const { toggleThemeMode, setThemeMode } = themeModeSlice.actions;
+export const { togglePageLoading, setPageLoading } = pageLoadingSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export default themeModeSlice.reducer;
+export default pageLoadingSlice.reducer;
