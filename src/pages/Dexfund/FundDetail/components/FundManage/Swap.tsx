@@ -4,8 +4,8 @@ import tokenLists from '../../../../../config/tokenlists.json';
 import TokenListDropdown from './TokenListDropdown';
 
 function Swap() {
-  const [swapToken, setSwapToken] = useState<Token>(tokenLists.tokens[0]);
-  const [receiveToken, setReceiveToken] = useState<Token>(tokenLists.tokens[1]);
+  const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
+  const [receiveToken, setReceiveToken] = useState<Token>(tokenLists[1]);
 
   const swapFromandToTokens = () => {
     const tmpS = { ...swapToken };
@@ -28,7 +28,7 @@ function Swap() {
               />
 
               <TokenListDropdown
-                tokenList={tokenLists.tokens}
+                tokenList={tokenLists}
                 token={swapToken}
                 setToken={setSwapToken}
               ></TokenListDropdown>
@@ -44,7 +44,10 @@ function Swap() {
           </div>
           <div className="grid grid-cols-4 text-xs gap-2">
             {['25%', '50%', '75%', 'MAX'].map((value) => (
-              <button className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white">
+              <button
+                key={value}
+                className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"
+              >
                 {value}
               </button>
             ))}
@@ -66,7 +69,7 @@ function Swap() {
               </div>
 
               <TokenListDropdown
-                tokenList={tokenLists.tokens}
+                tokenList={tokenLists}
                 token={receiveToken}
                 setToken={setReceiveToken}
               ></TokenListDropdown>

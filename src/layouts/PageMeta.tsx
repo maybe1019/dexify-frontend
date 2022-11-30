@@ -15,7 +15,6 @@ function PageMeta({
   title,
   isAlert = false,
 }: Props) {
-  console.log(title);
   return (
     <Helmet>
       <title>{title ?? metadata[pageName].title}</title>

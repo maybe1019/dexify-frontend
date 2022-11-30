@@ -1,53 +1,27 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import React, { useState } from 'react';
-import DataTable from '../../components/DataTable';
 import UserDexfund from '../../components/UserDexfund';
-
-import untypedDexifyData from './data/dexifyData.json';
-import untypedFields from './data/fields.json';
+import AllFundsTable from './components/AllFundsTable';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const Dexfund = () => {
-  const [filteredData, setFilteredData] = useState<any[]>(untypedDexifyData);
-
-  const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchBy: string = e.target.value;
-    const tmp: any[] = untypedDexifyData.filter(
-      (d) =>
-        d.dexfund.toLowerCase().includes(searchBy) ||
-        d.manager.toLowerCase().includes(searchBy),
-    );
-    setFilteredData(tmp);
-  };
+  const allFunds = useSelector((state: RootState) => state.allFunds.value);
 
   return (
     <div>
       <h1 className="text-[22px] font-[500] mb-5">Top Dexfunds</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        {Array(6)
-          .fill(1)
-          .map((item, i) => (
-            <div key={i}>
-              <UserDexfund />
-            </div>
-          ))}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+        {allFunds.length > 0 &&
+          allFunds
+            .map((f) => f)
+            .sort((a, b) => b.aum - a.aum)
+            .slice(0, 6)
+            .map((item, i) => (
+              <div key={i}>
+                <UserDexfund dexfund={item} />
+              </div>
+            ))}
       </div>
-      <h1 className="text-[22px] font-[500] mt-12">Browse Dexify</h1>
-      <div className="w-full relative bg-bg-2 dark:bg-bg-2-dark rounded-lg my-8 md:w-[300px]">
-        <input
-          type="text"
-          className="bg-transparent outline-none py-4 pl-12 pr-4 w-full"
-          onChange={onChangeSearchValue}
-        />
-        <MagnifyingGlassIcon width={24} className="absolute left-4 top-4" />
-      </div>
-      <div className="card">
-        <DataTable
-          data={filteredData}
-          fields={untypedFields}
-          pagination={true}
-          minWidth={950}
-        />
-      </div>
+      <AllFundsTable />
     </div>
   );
 };

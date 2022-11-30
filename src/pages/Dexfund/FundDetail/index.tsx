@@ -1,18 +1,20 @@
 import React, { useState, createRef } from 'react';
-import { useParams } from 'react-router-dom';
-import AUMChart from './components/AUMChart/AUMChart';
-import AssetsInfo from './components/AssetsInfo/AssetsInfo';
 import FundInfo from './components/FundInfo';
-import Tweets from './components/Tweets/Tweets';
 import { Disclosure, Tab } from '@headlessui/react';
 import './index.css';
 import Bio from './components/FundInfo/Bio';
 import Fees from './components/FundInfo/Fees';
 import TotalHistory from './components/FundInfo/TotalHistory';
-import { useOutsideHandler } from '../../../helpers/hooks/useOutsideHandler';
 import Swap from './components/FundManage/Swap';
 import PriceChart from './components/FundManage/PriceChart';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
+import AssetsInfo from './components/AssetsInfo';
+import Tweets from './components/Tweets';
+import AUMChart from './components/AUMChart';
+import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -23,9 +25,11 @@ const fundInfoTabList = ['Bio', 'Fees', 'History'];
 const FundDetail = () => {
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
-  const { fundAddress } = useParams();
-  console.log(fundAddress);
   const targetDom = createRef<HTMLDivElement>();
+
+  const allFunds = useSelector((state: RootState) => state.allFunds.value);
+  const { fundAddress } = useParams();
+  const fund = allFunds.find((value) => value.id === fundAddress);
 
   const handleStep = (e?: any) => {
     if (e) {
@@ -35,6 +39,10 @@ const FundDetail = () => {
     setFundInfoStep('');
   };
   useOutsideHandler(targetDom, handleStep);
+
+  const onInvest = async () => {
+    // const a = await investFundDenomination(account, 1000);
+  };
 
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
@@ -130,10 +138,13 @@ const FundDetail = () => {
         </div>
         {/* ---------- Mobile only ------------ */}
 
-        <AUMChart />
+        <AUMChart fund={fund as FundData} />
         <AssetsInfo />
         <div className="mx-auto">
-          <button className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] text-primary bg-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90 mr-6">
+          <button
+            onClick={() => onInvest()}
+            className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] text-primary bg-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90 mr-6"
+          >
             Invest
           </button>
           <button className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] bg-primary text-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90">
