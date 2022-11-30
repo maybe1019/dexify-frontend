@@ -13,10 +13,14 @@ export const themeModeSlice = createSlice({
     toggleThemeMode: (state) => {
       state.value = state.value === 'dark' ? 'light' : 'dark';
     },
+    setThemeMode: (state, action) => {
+      state.value = action.payload;
+      return state;
+    },
   },
 });
 
-export const { toggleThemeMode } = themeModeSlice.actions;
+export const { toggleThemeMode, setThemeMode } = themeModeSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export default themeModeSlice.reducer;

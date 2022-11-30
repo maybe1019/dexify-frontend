@@ -49,6 +49,7 @@ export const getTokenPriceHistory = (
   new Promise(async (resolve) => {
     try {
       if (from >= Date.now() - 7 * miliseconds['1d'] && isHistoryLoaded) {
+        console.log('abcde');
         resolve(coinPricesLast7D);
       }
 
@@ -64,13 +65,13 @@ export const getTokenPriceHistory = (
       const prices: Record<string, Record<string, number>[]> = {};
       Object.keys(res.data).forEach((key: string) => {
         prices[key] = [];
-        for (let i = 0; i < res.data[key].length; i++) {
+        for (let i = res.data[key].length - 1; i >= 0; i--) {
           if (res.data[key][i].price === null) {
             continue;
           }
           prices[key].push({
-            timestamp: res.data[key][i].timeStamp,
-            price: res.data[key][i].price,
+            timestamp: parseFloat(res.data[key][i].timeStamp),
+            price: parseFloat(res.data[key][i].price),
           });
         }
         if (prices[key].length === 0) {

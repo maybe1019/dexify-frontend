@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import LazyLoadingSpinner from './components/LazyLoadingSpinner';
 import utils from './helpers/utils';
 import api from './api';
+import { setThemeMode } from './store/reducers/themeModeSlice';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -25,6 +26,12 @@ function App() {
 
   useEffect(() => {
     initFundData();
+
+    const theme = localStorage.getItem('dexify-finance-theme');
+    console.log('abc', theme);
+    if (theme !== null) {
+      dispatch(setThemeMode(theme));
+    }
   }, []);
 
   const initFundData = async () => {
