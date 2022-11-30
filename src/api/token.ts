@@ -49,7 +49,6 @@ export const getTokenPriceHistory = (
   new Promise(async (resolve) => {
     try {
       if (from >= Date.now() - 7 * miliseconds['1d'] && isHistoryLoaded) {
-        console.log('abcde');
         resolve(coinPricesLast7D);
       }
 
