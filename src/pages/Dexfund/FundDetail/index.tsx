@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { getTokenInfo } from '../../../helpers/utils/utils';
+import WithdrawMOdal from './components/WithdrawModal';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -33,7 +34,7 @@ const FundDetail = () => {
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
   const targetDom = createRef<HTMLDivElement>();
-  const [isOpenInvestModal, setIsOpenInvestModal] = useState(false);
+  const [isOpenActionModal, setIsOpenActionModal] = useState<number>(0); // closed: 0, invest:1, withdraw:2
 
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
   const fund = allFunds.find((value) => value.id === fundAddress);
@@ -48,28 +49,35 @@ const FundDetail = () => {
   };
   useOutsideHandler(targetDom, handleStep);
 
-  const openInvestModal = () => {
-    if (!account) {
-      utils.notification.danger('Error', 'Please connect wallet first');
-      return;
-    }
-    setIsOpenInvestModal(true);
-  };
-
   const { investFundDenomination, loading, disabled } = useInvest(
     fundAddress as string,
   );
+  const openActionModal = (step: number) => {
+    if (disabled) {
+      utils.notification.danger('Error', 'Please connect wallet first');
+      return;
+    }
+    setIsOpenActionModal(step);
+  };
 
   const onInvest = async (amount: number) => {
-    setIsOpenInvestModal(false);
+    setIsOpenActionModal(0);
     await investFundDenomination(account, amount);
   };
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
       {denominationAsset && (
         <InvestModal
-          isOpen={isOpenInvestModal}
-          onCancel={() => setIsOpenInvestModal(false)}
+          isOpen={isOpenActionModal === 1}
+          onCancel={() => setIsOpenActionModal(0)}
+          onConfirm={(amount: number) => onInvest(amount)}
+          token={denominationAsset}
+        />
+      )}
+      {denominationAsset && (
+        <WithdrawMOdal
+          isOpen={isOpenActionModal === 2}
+          onCancel={() => setIsOpenActionModal(0)}
           onConfirm={(amount: number) => onInvest(amount)}
           token={denominationAsset}
         />
@@ -170,12 +178,15 @@ const FundDetail = () => {
         <AssetsInfo />
         <div className="mx-auto">
           <button
-            onClick={openInvestModal}
+            onClick={() => openActionModal(1)}
             className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] text-primary bg-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90 mr-6"
           >
             Invest
           </button>
-          <button className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] bg-primary text-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90">
+          <button
+            onClick={() => openActionModal(2)}
+            className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] bg-primary text-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90"
+          >
             Withdraw
           </button>
         </div>

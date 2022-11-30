@@ -11,7 +11,7 @@ type Props = {
   token: Token;
 };
 
-export default function InvestModal({
+export default function WithdrawModal({
   isOpen,
   onCancel,
   onConfirm,
@@ -67,7 +67,7 @@ export default function InvestModal({
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Invest for shares
+                  Withdraw my shares
                 </Dialog.Title>
                 <div className="mt-8 w-full bg-[#8881] p-6 rounded-2xl shadow-lg">
                   <div
@@ -75,66 +75,12 @@ export default function InvestModal({
                     aria-expanded="true"
                     aria-haspopup="true"
                   >
-                    <div className="flex gap-2 mx-2 items-center">
-                      <input
-                        type="number"
-                        value={investAmount}
-                        min={0}
-                        onChange={(e: any) => {
-                          if (e.target.value === '') {
-                            setInvestAmount(0);
-                            return;
-                          }
-                          if (investAmount === 0) {
-                            setInvestAmount(e.target.value.replace('0', ''));
-                            return;
-                          }
-                          setInvestAmount(e.target.value);
-                        }}
-                        className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
-                        placeholder="Input Amount"
-                      />
+                    <div className="flex gap-2 mx-2 items-center justify-between">
+                      <p>10</p>
                       <p>{token.symbol}</p>
                     </div>
                   </div>
-                  {denominationAssetBalance && (
-                    <div className="flex items-center justify-between mt-4 mb-2 mx-2">
-                      <div className=" text-text-3 dark:text-text-3-dark text-sm">
-                        = ${(bnbPrice * investAmount).toFixed(2)}
-                      </div>
-                      <div className=" text-text-3 dark:text-text-3-dark text-sm ml-auto">
-                        Balance:{' '}
-                        {parseFloat(
-                          formatEther(denominationAssetBalance),
-                        ).toFixed(2)}{' '}
-                        {token.symbol}
-                      </div>
-                    </div>
-                  )}
-                  <div className="grid grid-cols-4 text-xs gap-2">
-                    {['25%', '50%', '75%', 'MAX'].map((value, i) => (
-                      <button
-                        key={i + 1}
-                        index-data={i + 1}
-                        onClick={(e: any) => {
-                          if (denominationAssetBalance) {
-                            const val =
-                              (e.target.attributes[0].value *
-                                parseFloat(
-                                  formatEther(denominationAssetBalance),
-                                )) /
-                              4;
-                            setInvestAmount(val);
-                          }
-                        }}
-                        className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"
-                      >
-                        {value}
-                      </button>
-                    ))}
-                  </div>
                 </div>
-
                 <div className="mt-4 mx-4 flex justify-between">
                   <button
                     type="button"
