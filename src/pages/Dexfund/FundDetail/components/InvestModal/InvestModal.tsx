@@ -37,7 +37,9 @@ export default function InvestModal({
       <Dialog
         as="div"
         className="card shadow-xl rounded-2xl py-6 px-4 lg:px-6 relative z-10"
-        onClose={onCancel}
+        onClose={() => {
+          return;
+        }}
       >
         <Transition.Child
           as={Fragment}

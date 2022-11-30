@@ -30,7 +30,9 @@ export default function WithdrawModal({
       <Dialog
         as="div"
         className="card shadow-xl rounded-2xl py-6 px-4 lg:px-6 relative z-10"
-        onClose={onCancel}
+        onClose={() => {
+          return;
+        }}
       >
         <Transition.Child
           as={Fragment}
@@ -105,6 +107,26 @@ export default function WithdrawModal({
                         </div>
                       </div>
                     )}
+                    <div className="grid grid-cols-4 text-xs gap-2">
+                      {['25%', '50%', '75%', 'MAX'].map((value, i) => (
+                        <button
+                          key={i + 1}
+                          index-data={i + 1}
+                          onClick={(e: any) => {
+                            if (sharesBalance) {
+                              const val =
+                                (e.target.attributes[0].value *
+                                  parseFloat(formatEther(sharesBalance))) /
+                                4;
+                              setWithdrawAmount(val);
+                            }
+                          }}
+                          className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"
+                        >
+                          {value}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <div className="mt-4 mx-4 flex justify-between">
