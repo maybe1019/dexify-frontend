@@ -12,14 +12,14 @@ import AssetsInfo from './components/AssetsInfo';
 import Tweets from './components/Tweets';
 import AUMChart from './components/AUMChart';
 import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
-import { useInvest } from '../../../hooks/contracts/useComptrollerContract';
+import { useInvest } from '../../../hooks/useInvest';
 import { useEthers } from '@usedapp/core';
 import InvestModal from './components/InvestModal';
-import { InvestableTokenType } from '../../../helpers/enums';
 import utils from '../../../helpers/utils';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { getTokenInfo } from '../../../helpers/utils/utils';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -37,6 +37,7 @@ const FundDetail = () => {
 
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
   const fund = allFunds.find((value) => value.id === fundAddress);
+  const denominationAsset = fund && getTokenInfo(fund?.denominationAsset);
 
   const handleStep = (e?: any) => {
     if (e) {
@@ -65,12 +66,14 @@ const FundDetail = () => {
   };
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
-      <InvestModal
-        isOpen={isOpenInvestModal}
-        onCancel={() => setIsOpenInvestModal(false)}
-        onConfirm={(amount: number) => onInvest(amount)}
-        tokenType={InvestableTokenType.BNB}
-      />
+      {denominationAsset && (
+        <InvestModal
+          isOpen={isOpenInvestModal}
+          onCancel={() => setIsOpenInvestModal(false)}
+          onConfirm={(amount: number) => onInvest(amount)}
+          token={denominationAsset}
+        />
+      )}
       {/* ---------- Mobile only ------------ */}
       <div className="w-full absolute z-20 lg:hidden top-0 sm:top-[-50px]">
         <div className="">

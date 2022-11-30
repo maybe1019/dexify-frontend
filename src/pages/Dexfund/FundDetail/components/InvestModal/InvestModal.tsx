@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { useEtherBalance, useEthers } from '@usedapp/core';
+import { useEtherBalance, useEthers, useTokenBalance } from '@usedapp/core';
 import { Fragment, useEffect, useState } from 'react';
-import { InvestableTokenType } from '../../../../../helpers/enums';
 import { formatEther } from '@ethersproject/units';
 import api from '../../../../../api';
 
@@ -9,29 +8,29 @@ type Props = {
   isOpen: boolean;
   onCancel(): void;
   onConfirm(amount: number): any;
-  tokenType: InvestableTokenType;
+  token: Token;
 };
 
 export default function InvestModal({
   isOpen,
   onCancel,
   onConfirm,
-  tokenType,
+  token,
 }: Props) {
   const [investAmount, setInvestAmount] = useState(0);
   const { account } = useEthers();
-  const bnbBalance = useEtherBalance(account);
+  const denominationAssetBalance = useTokenBalance(token.address, account);
   const invest = () => {
     onConfirm(investAmount);
   };
-  const [bnbPrice, setBNBPrice] = useState<number>(0);
+  const [bnbPrice, setBNBPrice] = useState<number>(1);
   const getBNBPrice = async () => {
     const bnbPrice = await api.token.getTokenPrice('binancecoin');
     setBNBPrice(bnbPrice);
   };
   useEffect(() => {
-    getBNBPrice();
-  }, []);
+    if (token.symbol === 'WBNB') getBNBPrice();
+  }, [token]);
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -95,18 +94,20 @@ export default function InvestModal({
                         className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
                         placeholder="Input Amount"
                       />
-                      <p>{tokenType}</p>
+                      <p>{token.symbol}</p>
                     </div>
                   </div>
-                  {bnbBalance && (
+                  {denominationAssetBalance && (
                     <div className="flex items-center justify-between mt-4 mb-2 mx-2">
                       <div className=" text-text-3 dark:text-text-3-dark text-sm">
                         = ${(bnbPrice * investAmount).toFixed(2)}
                       </div>
                       <div className=" text-text-3 dark:text-text-3-dark text-sm ml-auto">
                         Balance:{' '}
-                        {parseFloat(formatEther(bnbBalance)).toFixed(2)}{' '}
-                        {tokenType}
+                        {parseFloat(
+                          formatEther(denominationAssetBalance),
+                        ).toFixed(2)}{' '}
+                        {token.symbol}
                       </div>
                     </div>
                   )}
@@ -116,10 +117,12 @@ export default function InvestModal({
                         key={i + 1}
                         index-data={i + 1}
                         onClick={(e: any) => {
-                          if (bnbBalance) {
+                          if (denominationAssetBalance) {
                             const val =
                               (e.target.attributes[0].value *
-                                parseFloat(formatEther(bnbBalance))) /
+                                parseFloat(
+                                  formatEther(denominationAssetBalance),
+                                )) /
                               4;
                             setInvestAmount(val);
                           }
