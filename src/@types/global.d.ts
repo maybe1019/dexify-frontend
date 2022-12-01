@@ -42,3 +42,8 @@ type FundData = {
   startTimestamp: number;
   holdings: HoldingToken[];
 };
+
+type AccountState = {
+  value: User;
+  status: ThunkStatus;
+};

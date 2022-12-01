@@ -10,3 +10,9 @@ export enum PageName {
   PORTFOLIO = 'portfolio',
   MANAGE = 'manage',
 }
+
+export enum ThunkStatus {
+  READY = 'ready',
+  IDLE = 'idle',
+  PENDING = 'pending',
+}

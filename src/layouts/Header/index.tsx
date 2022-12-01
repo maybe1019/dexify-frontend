@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import { useAppDispatch } from '../../store';
 import {
   getMyAccount,
-  setMyAccountAsDevault,
+  setMyAccountAsDefault,
 } from '../../store/reducers/myAccountSlice';
 import ThemeModeToggle from './components/ThemeModeToggle';
 import ProfileDropdown from './components/ProfileDropdown';
@@ -26,7 +26,7 @@ const Header = (): JSX.Element => {
     if (account) {
       initAccount();
     } else {
-      dispatch(setMyAccountAsDevault());
+      dispatch(setMyAccountAsDefault());
     }
   }, [account]); //eslint-disable-line
 
