@@ -5,19 +5,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialogModal from '../../components/ConfirmDialogModal';
-import { DialogType } from '../../helpers/enums';
+import { DialogType, ThunkStatus } from '../../helpers/enums';
 import { RootState, useAppDispatch } from '../../store';
 import { createOrUpdateMyAccount } from '../../store/reducers/myAccountSlice';
+import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
 
 const Account = () => {
-  const myAccount = useSelector((state: RootState) => state.myAccount.value);
+  const myAccountState = useSelector((state: RootState) => state.myAccount);
   const { account, library } = useEthers();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  // page loading
+  dispatch(setPageLoading(myAccountState.status === ThunkStatus.PENDING));
 
   const imageFileRef = useRef<HTMLInputElement | null>(null);
 
-  const [newAccount, setNewAccount] = useState<User>(myAccount);
+  const [newAccount, setNewAccount] = useState<User>(myAccountState.value);
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -82,17 +85,14 @@ const Account = () => {
       return;
     }
 
-    try {
-      dispatch(
-        createOrUpdateMyAccount({
-          library: library as ethers.providers.JsonRpcProvider,
-          file: imageFile,
-          newAccount,
-        }),
-      );
-    } catch (error) {
-      setIsDialogOpen(false);
-    }
+    dispatch(
+      createOrUpdateMyAccount({
+        library: library as ethers.providers.JsonRpcProvider,
+        file: imageFile,
+        newAccount,
+      }),
+    );
+    setIsDialogOpen(false);
   };
 
   return (
@@ -188,12 +188,14 @@ const Account = () => {
         className="p-3 w-full bg-primary rounded-lg text-white hover:opacity-90"
         onClick={() => setIsDialogOpen(true)}
       >
-        {myAccount.id ? 'Update Account' : 'Create Account'}
+        {myAccountState.value.id ? 'Update Account' : 'Create Account'}
       </button>
       <ConfirmDialogModal
         isOpen={isDialogOpen}
         dialogType={
-          myAccount.id ? DialogType.UPDATE_ACCOUNT : DialogType.CREATE_ACCOUNT
+          myAccountState.value.id
+            ? DialogType.UPDATE_ACCOUNT
+            : DialogType.CREATE_ACCOUNT
         }
         onCancel={() => setIsDialogOpen(false)}
         onConfirm={handleUpdate}
