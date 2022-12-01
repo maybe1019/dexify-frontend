@@ -5,7 +5,7 @@
     "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png",
-    "coingeckoId": "binancecoin"
+    "coingeckoId": "wbnb"
   },
   {
     "name": "BNB",
@@ -13,7 +13,7 @@
     "address": "",
     "decimals": 18,
     "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
-    "coingeckoId": "binancecoin"
+    "coingeckoId": "wbnb"
   },
   {
     "name": "BUSD Token",

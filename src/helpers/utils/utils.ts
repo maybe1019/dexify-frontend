@@ -63,7 +63,7 @@ export const getTokenPriceAt = (
       }
     }
   } catch (error) {
-    console.log('getTokenPriceAt: ', error);
+    console.error('getTokenPriceAt: ', error);
   }
   return 0;
 };
