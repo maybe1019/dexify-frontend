@@ -77,6 +77,7 @@ export const getTokenPriceHistory = (
           prices[key] = coinPricesLast7D[key];
         }
       });
+      console.log(prices);
       resolve(prices);
     } catch (error) {
       console.log('getTokenPriceHistory: ', error);

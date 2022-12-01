@@ -1,3 +1,4 @@
+import utils from '.';
 import {
   getCoinPriceHistoryLast7D,
   getTokenPriceHistory,
@@ -22,39 +23,24 @@ const getHoldingsFromStatesAt = (states: any[], timestamp: number): any[] => {
   }
 
   timestamp /= 1000;
-  if (timestamp > parseInt(states[0].end)) {
-    return states[0].last.portfolio.holdings as any[];
-  }
-
-  if (timestamp < parseInt(states[states.length - 1].start)) {
-    return states[states.length - 1].first.portfolio.holdings as any[];
+  const length = states.length;
+  if (timestamp < parseInt(states[length - 1].start)) {
+    return states[length - 1].first.portfolio.holdings as any[];
   }
 
   let i = 0;
-  for (i = 0; i < states.length; i++) {
+  for (i = 0; i < length; i++) {
     const start = parseInt(states[i].start);
     const end = parseInt(states[i].end);
-    if (timestamp >= start && timestamp <= end) {
-      if (timestamp - start < end - timestamp) {
-        return states[i].first.portfolio.holdings as any[];
-      }
+    if (timestamp >= end) {
       return states[i].last.portfolio.holdings as any[];
     }
-
-    if (i + 1 === states.length) {
-      continue;
-    }
-
-    const endPrev = parseInt(states[i + 1].end);
-    if (timestamp >= end && timestamp <= start) {
-      if (start - timestamp < timestamp - endPrev) {
-        return states[i + 1].last.portfolio.holdings as any[];
-      }
+    if (timestamp >= start) {
       return states[i].first.portfolio.holdings as any[];
     }
   }
 
-  return states[states.length - 1].first.portfolio.holdings as any[];
+  return states[length - 1].first.portfolio.holdings as any[];
 };
 
 const calcAUMfromHoldings = (
@@ -195,7 +181,7 @@ export const formatFundData = (fund: any): Promise<FundData> =>
 
       resolve(result);
     } catch (error) {
-      console.log('formatFundData: ', error);
+      console.error('formatFundData: ', error);
       resolve(result);
     }
   });
@@ -204,7 +190,7 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
   new Promise<any[]>(async (resolve) => {
     try {
       let states: any[] = [];
-      const unitDay = 24 * 60 * 60 * 1000;
+      const unitDay = utils.utils.miliseconds['1d'];
       let limit = 0;
       let unit = unitDay;
 
@@ -251,7 +237,7 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
 
       resolve(aumHistory);
     } catch (error) {
-      console.log('getAumHistoryOf: ', error);
+      console.error('getAumHistoryOf: ', error);
       resolve([]);
     }
   });
