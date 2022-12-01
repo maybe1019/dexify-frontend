@@ -10,7 +10,7 @@
   {
     "name": "aum",
     "title": "AUM",
-    "prefix": "",
+    "prefix": "$",
     "suffix": "",
     "type": "number",
     "colorful": false
@@ -18,7 +18,7 @@
   {
     "name": "price",
     "title": "Price",
-    "prefix": "",
+    "prefix": "$",
     "suffix": "",
     "type": "number",
     "colorful": false
@@ -28,7 +28,7 @@
     "title": "Daily%",
     "prefix": "",
     "suffix": "%",
-    "type": "number",
+    "type": "string",
     "colorful": false
   },
   {

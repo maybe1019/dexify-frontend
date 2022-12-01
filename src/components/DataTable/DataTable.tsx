@@ -50,7 +50,7 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
     <div className="p-2">
       <div className="pb-6 overflow-x-auto overflow-y-hidden text-sm">
         <table
-          className={`w-full border-collapse`}
+          className={`w-full border-collapse overflow-hidden`}
           style={{ minWidth: `${minWidth}px` }}
         >
           <thead>
