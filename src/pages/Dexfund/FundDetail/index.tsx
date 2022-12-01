@@ -12,9 +12,17 @@ import AssetsInfo from './components/AssetsInfo';
 import Tweets from './components/Tweets';
 import AUMChart from './components/AUMChart';
 import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
+import { useInvest } from '../../../hooks/useInvest';
+import { useEthers } from '@usedapp/core';
+import InvestModal from './components/InvestModal';
+import utils from '../../../helpers/utils';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { getTokenInfo } from '../../../helpers/utils/utils';
+import WithdrawMOdal from './components/WithdrawModal';
+import { setPageLoading } from '../../../store/reducers/pageLoadingSlice';
+import { useWithdraw } from '../../../hooks/useWithdraw';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -23,13 +31,16 @@ function classNames(...classes: string[]) {
 const fundInfoTabList = ['Bio', 'Fees', 'History'];
 
 const FundDetail = () => {
+  const { account } = useEthers();
+  const { fundAddress } = useParams();
   const [fundInfoStep, setFundInfoStep] = useState('');
   const [manageStep, setManageStep] = useState(false);
   const targetDom = createRef<HTMLDivElement>();
+  const [isOpenActionModal, setIsOpenActionModal] = useState<number>(0); // closed: 0, invest:1, withdraw:2
 
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
-  const { fundAddress } = useParams();
   const fund = allFunds.find((value) => value.id === fundAddress);
+  const denominationAsset = fund && getTokenInfo(fund?.denominationAsset);
 
   const handleStep = (e?: any) => {
     if (e) {
@@ -40,12 +51,66 @@ const FundDetail = () => {
   };
   useOutsideHandler(targetDom, handleStep);
 
-  const onInvest = async () => {
-    // const a = await investFundDenomination(account, 1000);
+  const {
+    investFundDenomination,
+    loading: investLoading,
+    disabled: investDisabled,
+  } = useInvest(fundAddress as string);
+
+  const {
+    redeemSharesDetailed,
+    loading: withdrawLoading,
+    disabled: withdrawDisabled,
+  } = useWithdraw(fundAddress as string);
+
+  // Page loading
+  const dispatch = useDispatch();
+  dispatch(setPageLoading(investLoading || withdrawLoading));
+
+  const openActionModal = (step: number) => {
+    if (investDisabled || withdrawDisabled) {
+      utils.notification.warning('Error', 'Please connect wallet first');
+      return;
+    }
+    setIsOpenActionModal(step);
+  };
+
+  const onInvest = async (amount: number) => {
+    if (amount <= 0) {
+      utils.notification.warning('Error', 'Amount should be greater than 0');
+      return;
+    }
+    await investFundDenomination(account, amount);
+    setIsOpenActionModal(0);
+  };
+
+  const onWithdraw = async (amount: number) => {
+    if (amount <= 0) {
+      utils.notification.warning('Error', 'Amount should be greater than 0');
+      return;
+    }
+    await redeemSharesDetailed(amount);
+    setIsOpenActionModal(0);
   };
 
   return (
     <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
+      {denominationAsset && (
+        <InvestModal
+          isOpen={isOpenActionModal === 1}
+          onCancel={() => setIsOpenActionModal(0)}
+          onConfirm={(amount: number) => onInvest(amount)}
+          token={denominationAsset}
+        />
+      )}
+      {fundAddress && (
+        <WithdrawMOdal
+          isOpen={isOpenActionModal === 2}
+          onCancel={() => setIsOpenActionModal(0)}
+          onConfirm={(amount: number) => onWithdraw(amount)}
+          fundAddress={fundAddress}
+        />
+      )}
       {/* ---------- Mobile only ------------ */}
       <div className="w-full absolute z-20 lg:hidden top-0 sm:top-[-50px]">
         <div className="">
@@ -142,12 +207,15 @@ const FundDetail = () => {
         <AssetsInfo />
         <div className="mx-auto">
           <button
-            onClick={() => onInvest()}
+            onClick={() => openActionModal(1)}
             className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] text-primary bg-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90 mr-6"
           >
             Invest
           </button>
-          <button className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] bg-primary text-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90">
+          <button
+            onClick={() => openActionModal(2)}
+            className="text-sm shadow-[0_0_3px_0_primary] shadow-[#C96AE488] bg-primary text-white px-4 md:px-8 py-3 rounded-lg hover:opacity-90"
+          >
             Withdraw
           </button>
         </div>
