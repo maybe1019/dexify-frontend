@@ -6,7 +6,7 @@ const initialState: { value: boolean } = {
 };
 
 export const pageLoadingSlice = createSlice({
-  name: 'themeMode',
+  name: 'pageLoading',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {

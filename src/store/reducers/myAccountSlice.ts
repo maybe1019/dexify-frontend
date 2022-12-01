@@ -48,8 +48,13 @@ export const createOrUpdateMyAccount = createAsyncThunk(
         postInfo.file,
         postInfo.newAccount,
       );
+      utils.notification.success(
+        'Success',
+        'Your account details have been saved.',
+      );
       return result;
     } catch (error) {
+      utils.notification.danger('ERROR', (error as any).message);
       return rejectWithValue('');
     }
   },
