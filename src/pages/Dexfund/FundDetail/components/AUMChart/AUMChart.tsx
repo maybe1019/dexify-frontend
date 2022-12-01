@@ -22,7 +22,6 @@ const AUMChart = ({ fund }: AUMChartProps) => {
 
   const onChangePeriod = async (days: number) => {
     setLoading(true);
-    console.log('start');
     const aumHistory = await getAumHistoryOf(fund, days);
     setChartData(aumHistory);
     setRisePercentage((fund.aum / aumHistory[0].value) * 100 - 100);
