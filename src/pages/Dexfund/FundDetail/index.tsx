@@ -204,7 +204,7 @@ const FundDetail = () => {
         {/* ---------- Mobile only ------------ */}
 
         <AUMChart fund={fund as FundData} />
-        <AssetsInfo />
+        <AssetsInfo fund={fund as FundData} />
         <div className="mx-auto">
           <button
             onClick={() => openActionModal(1)}
