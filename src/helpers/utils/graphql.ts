@@ -31,7 +31,7 @@ export const getFunds = (): Promise<any[]> =>
       const res = await client.query({ query });
       resolve(res.data.funds);
     } catch (error) {
-      console.log('getFunds: ', error);
+      console.error('getFunds: ', error);
       resolve([]);
     }
   });
@@ -43,7 +43,7 @@ export const getDailyStates = (fundId: string, limit: number): Promise<any[]> =>
       const res = await client.query({ query });
       resolve(res.data.fund.dailyStates);
     } catch (error) {
-      console.log('getDailyStates: ', error);
+      console.error('getDailyStates: ', error);
       resolve([]);
     }
   });
@@ -58,7 +58,7 @@ export const getHourlyStates = (
       const res = await client.query({ query });
       resolve(res.data.fund.hourlyStates);
     } catch (error) {
-      console.log('getHourlyStates: ', error);
+      console.error('getHourlyStates: ', error);
       resolve([]);
     }
   });
