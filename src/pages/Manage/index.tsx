@@ -84,7 +84,7 @@ const Manage = () => {
           name="walletAddress"
           value={formData.walletAddress}
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
-          placeholder="Wallet Address"
+          placeholder="Manager Wallet Address"
           onChange={onChangeValue}
         />
 
@@ -99,14 +99,14 @@ const Manage = () => {
           type="number"
           name="performanceFee"
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-          placeholder="Performance Fee"
+          placeholder="Performance Fee (%)"
           onChange={onChangeValue}
         />
         <input
           type="number"
           name="entryFee"
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-          placeholder="Entry Fee"
+          placeholder="Entry Fee (%)"
           onChange={onChangeValue}
         />
         <input
@@ -151,14 +151,14 @@ const Manage = () => {
         >
           Create Fund
         </button>
-        <p className="text-[#8888]">Connect with:</p>
+        {/* <p className="text-[#8888]">Connect with:</p>
         <a
           href="https://twitter.com"
           target="_blank"
           className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
         >
           Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
-        </a>
+        </a> */}
       </div>
     </div>
   );
