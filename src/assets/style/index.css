@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 :root {
+  --theme-bg-color: #EDF2F9;
   --theme-scroll-bg-color: white;
   --theme-scroll-thumb-color: #aab;
   --theme-scroll-hover-color: #99a;
+}
+
+html {
+  background-color: --theme-scroll-bg-color;
 }
 
 body {

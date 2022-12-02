@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Routes } from 'react-router-dom';
 
@@ -47,33 +47,59 @@ function App() {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const scrollColors: Record<string, string> = {
+      '--theme-bg-color': '#EDF2F9',
+      '--theme-scroll-bg-color': '#fff',
+      '--theme-scroll-thumb-color': '#aab',
+      '--theme-scroll-hover-color': '#99a',
+    };
+    if (themeMode === 'dark') {
+      scrollColors['--theme-bg-color'] = '#0A1727';
+      scrollColors['--theme-scroll-bg-color'] = '#121E2D';
+      scrollColors['--theme-scroll-thumb-color'] = '#40404588';
+      scrollColors['--theme-scroll-hover-color'] = '#404045';
+    }
+
+    for (const key in scrollColors) {
+      (document.querySelector(':root') as HTMLElement).style.setProperty(
+        key,
+        scrollColors[key],
+      );
+    }
+
+    localStorage.setItem('dexify-finance-theme', themeMode);
+  }, [themeMode]);
+
   return (
     <div className={`${themeMode}`}>
-      <Helmet>
-        <meta property="og:title" content={metadata.default.title} />
-        <meta
-          property="og:description"
-          content={metadata.default.description}
-        />
-        <meta property="og:image" content={metadata.default.image} />
-        <link rel="icon" type="image/png" href="favicon.ico" />
-      </Helmet>
-      <div className="text-text-1 dark:text-text-1-dark">
-        {loading ? (
-          <LazyLoadingSpinner />
-        ) : (
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Dexfund />} />
-              <Route path="/funds/:fundAddress" element={<FundDetail />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/manage" element={<Manage />} />
-              <Route path="/account" element={<Account />} />
-            </Routes>
-          </Layout>
-        )}
-      </div>
-      {pageLoading && <PageSpinner />}
+      <Suspense fallback={<LazyLoadingSpinner />}>
+        <Helmet>
+          <meta property="og:title" content={metadata.default.title} />
+          <meta
+            property="og:description"
+            content={metadata.default.description}
+          />
+          <meta property="og:image" content={metadata.default.image} />
+          <link rel="icon" type="image/png" href="favicon.ico" />
+        </Helmet>
+        <div className="text-text-1 dark:text-text-1-dark">
+          {loading ? (
+            <LazyLoadingSpinner />
+          ) : (
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Dexfund />} />
+                <Route path="/funds/:fundAddress" element={<FundDetail />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/manage" element={<Manage />} />
+                <Route path="/account" element={<Account />} />
+              </Routes>
+            </Layout>
+          )}
+        </div>
+        {pageLoading && <PageSpinner />}
+      </Suspense>
     </div>
   );
 }

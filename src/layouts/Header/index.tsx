@@ -1,7 +1,6 @@
 import { useEthers } from '@usedapp/core';
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ethers } from 'ethers';
 import { useAppDispatch } from '../../store';
 import {
   getMyAccount,
@@ -16,7 +15,7 @@ import untypedLinks from './data/links.json';
 const links: Array<Record<string, string>> = untypedLinks;
 
 const Header = (): JSX.Element => {
-  const { account, library } = useEthers();
+  const { account } = useEthers();
 
   const dispatch = useAppDispatch();
 
@@ -32,7 +31,7 @@ const Header = (): JSX.Element => {
 
   const initAccount = async () => {
     try {
-      dispatch(getMyAccount(library as ethers.providers.JsonRpcProvider));
+      dispatch(getMyAccount(account as string));
     } catch (error) {
       throw error;
     }
