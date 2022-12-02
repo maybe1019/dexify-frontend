@@ -151,14 +151,14 @@ const Manage = () => {
         >
           Create Fund
         </button>
-        {/* <p className="text-[#8888]">Connect with:</p>
+        <p className="text-[#8888]">Connect with:</p>
         <a
           href="https://twitter.com"
           target="_blank"
           className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
         >
           Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
-        </a> */}
+        </a>
       </div>
     </div>
   );
