@@ -1,19 +1,76 @@
+import { useEthers } from '@usedapp/core';
+import { isAddress } from 'ethers/lib/utils';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import utils from '../../helpers/utils';
+import { prepareFundData } from '../../helpers/utils/createFund';
+import { useCreateNewFund } from '../../hooks/useCreateNewFund';
+import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
 
-import tokenList from './data/tokenList.json';
-import colorList from '../../helpers/data/color-array.json';
+import allowedTokenList from './data/tokenList.json';
 
 const Manage = () => {
-  const [selectedTokens, setSelectedTokens] = useState<Record<number, any>>({});
+  const { account } = useEthers();
+  const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>();
+  const [formData, setFormData] = useState<any>({
+    walletAddress: account,
+  });
 
-  const toggleToken = (index: number) => {
-    const tmp = { ...selectedTokens };
-    if (tmp[index]) {
-      tmp[index] = undefined;
-    } else {
-      tmp[index] = true;
+  const onChangeValue = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    const newFormData: any = { ...formData };
+    newFormData[name] = value;
+    setFormData(newFormData);
+  };
+
+  const { createNewFund, loading, disabled } = useCreateNewFund();
+  // Page loading
+  const dispatch = useDispatch();
+  dispatch(setPageLoading(loading));
+
+  const onCreateNewFund = async () => {
+    if (!account) {
+      utils.notification.warning('Error', 'Please connect wallet first');
+      return;
     }
-    setSelectedTokens(tmp);
+    if (disabled) {
+      utils.notification.warning(
+        'Error',
+        'Please switch the network to Binance Smart Chain',
+      );
+      return;
+    }
+    if (Object.keys(formData).length !== 7) {
+      utils.notification.warning('Please fill in all fields', '');
+      return;
+    }
+    if (!selectedTokenAddress) {
+      utils.notification.warning('Error', 'Please select starting asset.');
+      return;
+    }
+    if (!isAddress(formData?.walletAddress)) {
+      utils.notification.danger('Invalid wallet address', '');
+      return;
+    }
+    const { feeArgsData, policyArgsData } = prepareFundData(
+      formData?.entryFee,
+      formData?.performanceFee,
+      formData?.minInvestment,
+    );
+    await createNewFund(
+      formData?.walletAddress,
+      formData?.fundName,
+      selectedTokenAddress,
+      (formData?.lockTime as number) * 3600,
+      feeArgsData,
+      policyArgsData,
+      account,
+    );
   };
 
   return (
@@ -24,59 +81,74 @@ const Manage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <input
           type="text"
+          name="walletAddress"
+          value={formData.walletAddress}
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
           placeholder="Wallet Address"
+          onChange={onChangeValue}
         />
 
         <input
           type="text"
+          name="fundName"
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
           placeholder="Dexfund Name"
+          onChange={onChangeValue}
         />
         <input
-          type="text"
+          type="number"
+          name="performanceFee"
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-          placeholder="Performance"
+          placeholder="Performance Fee"
+          onChange={onChangeValue}
         />
         <input
-          type="text"
+          type="number"
+          name="entryFee"
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
           placeholder="Entry Fee"
+          onChange={onChangeValue}
         />
-
         <input
-          type="text"
+          type="number"
+          name="minInvestment"
           className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
           placeholder="Minimum Investment"
+          onChange={onChangeValue}
+        />
+        <input
+          type="number"
+          name="lockTime"
+          className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
+          placeholder="Lock Time (H)"
+          onChange={onChangeValue}
         />
       </div>
       <div className="flex flex-col md:flex-row gap-4 my-8">
         <div className=" text-sm min-w-[160px]">Select Starting Assets</div>
         <div className="grid grid-cols-4 sm:grid-cols-7 grow gap-2">
-          {tokenList.map((token, index) => (
+          {allowedTokenList.map((token) => (
             <div
               key={token.symbol}
               className="rounded py-1 text-center text-sm cursor-pointer hover:shadow bg-[#8882] font-semibold"
               style={
-                selectedTokens[index]
-                  ? { backgroundColor: `${colorList[index]}66` }
+                selectedTokenAddress === token.address
+                  ? { backgroundColor: '#0074D966' }
                   : { color: 'gray' }
               }
-              onClick={() => toggleToken(index)}
+              onClick={() => setSelectedTokenAddress(token.address)}
             >
               {token.symbol}
             </div>
           ))}
         </div>
       </div>
-      <textarea
-        name="bio"
-        placeholder="Bio"
-        className=" resize-none bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none w-full h-48 focus:shadow"
-      ></textarea>
 
       <div className="flex flex-col gap-2 items-center my-4">
-        <button className="block text-primary font-bold text-xl">
+        <button
+          className="block text-primary font-bold text-xl"
+          onClick={onCreateNewFund}
+        >
           Create Fund
         </button>
         <p className="text-[#8888]">Connect with:</p>

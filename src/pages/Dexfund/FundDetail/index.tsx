@@ -67,9 +67,16 @@ const FundDetail = () => {
   const dispatch = useDispatch();
   dispatch(setPageLoading(investLoading || withdrawLoading));
 
-  const openActionModal = (step: number) => {
-    if (investDisabled || withdrawDisabled) {
+  const openActionModal = async (step: number) => {
+    if (!account) {
       utils.notification.warning('Error', 'Please connect wallet first');
+      return;
+    }
+    if (investDisabled || withdrawDisabled) {
+      utils.notification.warning(
+        'Error',
+        'Please switch the network to Binance Smart Chain',
+      );
       return;
     }
     setIsOpenActionModal(step);
