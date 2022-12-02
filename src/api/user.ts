@@ -2,13 +2,12 @@ import axios from 'axios';
 
 const baseUri: string = process.env.REACT_APP_SERVER_URL as string;
 
-export const getUser = (signature: string, address: string): Promise<User> =>
+export const getUser = (address: string): Promise<User> =>
   new Promise(async (resolve, reject) => {
     try {
       const res = await axios.get(`${baseUri}/user`, {
         params: {
           address,
-          signature,
         },
       });
       if (!res.data.id) {

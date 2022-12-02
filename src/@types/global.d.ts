@@ -27,6 +27,7 @@ type FundData = {
   id: string;
   name: string;
   manager: string;
+  comptrollerId: string;
   aum: number;
   topAsset: string;
   topAssetAUM: number;

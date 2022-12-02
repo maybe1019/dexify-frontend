@@ -83,12 +83,14 @@ export const formatFundData = (fund: any): Promise<FundData> =>
       denominationAsset: '',
       startTimestamp: 0,
       holdings: [],
+      comptrollerId: '',
     };
     try {
       result.id = fund.id;
       result.name = fund.name;
       result.manager = fund.manager.id;
       result.denominationAsset = fund.accessor.denominationAsset.symbol;
+      result.comptrollerId = fund.accessor.id;
       result.startTimestamp = parseInt(fund.accessor.activationTime) * 1000;
       result.investorId = parseInt(fund.investmentCount);
 
