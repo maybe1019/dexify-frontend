@@ -39,7 +39,11 @@ const FundDetail = () => {
   const [isOpenActionModal, setIsOpenActionModal] = useState<number>(0); // closed: 0, invest:1, withdraw:2
 
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
-  const fund = allFunds.find((value) => value.id === fundAddress);
+
+  // eslint-disable-next-line
+  const [fund, setFund] = useState<FundData>(
+    allFunds.find((value) => value.id === fundAddress) as FundData,
+  );
   const denominationAsset = fund && getTokenInfo(fund?.denominationAsset);
 
   const handleStep = (e?: any) => {
@@ -199,7 +203,7 @@ const FundDetail = () => {
           )}
           {fundInfoStep === fundInfoTabList[1] && (
             <div className="absolute lg:hidden w-full card z-10">
-              <Fees />
+              <Fees fund={fund} />
             </div>
           )}
           {fundInfoStep === fundInfoTabList[2] && (
@@ -271,7 +275,7 @@ const FundDetail = () => {
         ) : (
           <>
             <Tweets />
-            <FundInfo />
+            <FundInfo fund={fund} />
           </>
         )}
       </div>

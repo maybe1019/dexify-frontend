@@ -62,3 +62,54 @@ export const getHourlyStates = (
       resolve([]);
     }
   });
+
+export const getEntryFee = (fundId: string) =>
+  new Promise<number>(async (resolve) => {
+    try {
+      const query = queries.entranceDirectBurnFees(fundId);
+      const res = await client.query({ query });
+      if (res.data.entranceRateBurnFeeSettledEvents.length === 0) {
+        resolve(0);
+      } else {
+        resolve(
+          parseFloat(
+            res.data.entranceRateBurnFeeSettledEvents[0].sharesQuantity,
+          ),
+        );
+      }
+    } catch (error) {
+      resolve(0);
+    }
+  });
+
+export const getPerformanceFee = (comptrollerId: string) =>
+  new Promise<number>(async (resolve) => {
+    try {
+      const query = queries.performanceFee(comptrollerId);
+      const res = await client.query({ query });
+      if (res.data.performanceFeeSettings.length === 0) {
+        resolve(0);
+      } else {
+        resolve(parseFloat(res.data.performanceFeeSettings[0].rate));
+      }
+    } catch (error) {
+      resolve(0);
+    }
+  });
+
+export const getManagementFee = (comptrollerId: string) =>
+  new Promise<number>(async (resolve) => {
+    try {
+      const query = queries.managementFee(comptrollerId);
+      const res = await client.query({ query });
+      if (res.data.managementFeeSettings.length === 0) {
+        resolve(0);
+      } else {
+        resolve(
+          parseFloat(res.data.managementFeeSettings[0].scaledPerSecondRate),
+        );
+      }
+    } catch (error) {
+      resolve(0);
+    }
+  });

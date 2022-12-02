@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 :root {
+  --theme-bg-color: #EDF2F9;
   --theme-scroll-bg-color: white;
   --theme-scroll-thumb-color: #aab;
   --theme-scroll-hover-color: #99a;
+}
+
+html {
+  background-color: --theme-scroll-bg-color;
 }
 
 body {
@@ -89,8 +94,6 @@ input[type=number] {
 }
 
 .skeleton {
-  -webkit-animation-name: skeleton-frame;
-          animation-name: skeleton-frame;
   -webkit-animation-duration: 2s;
           animation-duration: 2s;
   -webkit-animation-iteration-count: infinite;
@@ -100,34 +103,58 @@ input[type=number] {
 }
 
 .dark .skeleton {
-  background-color: white;
+  -webkit-animation-name: skeleton-dark-frame;
+          animation-name: skeleton-dark-frame;
 }
 
 .light .skeleton {
-  background-color: black;
+  -webkit-animation-name: skeleton-light-frame;
+          animation-name: skeleton-light-frame;
 }
 
-@-webkit-keyframes skeleton-frame {
+@-webkit-keyframes skeleton-dark-frame {
   0% {
-    opacity: 0.1;
+    background-color: #162536;
   }
   50% {
-    opacity: 0.2;
+    background-color: #1f2f44;
   }
   100% {
-    opacity: 0.1;
+    background-color: #162536;
   }
 }
 
-@keyframes skeleton-frame {
+@keyframes skeleton-dark-frame {
   0% {
-    opacity: 0.1;
+    background-color: #162536;
   }
   50% {
-    opacity: 0.2;
+    background-color: #1f2f44;
   }
   100% {
-    opacity: 0.1;
+    background-color: #162536;
+  }
+}
+@-webkit-keyframes skeleton-light-frame {
+  0% {
+    background-color: #e2e7f0;
+  }
+  50% {
+    background-color: #c8ced6;
+  }
+  100% {
+    background-color: #e2e7f0;
+  }
+}
+@keyframes skeleton-light-frame {
+  0% {
+    background-color: #e2e7f0;
+  }
+  50% {
+    background-color: #c8ced6;
+  }
+  100% {
+    background-color: #e2e7f0;
   }
 }
 .tooltip {

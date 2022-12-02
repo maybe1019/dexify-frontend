@@ -10,7 +10,11 @@ function classNames(...classes: string[]) {
 
 const tabList = ['Bio', 'Fees', 'History'];
 
-export default function FundInfo() {
+type FundInfoProp = {
+  fund: FundData;
+};
+
+export default function FundInfo({ fund }: FundInfoProp) {
   return (
     <div className="card overflow-hidden p-2">
       <Tab.Group>
@@ -37,7 +41,7 @@ export default function FundInfo() {
             <Bio />
           </Tab.Panel>
           <Tab.Panel>
-            <Fees />
+            <Fees fund={fund} />
           </Tab.Panel>
           <Tab.Panel>
             <TotalHistory />

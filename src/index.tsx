@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/style/index.css';
 import reportWebVitals from './reportWebVitals';
@@ -11,8 +11,7 @@ import { Provider } from 'react-redux';
 import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import LazyLoadingSpinner from './components/LazyLoadingSpinner';
-const App = React.lazy(() => import('./App'));
+import App from './App';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -35,12 +34,10 @@ root.render(
     <Provider store={store}>
       <ApolloProvider client={client}>
         <BrowserRouter>
-          <Suspense fallback={<LazyLoadingSpinner />}>
-            <DAppProvider config={config}>
-              <ReactNotifications />
-              <App />
-            </DAppProvider>
-          </Suspense>
+          <DAppProvider config={config}>
+            <ReactNotifications />
+            <App />
+          </DAppProvider>
         </BrowserRouter>
       </ApolloProvider>
     </Provider>

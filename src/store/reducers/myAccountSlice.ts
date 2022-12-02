@@ -21,10 +21,9 @@ const initialState: AccountState = {
 
 export const getMyAccount = createAsyncThunk(
   'user/get',
-  async (library: ethers.providers.JsonRpcProvider, { rejectWithValue }) => {
+  async (address: string, { rejectWithValue }) => {
     try {
-      const { signature, address } = await utils.ethers.signMessage(library);
-      const result = await serverAPIs.user.getUser(signature, address);
+      const result = await serverAPIs.user.getUser(address);
       return result;
     } catch (error) {
       utils.notification.danger('ERROR', (error as any).message);
