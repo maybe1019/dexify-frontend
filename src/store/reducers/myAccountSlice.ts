@@ -12,6 +12,9 @@ const initialUser: User = {
   bio: '',
   address: '',
   email: '',
+  twitterName: '',
+  twitterScreenName: '',
+  twitterImage: '/images/default-user.png',
 };
 
 const initialState: AccountState = {

@@ -10,7 +10,7 @@ import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
 import allowedTokenList from './data/tokenList.json';
 
 const Manage = () => {
-  const { account } = useEthers();
+  const { account, activate } = useEthers();
   const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>();
   const [formData, setFormData] = useState<any>({
     walletAddress: account,
@@ -147,7 +147,15 @@ const Manage = () => {
       <div className="flex flex-col gap-2 items-center my-4">
         <button
           className="block text-primary font-bold text-xl"
-          onClick={onCreateNewFund}
+          onClick={
+            account
+              ? onCreateNewFund
+              : () =>
+                  utils.notification.info(
+                    'Please connect your wallet first',
+                    '',
+                  )
+          }
         >
           Create Fund
         </button>
