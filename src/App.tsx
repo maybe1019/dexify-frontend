@@ -3,15 +3,17 @@ import { Helmet } from 'react-helmet';
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from './layouts';
-import { useAppSelector } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 import metadata from './helpers/data/page-metadata.json';
 import { setAllFunds } from './store/reducers/allFundsSlice';
-import { useDispatch } from 'react-redux';
 import LazyLoadingSpinner from './components/LazyLoadingSpinner';
 import utils from './helpers/utils';
 import api from './api';
 import { setThemeMode } from './store/reducers/themeModeSlice';
 import { PageSpinner } from './components/Spinner';
+import { useEthers } from '@usedapp/core';
+import { updateMyAccountWithTwitter } from './store/reducers/myAccountSlice';
+import { ethers } from 'ethers';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -22,7 +24,8 @@ const FundDetail = React.lazy(() => import('./pages/Dexfund/FundDetail'));
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
   const pageLoading = useAppSelector((state) => state.pageLoading.value);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { library } = useEthers();
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -46,6 +49,21 @@ function App() {
     console.log(tmpData);
     setLoading(false);
   };
+
+  useEffect(() => {
+    const oauth_token = new URLSearchParams(location.search).get('oauth_token');
+    const oauth_verifier = new URLSearchParams(location.search).get(
+      'oauth_verifier',
+    );
+    if (oauth_token && oauth_verifier && library) {
+      dispatch(
+        updateMyAccountWithTwitter({
+          library: library as ethers.providers.JsonRpcProvider,
+          oauth_verifier,
+        }),
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const scrollColors: Record<string, string> = {

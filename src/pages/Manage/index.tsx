@@ -2,6 +2,7 @@ import { useEthers } from '@usedapp/core';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import api from '../../api';
 import utils from '../../helpers/utils';
 import { prepareFundData } from '../../helpers/utils/createFund';
 import { useCreateNewFund } from '../../hooks/useCreateNewFund';
@@ -10,7 +11,7 @@ import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
 import allowedTokenList from './data/tokenList.json';
 
 const Manage = () => {
-  const { account, activate } = useEthers();
+  const { account } = useEthers();
   const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>();
   const [formData, setFormData] = useState<any>({
     walletAddress: account,
@@ -71,6 +72,11 @@ const Manage = () => {
       policyArgsData,
       account,
     );
+  };
+
+  const onTwitterLogin = () => {
+    console.log('twitter click');
+    api.twitter.twitterLogin();
   };
 
   return (
@@ -161,9 +167,10 @@ const Manage = () => {
         </button>
         <p className="text-[#8888]">Connect with:</p>
         <a
-          href="https://twitter.com"
+          // href="https://twitter.com"
           target="_blank"
           className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
+          onClick={onTwitterLogin}
         >
           Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
         </a>

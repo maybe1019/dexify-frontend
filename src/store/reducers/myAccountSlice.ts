@@ -67,6 +67,36 @@ export const createOrUpdateMyAccount = createAsyncThunk(
   },
 );
 
+export const updateMyAccountWithTwitter = createAsyncThunk(
+  'twitter/post',
+  async (
+    postInfo: {
+      library: ethers.providers.JsonRpcProvider;
+      oauth_verifier: string;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const { signature, address } = await utils.ethers.signMessage(
+        postInfo.library,
+      );
+      const result = await serverAPIs.twitter.saveTwitterUserInfo(
+        address,
+        signature,
+        postInfo.oauth_verifier,
+      );
+      utils.notification.success(
+        'Success',
+        'Your account details have been saved.',
+      );
+      return result;
+    } catch (error) {
+      utils.notification.danger('ERROR', (error as any).message);
+      return rejectWithValue('');
+    }
+  },
+);
+
 export const myAccountSlice = createSlice({
   name: 'myAccount',
   initialState,
@@ -98,6 +128,14 @@ export const myAccountSlice = createSlice({
       state.status = ThunkStatus.PENDING;
     });
     builder.addCase(createOrUpdateMyAccount.fulfilled, (state, action) => {
+      state.value = action.payload;
+      state.status = ThunkStatus.READY;
+      return state;
+    });
+    builder.addCase(updateMyAccountWithTwitter.pending, (state) => {
+      state.status = ThunkStatus.PENDING;
+    });
+    builder.addCase(updateMyAccountWithTwitter.fulfilled, (state, action) => {
       state.value = action.payload;
       state.status = ThunkStatus.READY;
       return state;
