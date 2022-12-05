@@ -2,7 +2,7 @@ import { useEthers } from '@usedapp/core';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import api from '../../api';
+import { twitterLogin } from '../../api/twitter';
 import utils from '../../helpers/utils';
 import { prepareFundData } from '../../helpers/utils/createFund';
 import { useCreateNewFund } from '../../hooks/useCreateNewFund';
@@ -75,8 +75,7 @@ const Manage = () => {
   };
 
   const onTwitterLogin = () => {
-    console.log('twitter click');
-    api.twitter.twitterLogin();
+    twitterLogin();
   };
 
   return (
