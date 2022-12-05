@@ -2,15 +2,21 @@ import { useEthers } from '@usedapp/core';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { twitterLogin } from '../../api/twitter';
 import utils from '../../helpers/utils';
 import { prepareFundData } from '../../helpers/utils/createFund';
 import { useCreateNewFund } from '../../hooks/useCreateNewFund';
+import { RootState, useAppSelector } from '../../store';
 import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
+import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-icon.svg';
 
 import allowedTokenList from './data/tokenList.json';
 
 const Manage = () => {
   const { account } = useEthers();
+  const myAccountValue = useAppSelector(
+    (state: RootState) => state.myAccount.value,
+  );
   const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>();
   const [formData, setFormData] = useState<any>({
     walletAddress: account,
@@ -71,6 +77,11 @@ const Manage = () => {
       policyArgsData,
       account,
     );
+  };
+
+  const onTwitterLogin = () => {
+    localStorage.setItem('twitter_login_location', 'manage');
+    twitterLogin();
   };
 
   return (
@@ -147,18 +158,48 @@ const Manage = () => {
       <div className="flex flex-col gap-2 items-center my-4">
         <button
           className="block text-primary font-bold text-xl"
-          onClick={onCreateNewFund}
+          onClick={
+            account
+              ? onCreateNewFund
+              : () =>
+                  utils.notification.info(
+                    'Please connect your wallet first',
+                    '',
+                  )
+          }
         >
           Create Fund
         </button>
-        {/* <p className="text-[#8888]">Connect with:</p>
-        <a
-          href="https://twitter.com"
-          target="_blank"
-          className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
-        >
-          Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
-        </a> */}
+        {myAccountValue.twitterScreenName ? (
+          <>
+            <p className="text-[#8888]">Connected with:</p>
+            <div className="relative flex items-center gap-4">
+              <img
+                src={myAccountValue.twitterImage}
+                alt="user"
+                className="w-10 h-10 rounded-full"
+              />
+              <TwitterIcon
+                width={16}
+                height={16}
+                className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
+              />
+              <div className="font-bold text-lg">
+                @{myAccountValue.twitterScreenName}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-[#8888]">Connect with:</p>
+            <button
+              className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
+              onClick={onTwitterLogin}
+            >
+              Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
