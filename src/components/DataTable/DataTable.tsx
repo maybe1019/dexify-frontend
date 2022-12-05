@@ -19,9 +19,16 @@ type DataTableProps = {
   data: any[];
   pagination: boolean;
   minWidth: number;
+  rowCnt: number;
 };
 
-const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
+const DataTable = ({
+  fields,
+  data,
+  pagination,
+  minWidth,
+  rowCnt,
+}: DataTableProps) => {
   const [page, setPage] = useState<number>(1);
   const [sortBy, setSortBy] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<number>(1);
@@ -50,7 +57,7 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
     <div className="p-2">
       <div className="pb-6 overflow-x-auto overflow-y-hidden text-sm">
         <table
-          className={`w-full border-collapse overflow-hidden`}
+          className={`w-full border-collapse overflow-hidden overflow-y-visible`}
           style={{ minWidth: `${minWidth}px` }}
         >
           <thead>
@@ -68,47 +75,49 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
           </thead>
           <tbody>
             {data.length > 0 ? (
-              showList.slice((page - 1) * 10, page * 10).map((d, index) => (
-                <tr
-                  key={index}
-                  className=" border-b border-b-[#8881] last:border-b-0"
-                >
-                  {fields.map((field) => (
-                    <td
-                      key={field.title}
-                      className="px-3 py-3 md:py-4 font-[300] tooltip"
-                      style={
-                        field.colorful ? { color: colors[d[field.name]] } : {}
-                      }
-                    >
-                      {field.prefix}{' '}
-                      {field.type === 'address' ? (
-                        shortenAddress(d[field.name])
-                      ) : field.type === 'number' ? (
-                        formatFloatFixed(d[field.name])
-                      ) : field.type === 'token' ? (
-                        getTokenInfo(d[field.name]) ? (
-                          <img
-                            src={getTokenInfo(d[field.name])?.logoURI}
-                            alt="top asset"
-                            className=" w-6 block rounded-full"
-                          />
+              showList
+                .slice((page - 1) * rowCnt, page * rowCnt)
+                .map((d, index) => (
+                  <tr
+                    key={index}
+                    className=" border-b border-b-[#8881] last:border-b-0"
+                  >
+                    {fields.map((field) => (
+                      <td
+                        key={field.title}
+                        className="px-3 py-3 md:py-4 font-[300] tooltip"
+                        style={
+                          field.colorful ? { color: colors[d[field.name]] } : {}
+                        }
+                      >
+                        {field.prefix}{' '}
+                        {field.type === 'address' ? (
+                          shortenAddress(d[field.name])
+                        ) : field.type === 'number' ? (
+                          formatFloatFixed(d[field.name])
+                        ) : field.type === 'token' ? (
+                          getTokenInfo(d[field.name]) ? (
+                            <img
+                              src={getTokenInfo(d[field.name])?.logoURI}
+                              alt="top asset"
+                              className=" w-6 block rounded-full"
+                            />
+                          ) : (
+                            ''
+                          )
                         ) : (
-                          ''
-                        )
-                      ) : (
-                        d[field.name]
-                      )}{' '}
-                      {field.suffix}
-                      <div className="tooltiptext">
-                        {field.prefix}
-                        {d[field.name]}
+                          d[field.name]
+                        )}{' '}
                         {field.suffix}
-                      </div>
-                    </td>
-                  ))}
-                </tr>
-              ))
+                        <div className="tooltiptext">
+                          {field.prefix}
+                          {d[field.name]}
+                          {field.suffix}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))
             ) : (
               <tr>
                 {fields.map((field) => (
@@ -128,7 +137,7 @@ const DataTable = ({ fields, data, pagination, minWidth }: DataTableProps) => {
         <div className="flex mx-8 mt-2">
           <div className="ml-auto">
             <Pagination
-              totalPage={Math.ceil(data.length / 10)}
+              totalPage={Math.ceil(data.length / rowCnt)}
               onChange={(p) => setPage(p)}
             />
           </div>

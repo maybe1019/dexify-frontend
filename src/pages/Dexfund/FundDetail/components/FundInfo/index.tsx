@@ -44,7 +44,7 @@ export default function FundInfo({ fund }: FundInfoProp) {
             <Fees fund={fund} />
           </Tab.Panel>
           <Tab.Panel>
-            <TotalHistory />
+            <TotalHistory fund={fund} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
