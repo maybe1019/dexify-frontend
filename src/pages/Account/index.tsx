@@ -9,6 +9,7 @@ import { DialogType, ThunkStatus } from '../../helpers/enums';
 import { RootState, useAppDispatch } from '../../store';
 import { createOrUpdateMyAccount } from '../../store/reducers/myAccountSlice';
 import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
+import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-icon.svg';
 
 const Account = () => {
   const myAccountState = useSelector((state: RootState) => state.myAccount);
@@ -183,6 +184,29 @@ const Account = () => {
           value={newAccount.bio}
           onChange={onChangeValue}
         />
+        <div className=" flex items-center gap-4">
+          <TwitterIcon fill="gray" width={28} height={28} />
+          <div className=" text-gray-600 font-bold text-lg">Twitter</div>
+          <button className="ml-auto px-4 py-2 bg-blue-500/50 dark:bg-blue-900/50 rounded-lg font-bold text-slate-800 dark:text-slate-200 hover:bg-blue-400 dark:hover:bg-blue-900">
+            Login
+          </button>
+        </div>
+        <div className=" flex items-center gap-4 relative">
+          <img
+            src="/images/default-user.png"
+            alt="user"
+            className="w-10 h-10 rounded-full"
+          />
+          <TwitterIcon
+            width={16}
+            height={16}
+            className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
+          />
+          <div className="font-bold text-lg">Staka0123</div>
+          <button className="ml-auto px-4 py-2 bg-red-500/50 dark:bg-red-900/50 rounded-lg font-bold text-slate-900 dark:text-slate-200 hover:bg-red-400 dark:hover:bg-red-900">
+            Logout
+          </button>
+        </div>
       </div>
       <button
         className="p-3 w-full bg-primary rounded-lg text-white hover:opacity-90"
