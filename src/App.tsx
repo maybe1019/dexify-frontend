@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Layout } from './layouts';
 import { useAppDispatch, useAppSelector } from './store';
@@ -14,6 +14,7 @@ import { PageSpinner } from './components/Spinner';
 import { useEthers } from '@usedapp/core';
 import { updateMyAccountWithTwitter } from './store/reducers/myAccountSlice';
 import { ethers } from 'ethers';
+import { ThunkStatus } from './helpers/enums';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -24,6 +25,8 @@ const FundDetail = React.lazy(() => import('./pages/Dexfund/FundDetail'));
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
   const pageLoading = useAppSelector((state) => state.pageLoading.value);
+  const accountStatus = useAppSelector((state) => state.myAccount.status);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { library } = useEthers();
 
@@ -50,11 +53,12 @@ function App() {
     setLoading(false);
   };
 
+  const oauth_token = new URLSearchParams(location.search).get('oauth_token');
+  const oauth_verifier = new URLSearchParams(location.search).get(
+    'oauth_verifier',
+  );
+
   useEffect(() => {
-    const oauth_token = new URLSearchParams(location.search).get('oauth_token');
-    const oauth_verifier = new URLSearchParams(location.search).get(
-      'oauth_verifier',
-    );
     if (oauth_token && oauth_verifier && library) {
       dispatch(
         updateMyAccountWithTwitter({
@@ -63,7 +67,14 @@ function App() {
         }),
       );
     }
-  }, []);
+  }, [library]);
+
+  useEffect(() => {
+    if (accountStatus === ThunkStatus.READY && oauth_token) {
+      const location = localStorage.getItem('twitter_login_location');
+      navigate(`/${location}`);
+    }
+  }, [accountStatus]);
 
   useEffect(() => {
     const scrollColors: Record<string, string> = {

@@ -67,6 +67,24 @@ export const createOrUpdateMyAccount = createAsyncThunk(
   },
 );
 
+export const logoutTwitterUser = createAsyncThunk(
+  'twitter/get',
+  async (library: ethers.providers.JsonRpcProvider, { rejectWithValue }) => {
+    try {
+      const { signature, address } = await utils.ethers.signMessage(library);
+      const result = await serverAPIs.twitter.logoutUser(address, signature);
+      utils.notification.success(
+        'Success',
+        'Your twitter account have been disconnected.',
+      );
+      return result;
+    } catch (error) {
+      utils.notification.danger('ERROR', (error as any).message);
+      return rejectWithValue('');
+    }
+  },
+);
+
 export const updateMyAccountWithTwitter = createAsyncThunk(
   'twitter/post',
   async (
@@ -84,10 +102,6 @@ export const updateMyAccountWithTwitter = createAsyncThunk(
         address,
         signature,
         postInfo.oauth_verifier,
-      );
-      utils.notification.success(
-        'Success',
-        'Your account details have been saved.',
       );
       return result;
     } catch (error) {
@@ -132,10 +146,30 @@ export const myAccountSlice = createSlice({
       state.status = ThunkStatus.READY;
       return state;
     });
+    builder.addCase(createOrUpdateMyAccount.rejected, (state) => {
+      state.status = ThunkStatus.READY;
+      return state;
+    });
     builder.addCase(updateMyAccountWithTwitter.pending, (state) => {
       state.status = ThunkStatus.PENDING;
     });
     builder.addCase(updateMyAccountWithTwitter.fulfilled, (state, action) => {
+      state.value = action.payload;
+      state.status = ThunkStatus.READY;
+      return state;
+    });
+    builder.addCase(updateMyAccountWithTwitter.rejected, (state) => {
+      state.status = ThunkStatus.READY;
+      return state;
+    });
+    builder.addCase(logoutTwitterUser.pending, (state) => {
+      state.status = ThunkStatus.PENDING;
+    });
+    builder.addCase(logoutTwitterUser.rejected, (state) => {
+      state.status = ThunkStatus.READY;
+      return state;
+    });
+    builder.addCase(logoutTwitterUser.fulfilled, (state, action) => {
       state.value = action.payload;
       state.status = ThunkStatus.READY;
       return state;

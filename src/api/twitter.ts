@@ -33,3 +33,19 @@ export const saveTwitterUserInfo = async (
     console.log(error);
   }
 };
+
+export const logoutUser = async (address: string, signature: string) => {
+  try {
+    const { data } = await axios.get(`${baseUri}/twitter/disconnect`, {
+      params: {
+        address,
+        signature,
+      },
+    });
+    localStorage.removeItem('oauth_token');
+    localStorage.removeItem('oauth_token_secret');
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
