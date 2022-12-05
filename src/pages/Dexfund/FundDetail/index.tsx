@@ -208,7 +208,7 @@ const FundDetail = () => {
           )}
           {fundInfoStep === fundInfoTabList[2] && (
             <div className="absolute lg:hidden w-full card z-10">
-              <TotalHistory />
+              <TotalHistory fund={fund} />
             </div>
           )}
         </div>

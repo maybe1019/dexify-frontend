@@ -6,6 +6,7 @@ import hourlyState from './queries/hourlyState';
 import performanceFee from './queries/performanceFee';
 import entranceDirectBurnFees from './queries/entranceDirectBurnFees';
 import managementFee from './queries/managementFee';
+import fundTransactions from './queries/fundTransactions';
 
 export default {
   funds,
@@ -16,4 +17,5 @@ export default {
   performanceFee,
   entranceDirectBurnFees,
   managementFee,
+  fundTransactions,
 };

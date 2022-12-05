@@ -45,6 +45,7 @@ const AllFundsTable = () => {
           fields={untypedFields}
           pagination={true}
           minWidth={1000}
+          rowCnt={10}
         />
       </div>
     </div>
