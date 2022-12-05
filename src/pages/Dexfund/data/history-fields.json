@@ -1,10 +1,18 @@
 [
   {
-    "name": "data",
-    "title": "Data",
+    "name": "date",
+    "title": "Date",
     "prefix": "",
     "suffix": "",
     "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "symbol",
+    "title": "Asset",
+    "prefix": "",
+    "suffix": "",
+    "type": "token",
     "colorful": false
   },
   {
@@ -16,8 +24,8 @@
     "colorful": false
   },
   {
-    "name": "transaction",
-    "title": "Withdrawal/Deposit",
+    "name": "type",
+    "title": "Withdraw/Invest",
     "prefix": "",
     "suffix": "",
     "type": "string",

@@ -34,10 +34,10 @@ export const calcDate = (
 };
 
 export const formatFloatFixed = (num: number) => {
-  if (num - parseFloat(num.toFixed(2)) === 0) {
+  if (num - parseFloat(num.toFixed(3)) === 0) {
     return num;
   }
-  return parseFloat(num.toFixed(2));
+  return parseFloat(num.toFixed(3));
 };
 
 export const getTokenPriceAt = (
@@ -81,6 +81,20 @@ export const formatTimestampToString = (
   } else {
     return `${months[date.getMonth()]} ${date.getDate()}`;
   }
+};
+
+export const formatDateTimeToString = (date: Date): string => {
+  let res = '';
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  res += `${month < 10 ? '0' : ''}${month}/${
+    day < 10 ? '0' : ''
+  }${day}/${year}`;
+  const hour = date.getHours();
+  const min = date.getMinutes();
+  res += ` ${hour < 10 ? '0' : ''}${hour}:${min < 10 ? '0' : ''}${min}`;
+  return res;
 };
 
 export const getTokenInfo = (symbol: string): Token => {
