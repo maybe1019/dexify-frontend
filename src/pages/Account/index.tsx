@@ -5,19 +5,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialogModal from '../../components/ConfirmDialogModal';
-import { DialogType } from '../../helpers/enums';
+import { DialogType, ThunkStatus } from '../../helpers/enums';
 import { RootState, useAppDispatch } from '../../store';
-import { createOrUpdateMyAccount } from '../../store/reducers/myAccountSlice';
+import {
+  createOrUpdateMyAccount,
+  logoutTwitterUser,
+} from '../../store/reducers/myAccountSlice';
+import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
+import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-icon.svg';
+import { twitterLogin } from '../../api/twitter';
 
 const Account = () => {
-  const myAccount = useSelector((state: RootState) => state.myAccount.value);
+  const myAccountState = useSelector((state: RootState) => state.myAccount);
   const { account, library } = useEthers();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  // page loading
+  dispatch(setPageLoading(myAccountState.status === ThunkStatus.PENDING));
 
   const imageFileRef = useRef<HTMLInputElement | null>(null);
 
-  const [newAccount, setNewAccount] = useState<User>(myAccount);
+  const [newAccount, setNewAccount] = useState<User>(myAccountState.value);
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -82,17 +90,23 @@ const Account = () => {
       return;
     }
 
-    try {
-      dispatch(
-        createOrUpdateMyAccount({
-          library: library as ethers.providers.JsonRpcProvider,
-          file: imageFile,
-          newAccount,
-        }),
-      );
-    } catch (error) {
-      setIsDialogOpen(false);
-    }
+    dispatch(
+      createOrUpdateMyAccount({
+        library: library as ethers.providers.JsonRpcProvider,
+        file: imageFile,
+        newAccount,
+      }),
+    );
+    setIsDialogOpen(false);
+  };
+
+  const onTwitterLogin = () => {
+    localStorage.setItem('twitter_login_location', 'account');
+    twitterLogin();
+  };
+
+  const onTwitterLogout = () => {
+    dispatch(logoutTwitterUser(library as ethers.providers.JsonRpcProvider));
   };
 
   return (
@@ -183,17 +197,53 @@ const Account = () => {
           value={newAccount.bio}
           onChange={onChangeValue}
         />
+        {myAccountState.value.twitterScreenName ? (
+          <div className=" flex items-center gap-4 relative">
+            <img
+              src={myAccountState.value.twitterImage}
+              alt="twitter-user"
+              className="w-10 h-10 rounded-full"
+            />
+            <TwitterIcon
+              width={16}
+              height={16}
+              className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
+            />
+            <div className="font-bold text-lg">
+              @{myAccountState.value.twitterName}
+            </div>
+            <button
+              onClick={onTwitterLogout}
+              className="ml-auto px-4 py-2 bg-red-500/50 dark:bg-red-900/50 rounded-lg font-bold text-slate-900 dark:text-slate-200 hover:bg-red-400 dark:hover:bg-red-900"
+            >
+              Disconnect
+            </button>
+          </div>
+        ) : (
+          <div className=" flex items-center gap-4">
+            <TwitterIcon fill="gray" width={28} height={28} />
+            <div className=" text-gray-600 font-bold text-lg">Twitter</div>
+            <button
+              onClick={onTwitterLogin}
+              className="ml-auto px-4 py-2 bg-blue-500/50 dark:bg-blue-900/50 rounded-lg font-bold text-slate-800 dark:text-slate-200 hover:bg-blue-400 dark:hover:bg-blue-900"
+            >
+              Connect
+            </button>
+          </div>
+        )}
       </div>
       <button
         className="p-3 w-full bg-primary rounded-lg text-white hover:opacity-90"
         onClick={() => setIsDialogOpen(true)}
       >
-        {myAccount.id ? 'Update Account' : 'Create Account'}
+        {myAccountState.value.id ? 'Update Account' : 'Create Account'}
       </button>
       <ConfirmDialogModal
         isOpen={isDialogOpen}
         dialogType={
-          myAccount.id ? DialogType.UPDATE_ACCOUNT : DialogType.CREATE_ACCOUNT
+          myAccountState.value.id
+            ? DialogType.UPDATE_ACCOUNT
+            : DialogType.CREATE_ACCOUNT
         }
         onCancel={() => setIsDialogOpen(false)}
         onConfirm={handleUpdate}

@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import queries from '../../graphql';
+import { formatDateTimeToString } from './utils';
 
 const client = new ApolloClient({
   uri: 'https://api.thegraph.com/subgraphs/name/trust0212/dexify-finance-subgraph',
@@ -59,6 +60,108 @@ export const getHourlyStates = (
       resolve(res.data.fund.hourlyStates);
     } catch (error) {
       console.error('getHourlyStates: ', error);
+      resolve([]);
+    }
+  });
+
+export const getEntryFee = (fundId: string) =>
+  new Promise<number>(async (resolve) => {
+    try {
+      const query = queries.entranceDirectBurnFees(fundId);
+      const res = await client.query({ query });
+      if (res.data.entranceRateBurnFeeSettledEvents.length === 0) {
+        resolve(0);
+      } else {
+        resolve(
+          parseFloat(
+            res.data.entranceRateBurnFeeSettledEvents[0].sharesQuantity,
+          ),
+        );
+      }
+    } catch (error) {
+      resolve(0);
+    }
+  });
+
+export const getPerformanceFee = (comptrollerId: string) =>
+  new Promise<number>(async (resolve) => {
+    try {
+      const query = queries.performanceFee(comptrollerId);
+      const res = await client.query({ query });
+      if (res.data.performanceFeeSettings.length === 0) {
+        resolve(0);
+      } else {
+        resolve(parseFloat(res.data.performanceFeeSettings[0].rate));
+      }
+    } catch (error) {
+      resolve(0);
+    }
+  });
+
+export const getManagementFee = (comptrollerId: string) =>
+  new Promise<number>(async (resolve) => {
+    try {
+      const query = queries.managementFee(comptrollerId);
+      const res = await client.query({ query });
+      if (res.data.managementFeeSettings.length === 0) {
+        resolve(0);
+      } else {
+        resolve(
+          parseFloat(res.data.managementFeeSettings[0].scaledPerSecondRate),
+        );
+      }
+    } catch (error) {
+      resolve(0);
+    }
+  });
+
+export const getFundTransactions = (fundId: string) =>
+  new Promise<any[]>(async (resolve) => {
+    try {
+      const query = queries.fundTransactions(fundId);
+      const res = await client.query({ query });
+      const data = res.data;
+
+      const boughtEvents = data.sharesBoughtEvents.map((item: any) => ({
+        timestamp: parseInt(item.timestamp),
+        date: formatDateTimeToString(new Date(parseInt(item.timestamp) * 1000)),
+        from: item.transaction.from,
+        to: item.transaction.to,
+        type: 'INVEST',
+        amount: parseFloat(item.investmentAmount),
+        symbol: item.asset.symbol,
+        investor: item.investor.id,
+      }));
+
+      const redeemEvents = data.sharesRedeemedEvents.map((item: any) => ({
+        timestamp: parseInt(item.timestamp),
+        date: formatDateTimeToString(new Date(parseInt(item.timestamp) * 1000)),
+        from: item.transaction.from,
+        to: item.transaction.to,
+        type: 'WITHDRAW',
+        payoutAssetAmounts: item.payoutAssetAmounts,
+        investor: item.investor.id,
+      }));
+
+      const withdrawnEvents: any[] = [];
+
+      redeemEvents.map((item: any) => {
+        item.payoutAssetAmounts.map((payoutItem: any) => {
+          const event: any = {
+            ...item,
+            amount: parseFloat(payoutItem.amount),
+            symbol: payoutItem.asset.symbol,
+          };
+          withdrawnEvents.push(event);
+        });
+      });
+
+      const result = boughtEvents.concat(withdrawnEvents);
+      result.sort((a: any, b: any) => b.timestamp - a.timestamp);
+
+      resolve(result);
+    } catch (error) {
+      console.error('getFundTransactions: ', error);
       resolve([]);
     }
   });

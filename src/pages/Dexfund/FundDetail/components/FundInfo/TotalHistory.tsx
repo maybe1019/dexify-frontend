@@ -1,19 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from '../../../../../components/DataTable';
-import untypedData from '../../../data/history-data.json';
+import { getFundTransactions } from '../../../../../helpers/utils/graphql';
 import untypedField from '../../../data/history-fields.json';
 
 const fields: any = untypedField;
-const data: any = untypedData;
 
-function TotalHistory() {
+type TotalHistoryProps = {
+  fund: FundData;
+};
+
+function TotalHistory({ fund }: TotalHistoryProps) {
+  const [fundTransactions, setFundTransactions] = useState<any[]>([]);
+
+  useEffect(() => {
+    init();
+  }, []); //eslint-disable-line
+
+  const init = async () => {
+    const fundTransactions = await getFundTransactions(fund.id);
+    setFundTransactions(fundTransactions);
+  };
+
   return (
     <div>
       <DataTable
-        data={data}
+        data={fundTransactions}
         fields={fields}
-        pagination={false}
+        pagination={true}
         minWidth={375}
+        rowCnt={5}
       />
       <div className="xl:grid xl:grid-cols-2 mx-4 py-2">
         <p className="sm:text-xl text-center">Total PNL: 34% </p>

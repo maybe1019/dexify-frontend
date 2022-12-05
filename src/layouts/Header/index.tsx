@@ -1,11 +1,10 @@
 import { useEthers } from '@usedapp/core';
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ethers } from 'ethers';
 import { useAppDispatch } from '../../store';
 import {
   getMyAccount,
-  setMyAccountAsDevault,
+  setMyAccountAsDefault,
 } from '../../store/reducers/myAccountSlice';
 import ThemeModeToggle from './components/ThemeModeToggle';
 import ProfileDropdown from './components/ProfileDropdown';
@@ -16,7 +15,7 @@ import untypedLinks from './data/links.json';
 const links: Array<Record<string, string>> = untypedLinks;
 
 const Header = (): JSX.Element => {
-  const { account, library } = useEthers();
+  const { account } = useEthers();
 
   const dispatch = useAppDispatch();
 
@@ -26,13 +25,13 @@ const Header = (): JSX.Element => {
     if (account) {
       initAccount();
     } else {
-      dispatch(setMyAccountAsDevault());
+      dispatch(setMyAccountAsDefault());
     }
   }, [account]); //eslint-disable-line
 
   const initAccount = async () => {
     try {
-      dispatch(getMyAccount(library as ethers.providers.JsonRpcProvider));
+      dispatch(getMyAccount(account as string));
     } catch (error) {
       throw error;
     }
@@ -48,7 +47,9 @@ const Header = (): JSX.Element => {
             <Link
               to={link.path}
               className={
-                'nav-item' + (link.path === location.pathname ? ' active' : '')
+                'nav-item' +
+                (link.path === location.pathname ? ' active' : '') +
+                (link.path === '/portfolio' && !account ? ' hidden' : '')
               }
               key={link.name}
             >

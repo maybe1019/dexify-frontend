@@ -6,6 +6,9 @@ type User = {
   bio: string;
   name: string;
   image: string;
+  twitterName: string;
+  twitterScreenName: string;
+  twitterImage: string;
 };
 
 type Token = {
@@ -27,6 +30,7 @@ type FundData = {
   id: string;
   name: string;
   manager: string;
+  comptrollerId: string;
   aum: number;
   topAsset: string;
   topAssetAUM: number;
@@ -41,4 +45,9 @@ type FundData = {
   denominationAsset: string;
   startTimestamp: number;
   holdings: HoldingToken[];
+};
+
+type AccountState = {
+  value: User;
+  status: ThunkStatus;
 };
