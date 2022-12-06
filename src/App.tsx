@@ -20,7 +20,7 @@ const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
 const Dexfund = React.lazy(() => import('./pages/Dexfund'));
 const Manage = React.lazy(() => import('./pages/Manage'));
-const FundDetail = React.lazy(() => import('./pages/Dexfund/FundDetail'));
+const FundDetail = React.lazy(() => import('./pages/FundDetail'));
 
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);

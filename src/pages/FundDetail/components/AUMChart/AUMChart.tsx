@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import FundChart from '../../../../../components/FundChart';
-import DatePeriodDropDown from '../../../../../components/DatePeriodDropDown';
-import { getAumHistoryOf } from '../../../../../helpers/utils/fund';
-import { formatFloatFixed } from '../../../../../helpers/utils/utils';
-import { ComponentSpinner } from '../../../../../components/Spinner';
+import FundChart from '../../../../components/FundChart';
+import DatePeriodDropDown from '../../../../components/DatePeriodDropDown';
+import { getAumHistoryOf } from '../../../../helpers/utils/fund';
+import { formatFloatFixed } from '../../../../helpers/utils/utils';
+import { ComponentSpinner } from '../../../../components/Spinner';
 
 type AUMChartProps = {
   fund: FundData;

@@ -1,6 +1,6 @@
 import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react';
-import tokenLists from '../../../../../config/tokenlists.json';
+import tokenLists from '../../../../config/tokenlists.json';
 import TokenListDropdown from './TokenListDropdown';
 
 function Swap() {

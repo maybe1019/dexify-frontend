@@ -3,7 +3,7 @@ import {
   getEntryFee,
   getManagementFee,
   getPerformanceFee,
-} from '../../../../../helpers/utils/graphql';
+} from '../../../../helpers/utils/graphql';
 
 type FeesProp = {
   fund: FundData;

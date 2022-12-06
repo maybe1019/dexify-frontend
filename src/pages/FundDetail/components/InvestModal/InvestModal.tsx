@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useEthers, useTokenBalance } from '@usedapp/core';
 import { Fragment, useEffect, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
-import api from '../../../../../api';
+import api from '../../../../api';
 
 type Props = {
   isOpen: boolean;
