@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import FundChart from '../../../../../components/FundChart';
-import { ReactComponent as TwitterIcon } from '../../../../../assets/images/svg/twitter-icon.svg';
 import DatePeriodDropDown from '../../../../../components/DatePeriodDropDown';
 import { getAumHistoryOf } from '../../../../../helpers/utils/fund';
 import { formatFloatFixed } from '../../../../../helpers/utils/utils';
@@ -38,10 +37,6 @@ const AUMChart = ({ fund }: AUMChartProps) => {
             className="w-12 rounded-full"
           />
           <p className="text-base font-bold sm:text-xl mx-4">{fund.name}</p>
-        </div>
-        <div className="twitter-button">
-          <span className="text-xs leading-[12px] text-[#03A9F4]">Twitter</span>
-          <TwitterIcon />
         </div>
       </div>
       <div className="flex items-center justify-center my-4 mx-6 gap-4 md:mx-12 md:gap-12 text-center ">

@@ -47,7 +47,9 @@ const Header = (): JSX.Element => {
             <Link
               to={link.path}
               className={
-                'nav-item' + (link.path === location.pathname ? ' active' : '')
+                'nav-item' +
+                (link.path === location.pathname ? ' active' : '') +
+                (link.path === '/portfolio' && !account ? ' hidden' : '')
               }
               key={link.name}
             >

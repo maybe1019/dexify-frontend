@@ -6,6 +6,9 @@ type User = {
   bio: string;
   name: string;
   image: string;
+  twitterName: string;
+  twitterScreenName: string;
+  twitterImage: string;
 };
 
 type Token = {
