@@ -210,6 +210,10 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
         limit = 24;
         states = await getHourlyStates(dexfund.id, limit);
         unit = unitDay / 24;
+      } else if (days === 7) {
+        limit = days * 24;
+        states = await getHourlyStates(dexfund.id, limit);
+        unit = Math.floor((Math.min(dexfund.age, days) * unitDay) / 30);
       } else {
         limit = days;
         states = await getDailyStates(dexfund.id, limit);
@@ -228,7 +232,8 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
       );
 
       const aumHistory: any[] = [];
-      for (let timestamp = startAt; timestamp < Date.now(); timestamp += unit) {
+      let timestamp = startAt;
+      for (; timestamp <= Date.now(); timestamp += unit) {
         const holdings = getHoldingsFromStatesAt(states, timestamp);
         const aum = calcAUMfromHoldings(holdings, coinPrices, timestamp);
         aumHistory.push({
@@ -236,6 +241,14 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
           value: formatFloatFixed(aum),
         });
       }
+
+      timestamp = Date.now();
+      const holdings = getHoldingsFromStatesAt(states, timestamp);
+      const aum = calcAUMfromHoldings(holdings, coinPrices, timestamp);
+      aumHistory.push({
+        title: formatTimestampToString(timestamp, unit),
+        value: formatFloatFixed(aum),
+      });
 
       resolve(aumHistory);
     } catch (error) {

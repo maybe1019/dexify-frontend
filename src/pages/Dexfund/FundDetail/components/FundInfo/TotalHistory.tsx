@@ -11,6 +11,7 @@ type TotalHistoryProps = {
 
 function TotalHistory({ fund }: TotalHistoryProps) {
   const [fundTransactions, setFundTransactions] = useState<any[]>([]);
+  const [transactionLoading, setTransactionLoading] = useState<boolean>(true);
 
   useEffect(() => {
     init();
@@ -19,6 +20,7 @@ function TotalHistory({ fund }: TotalHistoryProps) {
   const init = async () => {
     const fundTransactions = await getFundTransactions(fund.id);
     setFundTransactions(fundTransactions);
+    setTransactionLoading(false);
   };
 
   return (
@@ -29,6 +31,7 @@ function TotalHistory({ fund }: TotalHistoryProps) {
         pagination={true}
         minWidth={375}
         rowCnt={5}
+        loading={transactionLoading}
       />
       <div className="xl:grid xl:grid-cols-2 mx-4 py-2">
         <p className="sm:text-xl text-center">Total PNL: 34% </p>

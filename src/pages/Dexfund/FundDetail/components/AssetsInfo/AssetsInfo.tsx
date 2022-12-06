@@ -16,6 +16,7 @@ type AssetsInfoProps = {
 
 function AssetsInfo({ fund }: AssetsInfoProps) {
   const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     init();
@@ -44,6 +45,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
       };
     });
     setData(tmp);
+    setLoading(false);
   };
 
   return (
@@ -54,6 +56,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
         pagination={false}
         minWidth={400}
         rowCnt={10}
+        loading={loading}
       />
     </div>
   );
