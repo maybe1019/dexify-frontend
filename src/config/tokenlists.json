@@ -8,14 +8,6 @@
     "coingeckoId": "wbnb"
   },
   {
-    "name": "BNB",
-    "symbol": "BNB",
-    "address": "",
-    "decimals": 18,
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
-    "coingeckoId": "wbnb"
-  },
-  {
     "name": "BUSD Token",
     "symbol": "BUSD",
     "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",

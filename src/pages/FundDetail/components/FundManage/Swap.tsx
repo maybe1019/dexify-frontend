@@ -1,11 +1,16 @@
 import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/solid';
-import React, { useState } from 'react';
+import { useTokenBalance } from '@usedapp/core';
+import { formatEther } from '@ethersproject/units';
+import React, { useEffect, useState } from 'react';
 import tokenLists from '../../../../config/tokenlists.json';
 import TokenListDropdown from './TokenListDropdown';
+import api from '../../../../api';
 
-function Swap() {
+function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
   const [receiveToken, setReceiveToken] = useState<Token>(tokenLists[1]);
+  const [swapAmount, setSwapAmount] = useState(0);
+  const tokenBalance = useTokenBalance(swapToken.address, fundAddress);
 
   const swapFromandToTokens = () => {
     const tmpS = { ...swapToken };
@@ -13,6 +18,15 @@ function Swap() {
     setSwapToken(tmpR);
     setReceiveToken(tmpS);
   };
+
+  const [tokenPrice, setTokenPrice] = useState<number>(1);
+  const getTokenPrice = async (tokenCoingeckoId: string) => {
+    const bnbPrice = await api.token.getTokenPrice(tokenCoingeckoId);
+    setTokenPrice(bnbPrice);
+  };
+  useEffect(() => {
+    getTokenPrice(swapToken.coingeckoId);
+  }, [swapToken]);
 
   return (
     <div className="card shadow-xl rounded-2xl py-6 px-4 lg:px-6 ">
@@ -23,6 +37,19 @@ function Swap() {
             <div className="flex gap-2 ">
               <input
                 type="number"
+                value={swapAmount}
+                min={0}
+                onChange={(e: any) => {
+                  if (e.target.value === '') {
+                    setSwapAmount(0);
+                    return;
+                  }
+                  if (swapAmount === 0) {
+                    setSwapAmount(e.target.value.replace('0', ''));
+                    return;
+                  }
+                  setSwapAmount(e.target.value);
+                }}
                 className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
                 placeholder="Input Amount"
               />
@@ -36,16 +63,29 @@ function Swap() {
           </div>
           <div className="flex items-center justify-between mt-4 mb-2 mx-2">
             <div className=" text-text-3 dark:text-text-3-dark text-sm">
-              = $4000
+              = ${tokenPrice * swapAmount}
             </div>
             <div className=" text-text-3 dark:text-text-3-dark text-sm ml-auto">
-              Balance: 1000
+              Balance:{' '}
+              {tokenBalance
+                ? parseFloat(formatEther(tokenBalance)).toFixed(2)
+                : 0.0}
             </div>
           </div>
           <div className="grid grid-cols-4 text-xs gap-2">
-            {['25%', '50%', '75%', 'MAX'].map((value) => (
+            {['25%', '50%', '75%', 'MAX'].map((value, i) => (
               <button
-                key={value}
+                key={i + 1}
+                index-data={i + 1}
+                onClick={(e: any) => {
+                  if (tokenBalance) {
+                    const val =
+                      (e.target.attributes[0].value *
+                        parseFloat(formatEther(tokenBalance))) /
+                      4;
+                    setSwapAmount(val);
+                  }
+                }}
                 className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"
               >
                 {value}
@@ -73,14 +113,6 @@ function Swap() {
                 token={receiveToken}
                 setToken={setReceiveToken}
               ></TokenListDropdown>
-            </div>
-          </div>
-          <div className="flex items-center justify-between mt-4 mx-2">
-            <div className=" text-text-3 dark:text-text-3-dark text-sm">
-              = $4000
-            </div>
-            <div className=" text-text-3 dark:text-text-3-dark text-sm ml-auto">
-              Balance: 1000
             </div>
           </div>
         </div>
