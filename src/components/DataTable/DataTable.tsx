@@ -20,6 +20,7 @@ type DataTableProps = {
   pagination: boolean;
   minWidth: number;
   rowCnt: number;
+  loading: boolean;
 };
 
 const DataTable = ({
@@ -28,6 +29,7 @@ const DataTable = ({
   pagination,
   minWidth,
   rowCnt,
+  loading,
 }: DataTableProps) => {
   const [page, setPage] = useState<number>(1);
   const [sortBy, setSortBy] = useState<string>('');
@@ -74,7 +76,23 @@ const DataTable = ({
             </tr>
           </thead>
           <tbody>
-            {data.length > 0 ? (
+            {loading ? (
+              Array(rowCnt)
+                .fill(1)
+                .map((v, i) => (
+                  <tr
+                    key={i}
+                    className="border-b border-b-[#8881] last:border-b-0 relative"
+                  >
+                    {fields.map((field) => (
+                      <td key={field.title} className="px-3 py-3 md:py-4">
+                        -
+                      </td>
+                    ))}
+                    <td className="absolute h-5 w-[calc(100%-24px)] skeleton left-3 top-3 md:top-4 rounded-md"></td>
+                  </tr>
+                ))
+            ) : data.length > 0 ? (
               showList
                 .slice((page - 1) * rowCnt, page * rowCnt)
                 .map((d, index) => (

@@ -7,15 +7,15 @@ import DataTable from '../../../components/DataTable';
 import untypedFields from '../data/fields.json';
 
 const AllFundsTable = () => {
-  const allFunds = useSelector((state: RootState) => state.allFunds.value);
+  const allFunds = useSelector((state: RootState) => state.allFunds);
 
   const [dexifyData, setDexifyData] = useState<any[]>([]);
   const [filteredData, setFilteredData] = useState<any[]>([]);
 
   useEffect(() => {
-    if (allFunds.length > 0) {
-      setDexifyData(allFunds.map((f) => f));
-      setFilteredData(allFunds.map((f) => f));
+    if (allFunds.value.length > 0) {
+      setDexifyData(allFunds.value.map((f) => f));
+      setFilteredData(allFunds.value.map((f) => f));
     }
   }, [allFunds]);
 
@@ -46,6 +46,7 @@ const AllFundsTable = () => {
           pagination={true}
           minWidth={1000}
           rowCnt={10}
+          loading={allFunds.loading}
         />
       </div>
     </div>

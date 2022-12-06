@@ -75,7 +75,7 @@ export const formatTimestampToString = (
   const date = new Date(timestamp);
   const milisecDay = 1000 * 60 * 60 * 24;
   if (unit < milisecDay) {
-    return `${date.getDate()} ${
+    return `${months[date.getMonth()]} ${date.getDate()} ${
       date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
     }:00`;
   } else {

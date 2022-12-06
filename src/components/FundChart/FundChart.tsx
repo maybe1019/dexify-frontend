@@ -15,6 +15,19 @@ type FundChartProps = {
   yAxis: boolean;
 };
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className=" p-2 bg-white/50 dark:bg-black/50">
+        <p className=" text-sm">{label}</p>
+        <p className="text-primary">AUM: ${payload[0].value}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -39,7 +52,7 @@ const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         {xAxis && <XAxis dataKey="title" height={20} />}
         {yAxis && <YAxis width={45} />}
-        <Tooltip />
+        <Tooltip content={<CustomTooltip />} />
         <Area
           type="monotone"
           dataKey="value"
