@@ -11,18 +11,18 @@ import { ChevronUpIcon } from '@heroicons/react/24/solid';
 import AssetsInfo from './components/AssetsInfo';
 import Tweets from './components/Tweets';
 import AUMChart from './components/AUMChart';
-import { useOutsideHandler } from '../../../hooks/useOutsideHandler';
-import { useInvest } from '../../../hooks/useInvest';
+import { useOutsideHandler } from '../../hooks/useOutsideHandler';
+import { useInvest } from '../../hooks/useInvest';
 import { useEthers } from '@usedapp/core';
 import InvestModal from './components/InvestModal';
-import utils from '../../../helpers/utils';
+import utils from '../../helpers/utils';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { getTokenInfo } from '../../../helpers/utils/utils';
+import { RootState } from '../../store';
+import { getTokenInfo } from '../../helpers/utils/utils';
 import WithdrawMOdal from './components/WithdrawModal';
-import { setPageLoading } from '../../../store/reducers/pageLoadingSlice';
-import { useWithdraw } from '../../../hooks/useWithdraw';
+import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
+import { useWithdraw } from '../../hooks/useWithdraw';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

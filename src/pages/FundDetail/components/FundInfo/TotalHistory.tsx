@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import DataTable from '../../../../../components/DataTable';
-import { getFundTransactions } from '../../../../../helpers/utils/graphql';
-import untypedField from '../../../data/history-fields.json';
+import DataTable from '../../../../components/DataTable';
+import { getFundTransactions } from '../../../../helpers/utils/graphql';
+import untypedField from '../../../Dexfund/data/history-fields.json';
 
 const fields: any = untypedField;
 
