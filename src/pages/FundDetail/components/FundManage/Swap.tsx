@@ -13,14 +13,11 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapAmount, setSwapAmount] = useState(0);
   const tokenBalance = useTokenBalance(swapToken.address, fundAddress);
 
-  const { loading, tradePaths } = useSwapData(
-    fundAddress,
+  const { loading, tradePaths, priceRoute } = useSwapData(
     swapToken,
     receiveToken,
     swapAmount,
   );
-
-  console.log(tradePaths);
 
   const swapFromAndToTokens = () => {
     const tmpS = { ...swapToken };
@@ -66,7 +63,8 @@ function Swap({ fundAddress }: { fundAddress: string }) {
 
               <TokenListDropdown
                 tokenList={tokenLists}
-                token={swapToken}
+                oppToken={receiveToken}
+                selectedToken={swapToken}
                 setToken={setSwapToken}
               ></TokenListDropdown>
             </div>
@@ -115,12 +113,15 @@ function Swap({ fundAddress }: { fundAddress: string }) {
           <div id="menu-button" aria-expanded="true" aria-haspopup="true">
             <div className="flex gap-2 ">
               <div className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark">
-                100
+                {priceRoute
+                  ? parseFloat(formatEther(priceRoute.destAmount)).toFixed(4)
+                  : '-'}
               </div>
 
               <TokenListDropdown
                 tokenList={tokenLists}
-                token={receiveToken}
+                oppToken={swapToken}
+                selectedToken={receiveToken}
                 setToken={setReceiveToken}
               ></TokenListDropdown>
             </div>
@@ -130,12 +131,18 @@ function Swap({ fundAddress }: { fundAddress: string }) {
           <div className="flex justify-between items-center">
             <span className="col-span-1 text-center text-sm">Rate</span>
             <span className="col-span-2 text-primary font-bold">
-              1 BNB = 650 USDT
+              {'1 ' + receiveToken.symbol + ' = '}
+              {priceRoute
+                ? (priceRoute.srcAmount / priceRoute.destAmount).toFixed(2)
+                : '-'}{' '}
+              {swapToken.symbol}
             </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="col-span-1 text-center text-sm">Fee</span>
-            <span className="col-span-2 text-primary font-bold">$0.019</span>
+            <span className="col-span-2 text-primary font-bold">
+              {priceRoute ? priceRoute.gasCostUSD : '-'}
+            </span>
           </div>
         </div>
         <button className="w-full bg-primary p-3 rounded-lg text-white max-w-[250px] mx-auto block shadow-[0_1px_1px_1px_#9926af]">
