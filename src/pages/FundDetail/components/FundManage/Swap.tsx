@@ -6,6 +6,7 @@ import tokenLists from '../../../../config/tokenlists.json';
 import TokenListDropdown from './TokenListDropdown';
 import api from '../../../../api';
 import { useSwapData } from '../../../../hooks/useSwapData';
+import { useSwap } from '../../../../hooks/useSwap';
 
 function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
@@ -13,11 +14,17 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapAmount, setSwapAmount] = useState(0);
   const tokenBalance = useTokenBalance(swapToken.address, fundAddress);
 
-  const { loading, tradePaths, priceRoute, impactValue } = useSwapData(
+  const { loading, priceRoute, impactValue } = useSwapData(
     swapToken,
     receiveToken,
     swapAmount,
   );
+
+  const { swap } = useSwap();
+
+  const onSwap = async () => {
+    await swap(fundAddress, priceRoute, swapToken, receiveToken);
+  };
 
   const swapFromAndToTokens = () => {
     const tmpS = { ...swapToken };
@@ -155,7 +162,10 @@ function Swap({ fundAddress }: { fundAddress: string }) {
             </div>
           )}
         </div>
-        <button className="w-full bg-primary p-3 rounded-lg text-white max-w-[250px] mx-auto block shadow-[0_1px_1px_1px_#9926af]">
+        <button
+          onClick={onSwap}
+          className="w-full bg-primary p-3 rounded-lg text-white max-w-[250px] mx-auto block shadow-[0_1px_1px_1px_#9926af]"
+        >
           Swap
         </button>
       </div>
