@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { useEthers } from '@usedapp/core';
 import { ethers } from 'ethers';
 import { useCallback, useState } from 'react';
@@ -47,7 +48,7 @@ export const useInvest = (fundAddr: string) => {
         if (parseFloat(formatEther(allowance)) < amount) {
           const receipt = await assetContract.approve(
             accessorAddr,
-            parseEther(String(1000000)),
+            parseEther(Number.MAX_SAFE_INTEGER.toString()),
           );
           await receipt.wait();
         }
