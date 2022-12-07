@@ -23,6 +23,8 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const { swap } = useSwap();
 
   const onSwap = async () => {
+    console.log('swap button clicked');
+    return;
     await swap(fundAddress, priceRoute, swapToken, receiveToken);
   };
 
@@ -119,7 +121,10 @@ function Swap({ fundAddress }: { fundAddress: string }) {
         <div className="w-full bg-[#8881] p-6 rounded-2xl shadow-lg">
           <div id="menu-button" aria-expanded="true" aria-haspopup="true">
             <div className="flex gap-2 ">
-              <div className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark">
+              <div className="bg-transparent w-20 overflow-auto outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark relative">
+                {loading && (
+                  <div className=" absolute skeleton w-full h-full left-0 top-0 z-50 rounded-xl"></div>
+                )}
                 {priceRoute
                   ? parseFloat(formatEther(priceRoute.destAmount)).toFixed(4)
                   : '-'}
@@ -137,30 +142,45 @@ function Swap({ fundAddress }: { fundAddress: string }) {
         <div className="mx-4 mt-6 my-20 flex flex-col gap-2">
           <div className="flex justify-between items-center">
             <span className="col-span-1 text-center text-sm">Rate</span>
-            <span className="col-span-2 text-primary font-bold">
-              {'1 ' + receiveToken.symbol + ' = '}
-              {priceRoute
-                ? (priceRoute.srcAmount / priceRoute.destAmount).toFixed(2)
-                : '-'}{' '}
-              {swapToken.symbol}
-            </span>
+            <div className="relative">
+              {loading && (
+                <div className=" absolute skeleton w-full h-full left-0 top-0 z-50 rounded-xl"></div>
+              )}
+              <span className="col-span-2 text-primary font-bold">
+                {'1 ' + receiveToken.symbol + ' = '}
+                {priceRoute
+                  ? (priceRoute.srcAmount / priceRoute.destAmount).toFixed(2)
+                  : '-'}{' '}
+                {swapToken.symbol}
+              </span>
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <span className="col-span-1 text-center text-sm">Fee</span>
-            <span className="col-span-2 text-primary font-bold">
-              {priceRoute ? priceRoute.gasCostUSD : '-'}
-            </span>
-          </div>
-          {priceRoute && priceRoute.maxImpactReached && (
-            <div className="flex justify-between items-center">
-              <span className="col-span-1 text-center text-sm">
-                Price Impact
-              </span>
-              <span className="col-span-2 text-red-600 font-bold">
-                {'- ' + impactValue}
+            <div className="relative">
+              {loading && (
+                <div className=" absolute skeleton w-full h-full left-0 top-0 z-50 rounded-xl"></div>
+              )}
+              <span className="col-span-2 text-primary font-bold">
+                {priceRoute ? priceRoute.gasCostUSD : '-'}
               </span>
             </div>
-          )}
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="col-span-1 text-center text-sm">Price Impact</span>
+            {priceRoute && priceRoute.maxImpactReached ? (
+              <div className="relative">
+                {loading && (
+                  <div className=" absolute skeleton w-full h-full left-0 top-0 z-50 rounded-xl"></div>
+                )}
+                <span className="col-span-2 text-red-600 font-bold">
+                  {'- ' + impactValue}
+                </span>
+              </div>
+            ) : (
+              <span className="col-span-2 text-primary font-bold">-</span>
+            )}
+          </div>
         </div>
         <button
           onClick={onSwap}
