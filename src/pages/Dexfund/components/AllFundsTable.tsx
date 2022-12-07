@@ -14,8 +14,14 @@ const AllFundsTable = () => {
 
   useEffect(() => {
     if (allFunds.value.length > 0) {
-      setDexifyData(allFunds.value.map((f) => f));
-      setFilteredData(allFunds.value.map((f) => f));
+      const data = allFunds.value.map((f) => ({
+        ...f,
+        volume24H: f.aum === 0 ? 0 : (f.aum / f.aum24H) * 100 - 100,
+        volume7D: f.aum === 0 ? 0 : (f.aum / f.aum7D) * 100 - 100,
+        volumeAll: f.aum === 0 ? 0 : (f.aum / f.aumFirst) * 100 - 100,
+      }));
+      setDexifyData(data);
+      setFilteredData(data.map((d) => d));
     }
   }, [allFunds]);
 
