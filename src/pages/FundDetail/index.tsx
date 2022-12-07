@@ -91,7 +91,7 @@ const FundDetail = () => {
       utils.notification.warning('Error', 'Amount should be greater than 0');
       return;
     }
-    await investFundDenomination(account, amount);
+    await investFundDenomination(amount);
     setIsOpenActionModal(0);
   };
 
