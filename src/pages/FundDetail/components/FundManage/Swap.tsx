@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import tokenLists from '../../../../config/tokenlists.json';
 import TokenListDropdown from './TokenListDropdown';
 import api from '../../../../api';
+import { useSwapData } from '../../../../hooks/useSwapData';
 
 function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
@@ -12,7 +13,16 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapAmount, setSwapAmount] = useState(0);
   const tokenBalance = useTokenBalance(swapToken.address, fundAddress);
 
-  const swapFromandToTokens = () => {
+  const { loading, tradePaths } = useSwapData(
+    fundAddress,
+    swapToken,
+    receiveToken,
+    swapAmount,
+  );
+
+  console.log(tradePaths);
+
+  const swapFromAndToTokens = () => {
     const tmpS = { ...swapToken };
     const tmpR = { ...receiveToken };
     setSwapToken(tmpR);
@@ -96,7 +106,7 @@ function Swap({ fundAddress }: { fundAddress: string }) {
         <div className="my-2 relative">
           <button
             className="absolute translate-x-[-50%] left-1/2 top-[-24px] bg-bg-3 dark:bg-bg-3-dark border-4 rounded-lg border-bg-2 dark:border-bg-2-dark w-10 h-10 flex items-center justify-center"
-            onClick={swapFromandToTokens}
+            onClick={swapFromAndToTokens}
           >
             <ArrowPathRoundedSquareIcon width={20} />
           </button>
