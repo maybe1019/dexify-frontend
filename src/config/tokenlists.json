@@ -64,14 +64,6 @@
     "coingeckoId": "dai"
   },
   {
-    "name": "DPI Token",
-    "symbol": "DPI",
-    "address": "0x564d4a58fd000aa7b3e80f8a1f2a8e67f759151d",
-    "decimals": 18,
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/7055.png",
-    "coingeckoId": "defipulse-index"
-  },
-  {
     "name": "Chinlink",
     "symbol": "LINK",
     "address": "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",

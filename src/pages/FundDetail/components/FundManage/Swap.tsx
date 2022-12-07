@@ -13,7 +13,7 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapAmount, setSwapAmount] = useState(0);
   const tokenBalance = useTokenBalance(swapToken.address, fundAddress);
 
-  const { loading, tradePaths, priceRoute } = useSwapData(
+  const { loading, tradePaths, priceRoute, impactValue } = useSwapData(
     swapToken,
     receiveToken,
     swapAmount,
@@ -144,6 +144,16 @@ function Swap({ fundAddress }: { fundAddress: string }) {
               {priceRoute ? priceRoute.gasCostUSD : '-'}
             </span>
           </div>
+          {priceRoute && priceRoute.maxImpactReached && (
+            <div className="flex justify-between items-center">
+              <span className="col-span-1 text-center text-sm">
+                Price Impact
+              </span>
+              <span className="col-span-2 text-red-600 font-bold">
+                {'- ' + impactValue}
+              </span>
+            </div>
+          )}
         </div>
         <button className="w-full bg-primary p-3 rounded-lg text-white max-w-[250px] mx-auto block shadow-[0_1px_1px_1px_#9926af]">
           Swap
