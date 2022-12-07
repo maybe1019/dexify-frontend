@@ -10,6 +10,18 @@ const fundsPerInvestor = (address: string): DocumentNode => gql`
       shares {
         totalSupply
       }
+      portfolio {
+        holdings {
+          amount
+          asset {
+            id
+            symbol
+            price {
+              price
+            }
+          }
+        }
+      }
       investments(where: {investor: "${address.toLowerCase()}" }) {
         investor {
           id
