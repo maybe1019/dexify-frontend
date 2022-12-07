@@ -9,7 +9,7 @@ export const useVaultLib = () => {
   const getVaultLibContract = useCallback(
     (address: string) => {
       if (!library || !address) return undefined;
-      return VaultLib__factory.connect(address, signer);
+      return VaultLib__factory.connect(address, signer || library);
     },
     [library],
   );
