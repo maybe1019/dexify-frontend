@@ -9,7 +9,10 @@ export const useFundDeployerContract = () => {
   const signer = (library as ethers.providers.JsonRpcProvider)?.getSigner();
   const fundDeployerContract = useMemo(() => {
     if (!library) return undefined;
-    return FundDeployer__factory.connect(FundDeployerAddress, signer);
+    return FundDeployer__factory.connect(
+      FundDeployerAddress,
+      signer || library,
+    );
   }, [library]);
 
   return fundDeployerContract;

@@ -91,7 +91,7 @@ const FundDetail = () => {
       utils.notification.warning('Error', 'Amount should be greater than 0');
       return;
     }
-    await investFundDenomination(account, amount);
+    await investFundDenomination(amount);
     setIsOpenActionModal(0);
   };
 
@@ -140,7 +140,7 @@ const FundDetail = () => {
                 </Disclosure.Button>
                 <Disclosure.Panel className="w-full pt-4 pb-2 text-sm text-gray-500">
                   <div className="grid gap-4 w-full">
-                    <Swap />
+                    <Swap fundAddress={fundAddress as string} />
                     <PriceChart />
                   </div>
                 </Disclosure.Panel>
@@ -269,7 +269,7 @@ const FundDetail = () => {
         </Tab.Group>
         {manageStep ? (
           <>
-            <Swap />
+            <Swap fundAddress={fundAddress as string} />
             <PriceChart />
           </>
         ) : (
