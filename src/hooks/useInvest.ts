@@ -10,11 +10,11 @@ import {
   useVaultLib,
   useVaultLibContract,
 } from './contracts/useVaultLibContract';
-import { parseEther } from '@ethersproject/units';
+import { parseEther, formatEther } from '@ethersproject/units';
 import utils from '../helpers/utils';
 
 export const useInvest = (fundAddr: string) => {
-  const { library } = useEthers();
+  const { library, account } = useEthers();
   const signer = (library as ethers.providers.JsonRpcProvider)?.getSigner();
   const { isWrongNetwork } = useCheckNetwork();
   const disabled = library === undefined || isWrongNetwork;
@@ -27,10 +27,10 @@ export const useInvest = (fundAddr: string) => {
   const { getDenominationAssetAddr } = useComptrollerLibContract();
 
   const investFundDenomination = useCallback(
-    async (investor: string | undefined, amount: number) => {
+    async (amount: number) => {
       try {
         if (isWrongNetwork) throw new Error('Wrong Network');
-        if (!investor) throw new Error('Undefined wallet');
+        if (!account) throw new Error('Undefined wallet');
         if (amount <= 0) throw new Error('Amount should be greater than 0');
         setLoading(true);
 
@@ -43,16 +43,19 @@ export const useInvest = (fundAddr: string) => {
         const assetContract = getVaultLibContract(assetAddr);
 
         if (!assetContract) throw new Error('Not found asset');
-        const receipt = await assetContract.approve(
-          accessorAddr,
-          parseEther(String(amount)),
-        );
-        await receipt.wait();
+        const allowance = await assetContract.allowance(account, accessorAddr);
+        if (parseFloat(formatEther(allowance)) < amount) {
+          const receipt = await assetContract.approve(
+            accessorAddr,
+            parseEther(String(1000000)),
+          );
+          await receipt.wait();
+        }
 
         const comptrollerLabContract = getComptrollerLibContract(accessorAddr);
         if (!comptrollerLabContract) throw new Error('Not found Fund');
         const buySharesTx = await comptrollerLabContract.buyShares(
-          [investor],
+          [account],
           [parseEther(String(amount))],
           [1],
         );
@@ -70,6 +73,7 @@ export const useInvest = (fundAddr: string) => {
     },
     [
       signer,
+      account,
       getVaultLibContract,
       getComptrollerLibContract,
       getDenominationAssetAddr,
