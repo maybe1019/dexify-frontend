@@ -29,7 +29,7 @@ function TotalHistory({ fund }: TotalHistoryProps) {
         data={fundTransactions}
         fields={fields}
         pagination={true}
-        minWidth={375}
+        minWidth={550}
         rowCnt={5}
         loading={transactionLoading}
       />

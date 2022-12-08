@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { useEthers } from '@usedapp/core';
 import { ethers } from 'ethers';
 import { useCallback, useState } from 'react';
