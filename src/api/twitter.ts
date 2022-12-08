@@ -8,7 +8,7 @@ export const twitterLogin = () => {
       const { data } = await axios.get(`${baseUri}/twitter/auth_link`);
       localStorage.setItem('oauth_token', data.oauth_token);
       localStorage.setItem('oauth_token_secret', data.oauth_token_secret);
-      window.location.href = data.url;
+      window.location.href = `https://api.twitter.com/oauth/authorize?oauth_token=${data.oauth_token}`;
     } catch (error) {
       console.error(error);
     }

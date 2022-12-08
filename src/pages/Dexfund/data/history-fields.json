@@ -8,6 +8,14 @@
     "colorful": false
   },
   {
+    "name": "investor",
+    "title": "Investor",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
     "name": "symbol",
     "title": "Asset",
     "prefix": "",

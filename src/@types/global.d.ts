@@ -36,9 +36,9 @@ type FundData = {
   topAssetAUM: number;
   investorId: number;
   age: number;
-  volume24H: number;
-  volume7D: number;
-  volumeAll: number;
+  aum24H: number;
+  aum7D: number;
+  aumFirst: number;
   minInvestment: number;
   maxInvestment: number;
   risk: number;

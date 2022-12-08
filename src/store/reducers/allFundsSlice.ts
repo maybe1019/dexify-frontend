@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 // Define the initial state using that type
-const initialState: { value: FundData[]; status: string } = {
-  status: 'loading',
+const initialState: { value: FundData[]; loading: boolean } = {
+  loading: true,
   value: [],
 };
 
@@ -14,7 +14,7 @@ export const allFundsSlice = createSlice({
   reducers: {
     setAllFunds: (state, action) => {
       state.value = action.payload;
-      state.status = 'loaded';
+      state.loading = false;
       return state;
     },
   },

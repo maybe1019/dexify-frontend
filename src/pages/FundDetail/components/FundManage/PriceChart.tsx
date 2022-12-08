@@ -1,6 +1,6 @@
 import React from 'react';
-import FundChart from '../../../../../components/FundChart';
-import data from '../../../../../helpers/data/chartInitData.json';
+import FundChart from '../../../../components/FundChart';
+import data from '../../../../helpers/data/chartInitData.json';
 
 function PriceChart() {
   return (

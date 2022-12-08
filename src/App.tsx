@@ -20,7 +20,7 @@ const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
 const Dexfund = React.lazy(() => import('./pages/Dexfund'));
 const Manage = React.lazy(() => import('./pages/Manage'));
-const FundDetail = React.lazy(() => import('./pages/Dexfund/FundDetail'));
+const FundDetail = React.lazy(() => import('./pages/FundDetail'));
 
 function App() {
   const themeMode = useAppSelector((state) => state.themeMode.value);
@@ -109,6 +109,15 @@ function App() {
             property="og:description"
             content={metadata.default.description}
           />
+          <meta
+            name="twitter:title"
+            content="Dexify - Decentralised Social Asset Management on the BNB Chain"
+          ></meta>
+          <meta
+            name="twitter:description"
+            content={metadata.default.description}
+          ></meta>
+          <meta name="twitter:card" content="summary_large_image"></meta>
           <meta property="og:image" content={metadata.default.image} />
           <link rel="icon" type="image/png" href="favicon.ico" />
         </Helmet>

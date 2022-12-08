@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { shortenAddress } from '@usedapp/core';
 import queries from '../../graphql';
 import { formatDateTimeToString } from './utils';
 
@@ -130,7 +131,7 @@ export const getFundTransactions = (fundId: string) =>
         type: 'INVEST',
         amount: parseFloat(item.investmentAmount),
         symbol: item.asset.symbol,
-        investor: item.investor.id,
+        investor: shortenAddress(item.investor.id),
       }));
 
       const redeemEvents = data.sharesRedeemedEvents.map((item: any) => ({
@@ -140,7 +141,7 @@ export const getFundTransactions = (fundId: string) =>
         to: item.transaction.to,
         type: 'WITHDRAW',
         payoutAssetAmounts: item.payoutAssetAmounts,
-        investor: item.investor.id,
+        investor: shortenAddress(item.investor.id),
       }));
 
       const withdrawnEvents: any[] = [];
@@ -162,6 +163,24 @@ export const getFundTransactions = (fundId: string) =>
       resolve(result);
     } catch (error) {
       console.error('getFundTransactions: ', error);
+      resolve([]);
+    }
+  });
+
+export const getFundsPerInvestor = (address: string) =>
+  new Promise<any[]>(async (resolve) => {
+    try {
+      const query = queries.fundsPerInvestor(address);
+      const res = await client.query({ query });
+      const funds: any[] = [];
+      res.data.funds.map((fund: any) => {
+        if (fund.investments.length > 0) {
+          funds.push(fund);
+        }
+      });
+      resolve(funds);
+    } catch (error) {
+      console.error('getFundsPerInvestor: ', error);
       resolve([]);
     }
   });

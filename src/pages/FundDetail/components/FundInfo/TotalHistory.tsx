@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import DataTable from '../../../../../components/DataTable';
-import { getFundTransactions } from '../../../../../helpers/utils/graphql';
-import untypedField from '../../../data/history-fields.json';
+import DataTable from '../../../../components/DataTable';
+import { getFundTransactions } from '../../../../helpers/utils/graphql';
+import untypedField from '../../../Dexfund/data/history-fields.json';
 
 const fields: any = untypedField;
 
@@ -11,6 +11,7 @@ type TotalHistoryProps = {
 
 function TotalHistory({ fund }: TotalHistoryProps) {
   const [fundTransactions, setFundTransactions] = useState<any[]>([]);
+  const [transactionLoading, setTransactionLoading] = useState<boolean>(true);
 
   useEffect(() => {
     init();
@@ -19,6 +20,7 @@ function TotalHistory({ fund }: TotalHistoryProps) {
   const init = async () => {
     const fundTransactions = await getFundTransactions(fund.id);
     setFundTransactions(fundTransactions);
+    setTransactionLoading(false);
   };
 
   return (
@@ -27,8 +29,9 @@ function TotalHistory({ fund }: TotalHistoryProps) {
         data={fundTransactions}
         fields={fields}
         pagination={true}
-        minWidth={375}
+        minWidth={550}
         rowCnt={5}
+        loading={transactionLoading}
       />
       <div className="xl:grid xl:grid-cols-2 mx-4 py-2">
         <p className="sm:text-xl text-center">Total PNL: 34% </p>

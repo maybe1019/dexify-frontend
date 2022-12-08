@@ -6,6 +6,7 @@ import DatePeriodDropDown from '../DatePeriodDropDown';
 import { shortenAddress } from '@usedapp/core';
 import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
 import { getAumHistoryOf } from '../../helpers/utils/fund';
+import { ComponentSpinner } from '../Spinner';
 
 type UserDexfundProps = {
   dexfund: FundData;
@@ -15,12 +16,15 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
   const [chartDays, setChartDays] = useState<number>(7);
   const [chartData, setChartData] = useState<any[]>([]);
   const [risePercentage, setRisePercentage] = useState<number>(0);
+  const [chartLoading, setChartLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const onChangeChartsDays = async () => {
+    setChartLoading(true);
     const aumHistory = await getAumHistoryOf(dexfund, chartDays);
     setChartData(aumHistory);
     setRisePercentage((dexfund.aum / aumHistory[0].value) * 100 - 100);
+    setChartLoading(false);
   };
 
   useEffect(() => {
@@ -110,7 +114,8 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
           </div>
         </div>
 
-        <div className="grow overflow-hidden p-2 rounded-xl flex flex-col gap-3 shadow">
+        <div className="grow overflow-hidden p-2 rounded-xl flex flex-col gap-3 shadow relative">
+          {chartLoading && <ComponentSpinner />}
           <div className="flex justify-between items-center py-2 px-1">
             <span
               className={

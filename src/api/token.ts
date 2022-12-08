@@ -83,3 +83,14 @@ export const getTokenPriceHistory = (
       resolve({});
     }
   });
+
+export const getLatestTokenPrice = (id: string) =>
+  new Promise<number>(async (resolve) => {
+    try {
+      const res = await axios.get(`${baseUri}/price`, { params: { id } });
+      resolve(parseFloat(res.data.price));
+    } catch (error) {
+      console.error('getLatestTokenPrice: ', error);
+      resolve(0);
+    }
+  });

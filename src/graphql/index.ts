@@ -7,6 +7,7 @@ import performanceFee from './queries/performanceFee';
 import entranceDirectBurnFees from './queries/entranceDirectBurnFees';
 import managementFee from './queries/managementFee';
 import fundTransactions from './queries/fundTransactions';
+import fundsPerInvestor from './queries/fundsPerInvestor';
 
 export default {
   funds,
@@ -18,4 +19,5 @@ export default {
   entranceDirectBurnFees,
   managementFee,
   fundTransactions,
+  fundsPerInvestor,
 };

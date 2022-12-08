@@ -8,14 +8,6 @@
     "coingeckoId": "wbnb"
   },
   {
-    "name": "BNB",
-    "symbol": "BNB",
-    "address": "",
-    "decimals": 18,
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
-    "coingeckoId": "wbnb"
-  },
-  {
     "name": "BUSD Token",
     "symbol": "BUSD",
     "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
@@ -70,14 +62,6 @@
     "decimals": 18,
     "logoURI": "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3/logo.png",
     "coingeckoId": "dai"
-  },
-  {
-    "name": "DPI Token",
-    "symbol": "DPI",
-    "address": "0x564d4a58fd000aa7b3e80f8a1f2a8e67f759151d",
-    "decimals": 18,
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/7055.png",
-    "coingeckoId": "defipulse-index"
   },
   {
     "name": "Chinlink",
