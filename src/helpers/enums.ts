@@ -5,10 +5,11 @@ export enum DialogType {
 }
 
 export enum PageName {
-  DEFAULT = 'home',
+  DEFAULT = 'default',
   ACCOUNT = 'account',
   PORTFOLIO = 'portfolio',
   MANAGE = 'manage',
+  FUNDDETAIL = 'fund-detail',
 }
 
 export enum ThunkStatus {

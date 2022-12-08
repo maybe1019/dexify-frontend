@@ -109,6 +109,15 @@ function App() {
             property="og:description"
             content={metadata.default.description}
           />
+          <meta
+            name="twitter:title"
+            content="Dexify - Decentralised Social Asset Management on the BNB Chain"
+          ></meta>
+          <meta
+            name="twitter:description"
+            content={metadata.default.description}
+          ></meta>
+          <meta name="twitter:card" content="summary_large_image"></meta>
           <meta property="og:image" content={metadata.default.image} />
           <link rel="icon" type="image/png" href="favicon.ico" />
         </Helmet>
