@@ -46,7 +46,8 @@ const FundDetail = () => {
   const [fund, setFund] = useState<FundData>(
     allFunds.find((value) => value.id === fundAddress) as FundData,
   );
-  const denominationAsset = fund && getTokenInfo(fund?.denominationAsset);
+  const denominationAsset =
+    fund && (getTokenInfo(fund?.denominationAsset) as Token);
 
   const handleStep = (e?: any) => {
     if (e) {

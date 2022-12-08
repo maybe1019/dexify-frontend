@@ -7,6 +7,7 @@ import { shortenAddress } from '@usedapp/core';
 import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
 import { getAumHistoryOf } from '../../helpers/utils/fund';
 import { ComponentSpinner } from '../Spinner';
+import { getMinMaxInvestment } from '../../helpers/utils/graphql';
 
 type UserDexfundProps = {
   dexfund: FundData;
@@ -17,6 +18,7 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [risePercentage, setRisePercentage] = useState<number>(0);
   const [chartLoading, setChartLoading] = useState<boolean>(true);
+  const [minInvestment, setMinInvestment] = useState<number>(-1);
 
   const navigate = useNavigate();
   const onChangeChartsDays = async () => {
@@ -30,6 +32,14 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
   useEffect(() => {
     onChangeChartsDays();
   }, [chartDays]);
+
+  useEffect(() => {
+    const func = async () => {
+      const minMaxInvestment = await getMinMaxInvestment(dexfund.id);
+      setMinInvestment(minMaxInvestment.minInvestment);
+    };
+    func();
+  }, [dexfund]);
 
   return (
     <div className="card overflow-hidden transition ease-in-out delay-150">
@@ -68,7 +78,7 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
             <span className="rounded-lg bg-purple-300 dark:bg-purple-800 p-2 font-[500] text-xs">
               Users
             </span>
-            <span className="text-sm">{dexfund.investorId}</span>
+            <span className="text-sm">{dexfund.investorCnt}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="rounded-lg bg-pink-200 dark:bg-pink-900 p-2 font-[500] text-xs">
@@ -86,7 +96,7 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
                 alt=""
                 className=" w-5 overflow-hidden rounded-full"
               />{' '}
-              {dexfund.minInvestment}
+              {minInvestment}
               <div className="tooltiptext">{dexfund.denominationAsset}</div>
             </span>
           </div>

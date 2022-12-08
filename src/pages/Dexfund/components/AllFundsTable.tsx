@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import DataTable from '../../../components/DataTable';
 import untypedFields from '../data/fields.json';
+import { formatFloatFixed } from '../../../helpers/utils/utils';
 
 const AllFundsTable = () => {
   const allFunds = useSelector((state: RootState) => state.allFunds);
@@ -14,12 +15,23 @@ const AllFundsTable = () => {
 
   useEffect(() => {
     if (allFunds.value.length > 0) {
-      const data = allFunds.value.map((f) => ({
-        ...f,
-        volume24H: f.aum === 0 ? 0 : (f.aum / f.aum24H) * 100 - 100,
-        volume7D: f.aum === 0 ? 0 : (f.aum / f.aum7D) * 100 - 100,
-        volumeAll: f.aum === 0 ? 0 : (f.aum / f.aumFirst) * 100 - 100,
-      }));
+      const data = allFunds.value.map((f) => {
+        const volume24H = formatFloatFixed(
+          f.aum === 0 ? 0 : (f.aum / f.aum24H) * 100 - 100,
+        );
+        const volume7D = formatFloatFixed(
+          f.aum === 0 ? 0 : (f.aum / f.aum7D) * 100 - 100,
+        );
+        const volumeAll = formatFloatFixed(
+          f.aum === 0 ? 0 : (f.aum / f.aumFirst) * 100 - 100,
+        );
+        return {
+          ...f,
+          volume24H: volume24H > 0 ? `+${volume24H}` : `${volume24H}`,
+          volume7D: volume7D > 0 ? `+${volume7D}` : `${volume7D}`,
+          volumeAll: volumeAll > 0 ? `+${volumeAll}` : `${volumeAll}`,
+        };
+      });
       setDexifyData(data);
       setFilteredData(data.map((d) => d));
     }
