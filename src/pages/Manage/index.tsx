@@ -11,6 +11,8 @@ import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
 import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-icon.svg';
 
 import allowedTokenList from './data/tokenList.json';
+import PageMeta from '../../layouts/PageMeta';
+import { PageName } from '../../helpers/enums';
 
 const Manage = () => {
   const { account } = useEthers();
@@ -85,123 +87,126 @@ const Manage = () => {
   };
 
   return (
-    <div className="md:bg-white dark:md:bg-bg-2-dark rounded-3xl max-w-4xl px-4 lg:px-24 py-0 md:py-12 mx-auto my-20">
-      <h1 className=" text-3xl lg:text-4xl my-8 text-center font-bold">
-        Create a Dexfund
-      </h1>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-        <input
-          type="text"
-          name="walletAddress"
-          value={formData.walletAddress}
-          className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
-          placeholder="Manager Wallet Address"
-          onChange={onChangeValue}
-        />
+    <>
+      <PageMeta pageName={PageName.MANAGE} />
+      <div className="md:bg-white dark:md:bg-bg-2-dark rounded-3xl max-w-4xl px-4 lg:px-24 py-0 md:py-12 mx-auto my-20">
+        <h1 className=" text-3xl lg:text-4xl my-8 text-center font-bold">
+          Create a Dexfund
+        </h1>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <input
+            type="text"
+            name="walletAddress"
+            value={formData.walletAddress}
+            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
+            placeholder="Manager Wallet Address"
+            onChange={onChangeValue}
+          />
 
-        <input
-          type="text"
-          name="fundName"
-          className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
-          placeholder="Dexfund Name"
-          onChange={onChangeValue}
-        />
-        <input
-          type="number"
-          name="performanceFee"
-          className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-          placeholder="Performance Fee (%)"
-          onChange={onChangeValue}
-        />
-        <input
-          type="number"
-          name="entryFee"
-          className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-          placeholder="Entry Fee (%)"
-          onChange={onChangeValue}
-        />
-        <input
-          type="number"
-          name="minInvestment"
-          className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-          placeholder="Minimum Investment"
-          onChange={onChangeValue}
-        />
-        <input
-          type="number"
-          name="lockTime"
-          className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-          placeholder="Lock Time (H)"
-          onChange={onChangeValue}
-        />
-      </div>
-      <div className="flex flex-col md:flex-row gap-4 my-8">
-        <div className=" text-sm min-w-[160px]">Select Starting Assets</div>
-        <div className="grid grid-cols-4 sm:grid-cols-7 grow gap-2">
-          {allowedTokenList.map((token) => (
-            <div
-              key={token.symbol}
-              className="rounded py-1 text-center text-sm cursor-pointer hover:shadow bg-[#8882] font-semibold"
-              style={
-                selectedTokenAddress === token.address
-                  ? { backgroundColor: '#0074D966' }
-                  : { color: 'gray' }
-              }
-              onClick={() => setSelectedTokenAddress(token.address)}
-            >
-              {token.symbol}
-            </div>
-          ))}
+          <input
+            type="text"
+            name="fundName"
+            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
+            placeholder="Dexfund Name"
+            onChange={onChangeValue}
+          />
+          <input
+            type="number"
+            name="performanceFee"
+            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
+            placeholder="Performance Fee (%)"
+            onChange={onChangeValue}
+          />
+          <input
+            type="number"
+            name="entryFee"
+            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
+            placeholder="Entry Fee (%)"
+            onChange={onChangeValue}
+          />
+          <input
+            type="number"
+            name="minInvestment"
+            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
+            placeholder="Minimum Investment"
+            onChange={onChangeValue}
+          />
+          <input
+            type="number"
+            name="lockTime"
+            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
+            placeholder="Lock Time (H)"
+            onChange={onChangeValue}
+          />
+        </div>
+        <div className="flex flex-col md:flex-row gap-4 my-8">
+          <div className=" text-sm min-w-[160px]">Select Starting Assets</div>
+          <div className="grid grid-cols-4 sm:grid-cols-7 grow gap-2">
+            {allowedTokenList.map((token) => (
+              <div
+                key={token.symbol}
+                className="rounded py-1 text-center text-sm cursor-pointer hover:shadow bg-[#8882] font-semibold"
+                style={
+                  selectedTokenAddress === token.address
+                    ? { backgroundColor: '#0074D966' }
+                    : { color: 'gray' }
+                }
+                onClick={() => setSelectedTokenAddress(token.address)}
+              >
+                {token.symbol}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 items-center my-4">
+          <button
+            className="block text-primary font-bold text-xl"
+            onClick={
+              account
+                ? onCreateNewFund
+                : () =>
+                    utils.notification.info(
+                      'Please connect your wallet first',
+                      '',
+                    )
+            }
+          >
+            Create Fund
+          </button>
+          {myAccountValue.twitterScreenName ? (
+            <>
+              <p className="text-[#8888]">Connected with:</p>
+              <div className="relative flex items-center gap-4">
+                <img
+                  src={myAccountValue.twitterImage}
+                  alt="user"
+                  className="w-10 h-10 rounded-full"
+                />
+                <TwitterIcon
+                  width={16}
+                  height={16}
+                  className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
+                />
+                <div className="font-bold text-lg">
+                  @{myAccountValue.twitterScreenName}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-[#8888]">Connect with:</p>
+              <button
+                className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
+                onClick={onTwitterLogin}
+              >
+                Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
+              </button>
+            </>
+          )}
         </div>
       </div>
-
-      <div className="flex flex-col gap-2 items-center my-4">
-        <button
-          className="block text-primary font-bold text-xl"
-          onClick={
-            account
-              ? onCreateNewFund
-              : () =>
-                  utils.notification.info(
-                    'Please connect your wallet first',
-                    '',
-                  )
-          }
-        >
-          Create Fund
-        </button>
-        {myAccountValue.twitterScreenName ? (
-          <>
-            <p className="text-[#8888]">Connected with:</p>
-            <div className="relative flex items-center gap-4">
-              <img
-                src={myAccountValue.twitterImage}
-                alt="user"
-                className="w-10 h-10 rounded-full"
-              />
-              <TwitterIcon
-                width={16}
-                height={16}
-                className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
-              />
-              <div className="font-bold text-lg">
-                @{myAccountValue.twitterScreenName}
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <p className="text-[#8888]">Connect with:</p>
-            <button
-              className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
-              onClick={onTwitterLogin}
-            >
-              Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
-            </button>
-          </>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
