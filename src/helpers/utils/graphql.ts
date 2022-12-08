@@ -8,11 +8,17 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export const getMinMaxInvestment = (fundId: string): Promise<any> =>
+export const getMinMaxInvestment = (
+  fundId: string,
+): Promise<Record<string, number>> =>
   new Promise(async (resolve, reject) => {
     try {
       const query = queries.minMaxInvestment(fundId);
       const res = await client.query({ query });
+      if (res.data.minMaxInvestmentFundSettingsSetEvents.length === 0) {
+        resolve({ minInvestment: 0, maxInvestment: 1000000 });
+        return;
+      }
       resolve({
         minInvestment: parseInt(
           res.data.minMaxInvestmentFundSettingsSetEvents[0].minInvestmentAmount,

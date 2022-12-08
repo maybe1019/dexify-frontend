@@ -1,122 +1,68 @@
 import { DocumentNode, gql } from '@apollo/client';
+import { miliseconds } from '../../helpers/utils/utils';
+import { PORTFOLIO_FIELDS } from '../fragments';
 
-const funds = (): DocumentNode => gql`
-  query getAllFunds {
-    funds {
-      id
-      name
-      inception
-      accessor {
-        id
-        timestamp
-        activationTime
-        destructionTime
-        denominationAsset {
-          symbol
-        }
-      }
-      creator {
-        id
-        firstSeen
-        manager
-        managerSince
-        investor
-        investorSince
-      }
-      manager {
-        id
-        firstSeen
-        manager
-        managerSince
-        investor
-        investorSince
-      }
-      trackedAssets {
+const funds = (): DocumentNode => {
+  const now = Date.now();
+  const time1dAgo = Math.floor((now - miliseconds['1d']) / 1000);
+  const time7dAgo = Math.floor((now - miliseconds['1d'] * 7) / 1000);
+  console.log(time1dAgo, time7dAgo);
+  return gql`
+    ${PORTFOLIO_FIELDS}
+    query getAllFunds {
+      funds {
         id
         name
-        symbol
-        decimals
-      }
-      investmentCount
-      portfolio {
-        holdings {
-          amount
-          asset {
-            name
-            symbol
+        inception
+        investmentCount
+        accessor {
+          id
+          denominationAsset {
+            id
           }
         }
-      }
-      volume7D: dailyStates(first: 7, orderBy: start, orderDirection: desc) {
-        id
-        start
-        end
-        first {
-          portfolio {
-            holdings {
-              amount
-              asset {
-                name
-                symbol
-                price {
-                  price
-                }
-              }
-            }
+        creator {id}
+        manager {id}
+
+        trackedAssets {
+          id
+          price {
+            price
+          }
+          price1dAgo: priceHistory(where:{ timestamp_lte: ${time1dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+            timestamp
+            price
+          }
+          price7dAgo: priceHistory(where:{ timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+            timestamp
+            price
           }
         }
-        last {
-          portfolio {
-            holdings {
-              amount
-              asset {
-                name
-                symbol
-                price {
-                  price
-                }
-              }
-            }
-          }
+
+        portfolio {
+          ...portfolioFragment
         }
-      }
-      volumeAll: dailyStates(first: 1, orderBy: start, orderDirection: asc) {
-        id
-        start
-        end
-        first {
-          timestamp
-          portfolio {
-            holdings {
-              amount
-              asset {
-                name
-                symbol
-                price {
-                  price
-                }
-              }
-            }
-          }
+        
+        portfolio1dAgo: portfolioHistory(where: {timestamp_lte: ${time1dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+          ...portfolioFragment
         }
-        last {
-          timestamp
-          portfolio {
-            holdings {
-              amount
-              asset {
-                name
-                symbol
-                price {
-                  price
-                }
-              }
+
+        portfolio7dAgo: portfolioHistory(where: {timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+          ...portfolioFragment
+        }
+
+        portfolioInception:portfolioHistory(orderBy: timestamp, orderDirection: asc, first: 2) {
+          ...portfolioFragment
+          holdings {
+            price {
+              price
+              timestamp
             }
           }
         }
       }
     }
-  }
-`;
+  `;
+};
 
 export default funds;

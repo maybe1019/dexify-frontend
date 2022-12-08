@@ -3,12 +3,10 @@ import axios from 'axios';
 const baseUri: string = process.env.REACT_APP_SERVER_URL as string;
 
 import tokens from '../config/tokenlists.json';
-import { miliseconds } from '../helpers/utils/utils';
 
 const tokenList: Token[] = tokens;
 
 let coinPricesLast7D: any = {};
-let isHistoryLoaded = false;
 
 const getTotalTokenIds = (): string => {
   let ids = tokenList[0].coingeckoId;
@@ -24,7 +22,6 @@ export const initPricesLast7D = async () => {
   const from = to - 7 * 24 * 60 * 60 * 1000;
   const interval = 30 * 60 * 1000;
   coinPricesLast7D = await getTokenPriceHistory(ids, from, to, interval);
-  isHistoryLoaded = true;
 };
 
 export const getCoinPriceHistoryLast7D = (): any => coinPricesLast7D;
@@ -48,11 +45,9 @@ export const getTokenPriceHistory = (
 ): Promise<Record<string, Record<string, number>[]>> =>
   new Promise(async (resolve) => {
     try {
-      if (from >= Date.now() - 7 * miliseconds['1d'] && isHistoryLoaded) {
-        resolve(coinPricesLast7D);
+      if (ids === 'all') {
+        ids = getTotalTokenIds();
       }
-
-      ids = getTotalTokenIds();
       const res = await axios.get(`${baseUri}/price/history`, {
         params: {
           ids,
