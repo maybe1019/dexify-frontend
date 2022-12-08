@@ -1,12 +1,12 @@
 {
   "default": {
     "title": "Dexify",
-    "image": "/images/dexify.png",
+    "image": "https://dexify.finance/images/dexify.png",
     "description": "The best social DeFi asset management dApp on BNB. Create, manage or invest in decentralised portfolios from the best investors on the BNB Chain. Become a manager and earn fees and rewards! Or Invest with the best investors passively letting them manage your capital!"
   },
   "account": {
     "title": "Account | Dexify",
-    "image": "/images/dexify.png",
+    "image": "https://dexify.finance/images/dexify.png",
     "description": "The best social DeFi asset management dApp on BNB. Create, manage or invest in decentralised portfolios from the best investors on the BNB Chain. Become a manager and earn fees and rewards! Or Invest with the best investors passively letting them manage your capital!"
   },
   "portfolio": {
@@ -16,12 +16,12 @@
   },
   "manage": {
     "title": "Manage | Dexify",
-    "image": "/images/dexify.png",
+    "image": "https://dexify.finance/images/dexify.png",
     "description": "The best social DeFi asset management dApp on BNB. Create, manage or invest in decentralised portfolios from the best investors on the BNB Chain. Become a manager and earn fees and rewards! Or Invest with the best investors passively letting them manage your capital!"
   },
   "fund-detail": {
     "title": "Fund-details | Dexify",
-    "image": "/images/dexify.png",
+    "image": "https://dexify.finance/images/dexify.png",
     "description": "The best social DeFi asset management dApp on BNB. Create, manage or invest in decentralised portfolios from the best investors on the BNB Chain. Become a manager and earn fees and rewards! Or Invest with the best investors passively letting them manage your capital!"
   }
 }
