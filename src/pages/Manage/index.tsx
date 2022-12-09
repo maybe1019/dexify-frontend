@@ -188,7 +188,7 @@ const Manage = () => {
                   height={16}
                   className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
                 />
-                <div className="font-bold text-lg">
+                <div className="font-bold text-lg text-[#03a9f4]">
                   @{myAccountValue.twitterScreenName}
                 </div>
               </div>

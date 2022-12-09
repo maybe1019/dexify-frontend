@@ -57,7 +57,7 @@ const getParaswapData = async (
       dest: to.address,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     utils.notification.danger('Error', error.message);
     return false;
   }
@@ -161,7 +161,7 @@ export const useSwap = () => {
         utils.notification.success('Success', 'Succeed in swap');
         setLoading(false);
       } catch (error: any) {
-        console.log(error);
+        console.error(error);
         utils.notification.danger('Error', error.message);
       } finally {
         setLoading(false);
