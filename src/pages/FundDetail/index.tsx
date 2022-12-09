@@ -1,4 +1,4 @@
-import React, { useState, createRef } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import FundInfo from './components/FundInfo';
 import { Disclosure, Tab } from '@headlessui/react';
 import './index.css';
@@ -74,7 +74,10 @@ const FundDetail = () => {
 
   // Page loading
   const dispatch = useDispatch();
-  dispatch(setPageLoading(investLoading || withdrawLoading));
+  useEffect(() => {
+    console.log(investLoading || withdrawLoading);
+    dispatch(setPageLoading(investLoading || withdrawLoading));
+  }, [investLoading, withdrawLoading]);
 
   const openActionModal = async (step: number) => {
     if (!account) {
