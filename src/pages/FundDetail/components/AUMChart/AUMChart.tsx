@@ -28,13 +28,15 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
       ...v,
       value: v[dataKey],
     }));
-    console.log(fundHistory);
     if (fundHistory[0].totalSupply === 0) {
       fundHistory.shift();
     }
 
     setChartData(fundHistory);
-    setRisePercentage((fund.aum / fundHistory[0].aum) * 100 - 100);
+    setRisePercentage(
+      (fundHistory[fundHistory.length - 1].value / fundHistory[0].value) * 100 -
+        100,
+    );
     setLoading(false);
   };
 

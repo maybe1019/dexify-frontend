@@ -40,7 +40,7 @@ export const createOrUpdateMyAccount = createAsyncThunk(
   async (
     postInfo: {
       library: ethers.providers.JsonRpcProvider;
-      file: File;
+      file: File | undefined;
       newAccount: User;
     },
     { rejectWithValue },
