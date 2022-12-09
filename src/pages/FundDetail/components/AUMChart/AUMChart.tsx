@@ -24,8 +24,12 @@ const AUMChart = ({ fund }: AUMChartProps) => {
     setLoading(true);
     const fundHistory = (await getAumHistoryOf(fund, days)).map((v: any) => ({
       ...v,
-      value: v.aum,
+      value: v[dataKey],
     }));
+    console.log(fundHistory);
+    if (fundHistory[0].totalSupply === 0) {
+      fundHistory.shift();
+    }
 
     setChartData(fundHistory);
     setRisePercentage((fund.aum / fundHistory[0].aum) * 100 - 100);
