@@ -39,7 +39,7 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
           />
           <p className="text-base font-bold sm:text-xl mx-4">{fund.name}</p>
         </div>
-        {managerInfo && (
+        {managerInfo && managerInfo.twitterName && (
           <>
             <div className="relative flex items-center gap-4">
               <img
