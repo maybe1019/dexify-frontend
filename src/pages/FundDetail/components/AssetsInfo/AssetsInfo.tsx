@@ -23,7 +23,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
   const init = async () => {
     const prices = await getTokenPriceHistory(
       'all',
-      Date.now() - miliseconds['1d'],
+      Date.now() - miliseconds['1D'],
       Date.now(),
       miliseconds['1h'],
     );
@@ -31,7 +31,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
       const price = getTokenPriceAt(
         prices,
         getTokenInfo(asset.id)?.coingeckoId as string,
-        Date.now() - miliseconds['1d'],
+        Date.now() - miliseconds['1D'],
       );
       const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
       const token = getTokenInfo(asset.id);

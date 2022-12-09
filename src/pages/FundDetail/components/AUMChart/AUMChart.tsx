@@ -23,7 +23,7 @@ const AUMChart = ({ fund }: AUMChartProps) => {
     setLoading(true);
     const aumHistory = await getAumHistoryOf(fund, days);
     setChartData(aumHistory);
-    setRisePercentage((fund.aum / aumHistory[0].value) * 100 - 100);
+    setRisePercentage((fund.aum / aumHistory[0].aum) * 100 - 100);
     setLoading(false);
   };
 
@@ -64,7 +64,7 @@ const AUMChart = ({ fund }: AUMChartProps) => {
       </div>
       <div className="relative flex-grow text-xs transition-none h-52 md:h-[375px] pr-3 pt-3">
         {loading && <ComponentSpinner />}
-        <FundChart xAxis={true} yAxis={true} data={chartData} />
+        <FundChart xAxis={true} yAxis={true} data={chartData} dataKey="aum" />
       </div>
     </div>
   );

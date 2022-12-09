@@ -5,9 +5,9 @@ import FundChart from '../FundChart';
 import DatePeriodDropDown from '../DatePeriodDropDown';
 import { shortenAddress } from '@usedapp/core';
 import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
-import { getAumHistoryOf } from '../../helpers/utils/fund';
 import { ComponentSpinner } from '../Spinner';
 import { getMinMaxInvestment } from '../../helpers/utils/graphql';
+import { getAumHistoryOf } from '../../helpers/utils/fund';
 
 type UserDexfundProps = {
   dexfund: FundData;
@@ -144,7 +144,12 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
             <DatePeriodDropDown onChange={setChartDays} />
           </div>
           <div className="flex-grow text-xs transition-none h-[160px] md:h-auto">
-            <FundChart xAxis={true} yAxis={false} data={chartData} />
+            <FundChart
+              xAxis={true}
+              yAxis={false}
+              data={chartData}
+              dataKey="aum"
+            />
           </div>
         </div>
       </div>
