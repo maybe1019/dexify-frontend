@@ -4,9 +4,8 @@ import { PORTFOLIO_FIELDS } from '../fragments';
 
 const funds = (): DocumentNode => {
   const now = Date.now();
-  const time1dAgo = Math.floor((now - miliseconds['1d']) / 1000);
-  const time7dAgo = Math.floor((now - miliseconds['1d'] * 7) / 1000);
-  console.log(time1dAgo, time7dAgo);
+  const time1dAgo = Math.floor((now - miliseconds['1D']) / 1000);
+  const time7dAgo = Math.floor((now - miliseconds['1D'] * 7) / 1000);
   return gql`
     ${PORTFOLIO_FIELDS}
     query getAllFunds {

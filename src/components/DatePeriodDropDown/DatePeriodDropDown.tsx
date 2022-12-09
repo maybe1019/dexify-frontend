@@ -7,7 +7,7 @@ const list = [
   { title: 'Last 7Days', value: 7 },
   { title: 'This month', value: 30 },
   { title: 'Last 3Months', value: 90 },
-  { title: 'All', value: 0 },
+  { title: 'All', value: 9999999 },
 ];
 
 type DatePeriodDropDownProps = {

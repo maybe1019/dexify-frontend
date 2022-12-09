@@ -190,3 +190,25 @@ export const getFundsPerInvestor = (address: string) =>
       resolve([]);
     }
   });
+
+export const getFundPortfolioHistory = (fundId: string, timestamp: number) =>
+  new Promise<Record<string, any[]>>(async (resolve) => {
+    try {
+      const query = queries.fundPortfolioHistory(
+        fundId,
+        Math.floor(timestamp / 1000),
+      );
+      const res = await client.query({ query });
+      resolve({
+        portfolioList: res.data.fund.lastPortfolio.concat(
+          res.data.fund.portfolioHistory,
+        ),
+        trackedAssets: res.data.fund.trackedAssets.map(
+          (asset: any) => asset.id,
+        ),
+      });
+    } catch (error) {
+      console.error('getFundPortfolioHistory: ', error);
+      resolve({ portfolioList: [], trackedAssets: [] });
+    }
+  });
