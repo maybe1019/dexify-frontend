@@ -191,13 +191,10 @@ export const getFundsPerInvestor = (address: string) =>
     }
   });
 
-export const getFundPortfolioHistory = (fundId: string, timestamp: number) =>
+export const getFundHistory = (fundId: string, timestamp: number) =>
   new Promise<Record<string, any[]>>(async (resolve) => {
     try {
-      const query = queries.fundPortfolioHistory(
-        fundId,
-        Math.floor(timestamp / 1000),
-      );
+      const query = queries.fundHistory(fundId, Math.floor(timestamp / 1000));
       const res = await client.query({ query });
       resolve({
         portfolioList: res.data.fund.lastPortfolio.concat(
@@ -206,6 +203,12 @@ export const getFundPortfolioHistory = (fundId: string, timestamp: number) =>
         trackedAssets: res.data.fund.trackedAssets.map(
           (asset: any) => asset.id,
         ),
+        totalSupplyList: res.data.fund.lastShare
+          .concat(res.data.fund.sharesHistory)
+          .map((d: any) => ({
+            timestamp: parseInt(d.timestamp) * 1000,
+            totalSupply: parseFloat(d.totalSupply),
+          })),
       });
     } catch (error) {
       console.error('getFundPortfolioHistory: ', error);

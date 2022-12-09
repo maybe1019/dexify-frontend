@@ -25,7 +25,7 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
     setChartLoading(true);
     const aumHistory = await getAumHistoryOf(dexfund, chartDays);
     setChartData(aumHistory);
-    setRisePercentage((dexfund.aum / aumHistory[0].value) * 100 - 100);
+    setRisePercentage((dexfund.aum / aumHistory[0].aum) * 100 - 100);
     setChartLoading(false);
   };
 
@@ -147,8 +147,7 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
             <FundChart
               xAxis={true}
               yAxis={false}
-              data={chartData}
-              dataKey="aum"
+              data={chartData.map((v: any) => ({ ...v, value: v.aum }))}
             />
           </div>
         </div>

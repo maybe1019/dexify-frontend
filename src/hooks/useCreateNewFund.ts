@@ -45,7 +45,7 @@ export const useCreateNewFund = () => {
           'A new fund has been created successfully.',
         );
       } catch (error: any) {
-        console.log(error);
+        console.error('useCreateNewFund: ', error);
         utils.notification.danger('Error', error.message);
       } finally {
         setLoading(false);
