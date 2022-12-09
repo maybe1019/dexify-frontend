@@ -3,17 +3,16 @@ import { twitterLogin } from '../../../../api/twitter';
 import { ComponentSpinner } from '../../../../components/Spinner';
 
 type TweetsProps = {
-  tweets: Array<any>;
+  tweetsData: { tweets: Array<any>; user: User };
   loading: boolean;
   isManager: boolean;
 };
 
-const Tweets = ({ tweets, loading, isManager }: TweetsProps) => {
+const Tweets = ({ tweetsData, loading, isManager }: TweetsProps) => {
   const onTwitterLogin = () => {
     localStorage.setItem('twitter_login_location', 'account');
     twitterLogin();
   };
-  console.log(isManager);
   return (
     <div className="card overflow-hidden">
       <div className="p-7 text-text-1 dark:text-text-1-dark text-xl header">
@@ -21,20 +20,21 @@ const Tweets = ({ tweets, loading, isManager }: TweetsProps) => {
       </div>
       <div className="overflow-auto h-[460px] flex flex-col gap-3 p-4 m-2 relative">
         {loading && <ComponentSpinner />}
-        {tweets ? (
-          tweets.map((item, i) => (
+        {tweetsData && tweetsData.tweets && tweetsData.user ? (
+          tweetsData.tweets.map((item, i) => (
             <div className="flex" key={i}>
               <img
-                src="/images/default-user.png"
+                src={tweetsData.user.twitterImage}
                 alt="default-user"
                 className="w-12 h-12 rounded-full"
               />
               <div>
-                <p className="text-sm mx-4">Ryan Gosling</p>
-                <p className="text-[10px] text-[#5E889B] mx-4">@gosling685</p>
+                <p className="text-sm mx-4">{tweetsData.user.twitterName}</p>
+                <p className="text-[10px] text-[#5E889B] mx-4">
+                  {tweetsData.user.twitterScreenName}
+                </p>
                 <p className="text-[15px] text-text-2 dark:text-text-2-dark mx-4">
-                  News from the SEC on the XRP Case! This is huge for the
-                  adoption of crypto, regulation will bring mass adoption!
+                  {item.text}
                 </p>
               </div>
             </div>

@@ -210,7 +210,7 @@ const FundDetail = () => {
             {fundInfoStep === 'Tweets' && (
               <div className="absolute lg:hidden w-full bg-white dark:bg-bg-2-dark z-10">
                 <Tweets
-                  tweets={tweetsData?.tweets}
+                  tweetsData={tweetsData}
                   loading={tweetsLoading}
                   isManager={account?.toLowerCase() === fund.manager}
                 />
@@ -218,7 +218,7 @@ const FundDetail = () => {
             )}
             {fundInfoStep === fundInfoTabList[0] && (
               <div className="absolute lg:hidden w-full card z-10">
-                <Bio />
+                <Bio fund={fund} managerInfo={tweetsData.user} />
               </div>
             )}
             {fundInfoStep === fundInfoTabList[1] && (
@@ -297,11 +297,11 @@ const FundDetail = () => {
           ) : (
             <>
               <Tweets
-                tweets={tweetsData?.tweets}
+                tweetsData={tweetsData}
                 loading={tweetsLoading}
                 isManager={account?.toLowerCase() === fund.manager}
               />
-              <FundInfo fund={fund} />
+              <FundInfo fund={fund} tweetsData={tweetsData} />
             </>
           )}
         </div>
