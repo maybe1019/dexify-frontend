@@ -4,7 +4,7 @@ import DataTable from '../../../../components/DataTable';
 import {
   getTokenInfo,
   getTokenPriceAt,
-  miliseconds,
+  milliseconds,
 } from '../../../../helpers/utils/utils';
 import fields from '../../../Dexfund/data/fund-detail-fields.json';
 
@@ -23,15 +23,15 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
   const init = async () => {
     const prices = await getTokenPriceHistory(
       'all',
-      Date.now() - miliseconds['1D'],
+      Date.now() - milliseconds['1D'],
       Date.now(),
-      miliseconds['1h'],
+      milliseconds['1h'],
     );
     const tmp: any[] = fund.holdings.map((asset) => {
       const price = getTokenPriceAt(
         prices,
         getTokenInfo(asset.id)?.coingeckoId as string,
-        Date.now() - miliseconds['1D'],
+        Date.now() - milliseconds['1D'],
       );
       const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
       const token = getTokenInfo(asset.id);

@@ -97,7 +97,7 @@ const Manage = () => {
           <input
             type="text"
             name="walletAddress"
-            value={formData.walletAddress}
+            value={formData.walletAddress ?? account}
             className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
             placeholder="Manager Wallet Address"
             onChange={onChangeValue}
@@ -188,7 +188,7 @@ const Manage = () => {
                   height={16}
                   className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
                 />
-                <div className="font-bold text-lg">
+                <div className="font-bold text-lg text-[#03a9f4]">
                   @{myAccountValue.twitterScreenName}
                 </div>
               </div>
@@ -198,7 +198,15 @@ const Manage = () => {
               <p className="text-[#8888]">Connect with:</p>
               <button
                 className="text-[#03A9F4] flex gap-2 shadow-lg px-4 py-2 rounded-lg"
-                onClick={onTwitterLogin}
+                onClick={
+                  account
+                    ? onTwitterLogin
+                    : () =>
+                        utils.notification.info(
+                          'Please connect your wallet first',
+                          '',
+                        )
+                }
               >
                 Twitter <img src="/images/icon-twitter.svg" alt="twitter" />
               </button>

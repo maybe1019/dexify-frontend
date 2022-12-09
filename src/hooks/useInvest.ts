@@ -65,7 +65,7 @@ export const useInvest = (fundAddr: string) => {
           'You got some shares. Please check your wallet.',
         );
       } catch (error: any) {
-        console.log(error);
+        console.error(error);
         utils.notification.danger('Error', error.message);
       } finally {
         setLoading(false);

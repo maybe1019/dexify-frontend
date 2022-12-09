@@ -1,7 +1,7 @@
 import utils from '.';
 import { getTokenPriceHistory } from '../../api/token';
 import { getFundPortfolioHistory } from './graphql';
-import { calcDate, getTokenInfo, getTokenPriceAt, miliseconds } from './utils';
+import { calcDate, getTokenInfo, getTokenPriceAt, milliseconds } from './utils';
 
 const getHoldingsFromStatesAt = (states: any[], timestamp: number): any[] => {
   if (states.length === 0) {
@@ -143,7 +143,7 @@ export const formatFundData = (fund: any) => {
         id: asset.id,
         price: asset.price1dAgo[0].price,
       })),
-      Date.now() - utils.utils.miliseconds['1D'],
+      Date.now() - utils.utils.milliseconds['1D'],
     );
   }
 
@@ -156,7 +156,7 @@ export const formatFundData = (fund: any) => {
         id: asset.id,
         price: asset.price7dAgo[0].price,
       })),
-      Date.now() - utils.utils.miliseconds['1D'] * 7,
+      Date.now() - utils.utils.milliseconds['1D'] * 7,
     );
   }
 
@@ -274,7 +274,7 @@ export const formatFundsPerInvestor = (allFunds: FundData[], funds: any[]) =>
         let totalSupply = 0;
         let investorShare = 0;
         let timestamp = 0;
-        timestamp = Date.now() - miliseconds['1D'];
+        timestamp = Date.now() - milliseconds['1D'];
 
         totalSupply = getTotalSupplyFromStatesAt(fund.dailyStates, timestamp);
         investorShare = getShareFromHistoryAt(
@@ -299,8 +299,8 @@ export const formatFundsPerInvestor = (allFunds: FundData[], funds: any[]) =>
         const coinPrices = await getTokenPriceHistory(
           'all',
           timestamp,
-          timestamp + miliseconds['1D'],
-          miliseconds['1h'],
+          timestamp + milliseconds['1D'],
+          milliseconds['1h'],
         );
         const aum = calcAUMfromHoldings(holdings, coinPrices, timestamp);
         myFund.investorAumFirst = (aum * investorShare) / totalSupply;

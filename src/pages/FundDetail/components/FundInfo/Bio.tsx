@@ -1,33 +1,28 @@
 import React from 'react';
+import {
+  formatTimestampToString,
+  milliseconds,
+} from '../../../../helpers/utils/utils';
 
-function Bio() {
+function Bio({ fund, managerInfo }: { fund: FundData; managerInfo: User }) {
   return (
     <div className="mx-2 text-text-2 dark:text-text-2-dark">
       <div className="grid grid-cols-5 gap-4 pt-5">
         <p className="text-sm text-right">Name:</p>
-        <p className="text-xs col-span-4 pt-0.5">Ryan Gosling</p>
+        <p className="text-xs col-span-4 pt-0.5">{fund.name}</p>
       </div>
       <div className="grid grid-cols-5 gap-4 pt-5">
         <p className="text-sm text-right">Age:</p>
         <p className="text-xs col-span-4 pt-0.5">
-          Created 21st June 2021 (35 days old)
-        </p>
-      </div>
-      <div className="grid grid-cols-5 gap-4 pt-5">
-        <p className="text-sm text-right">Bio:</p>
-        <p className="text-xs col-span-4 pt-0.5">
-          I am a experienced trader adn former analyst at goldman sachs. I have
-          been invetsing in crypto for 7 years and Defi specifially since 2019.
-          My favourite project is UNIswap I truly believe Defi can provide a
-          more robust and fair financial system for all.
+          {formatTimestampToString(fund.startTimestamp, milliseconds['1D'])} (
+          {fund.age} days old)
         </p>
       </div>
       <div className="grid grid-cols-5 gap-4 py-5">
-        <p className="text-sm text-right">Fund:</p>
-        <p className="text-xs col-span-4 pt-0.5">
-          This fund focuses on the DeFi gods. The Dexify portfolio rebalancing
-          algorithm helps me keep the funds distribution optimal.
-        </p>
+        <p className="text-sm text-right">Bio:</p>
+        {managerInfo && (
+          <p className="text-xs col-span-4 pt-0.5">{managerInfo.bio}</p>
+        )}
       </div>
     </div>
   );
