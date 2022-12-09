@@ -15,6 +15,7 @@ import { updateMyAccountWithTwitter } from './store/reducers/myAccountSlice';
 import { ethers } from 'ethers';
 import { ThunkStatus } from './helpers/enums';
 import { loadBnbPrices } from './helpers/utils/utils';
+import { setPageLoading } from './store/reducers/pageLoadingSlice';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -28,7 +29,8 @@ function App() {
   const accountStatus = useAppSelector((state) => state.myAccount.status);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { library } = useEthers();
+  const { library, account } = useEthers();
+  dispatch(setPageLoading(accountStatus === ThunkStatus.PENDING));
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -58,22 +60,21 @@ function App() {
   );
 
   useEffect(() => {
-    if (oauth_token && oauth_verifier && library) {
-      dispatch(
-        updateMyAccountWithTwitter({
-          library: library as ethers.providers.JsonRpcProvider,
-          oauth_verifier,
-        }),
-      );
+    verifyTwitter();
+    async function verifyTwitter() {
+      if (oauth_token && oauth_verifier && account) {
+        await dispatch(
+          updateMyAccountWithTwitter({
+            library: library as ethers.providers.JsonRpcProvider,
+            oauth_verifier,
+            account,
+          }),
+        );
+        const location = localStorage.getItem('twitter_login_location');
+        navigate(`/${location}`);
+      }
     }
-  }, [library]);
-
-  useEffect(() => {
-    if (accountStatus === ThunkStatus.READY && oauth_token) {
-      const location = localStorage.getItem('twitter_login_location');
-      navigate(`/${location}`);
-    }
-  }, [accountStatus]);
+  }, [oauth_token, oauth_verifier, account]);
 
   useEffect(() => {
     const scrollColors: Record<string, string> = {
