@@ -3,27 +3,29 @@ import {
   ChevronDownIcon,
   ClipboardDocumentIcon,
 } from '@heroicons/react/24/solid';
-import { shortenAddress, useEthers } from '@usedapp/core';
+import { BSC, shortenAddress, useEthers } from '@usedapp/core';
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../../store';
 
 const ProfileDropdown = () => {
-  const { account, deactivate, activateBrowserWallet } = useEthers();
+  const { account, deactivate, activateBrowserWallet, chainId, switchNetwork } =
+    useEthers();
   const myAccount = useSelector((state: RootState) => state.myAccount.value);
 
-  const handleConnect = () => {
-    if (account) {
+  const handleConnect = async () => {
+    if (account && chainId === BSC.chainId) {
       deactivate();
     } else {
       activateBrowserWallet();
+      await switchNetwork(BSC.chainId);
     }
   };
 
   return (
     <div>
-      {account ? (
+      {account && chainId === BSC.chainId ? (
         <Popover className="relative h-[44px]">
           <Popover.Button>
             <div
@@ -136,7 +138,9 @@ const ProfileDropdown = () => {
           className="font-bold bg-primary text-white px-4 md:px-8 py-2 rounded-lg hover:opacity-90"
           onClick={handleConnect}
         >
-          {account ? shortenAddress(account) : 'CONNECT'}
+          {account && chainId === BSC.chainId
+            ? shortenAddress(account)
+            : 'CONNECT'}
         </button>
       )}
     </div>
