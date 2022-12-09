@@ -165,5 +165,33 @@ export const miliseconds = {
   '1m': 1000 * 60,
   '30m': 1000 * 60 * 30,
   '1h': 1000 * 60 * 60,
-  '1d': 1000 * 60 * 60 * 24,
+  '1D': 1000 * 60 * 60 * 24,
+  '1W': 1000 * 60 * 60 * 24 * 7,
+  '1M': 1000 * 60 * 60 * 24 * 30,
+};
+
+export const getChartTimestampPoints = (
+  activedTime: number,
+  days: number,
+): number[] => {
+  const res = [];
+  const endTime = Date.now();
+  const startTime = Math.max(activedTime, endTime - days * miliseconds['1D']);
+  const period = endTime - startTime;
+  const internal = Math.max(
+    Math.floor(period / 30 / miliseconds['1h']) * miliseconds['1h'],
+    miliseconds['1h'],
+  );
+
+  res.push(startTime);
+  let pt = (Math.floor(startTime / internal) + 1) * internal;
+  while (pt < endTime) {
+    res.push(pt);
+    pt += internal;
+  }
+  res.push(endTime);
+
+  res.push(internal);
+
+  return res;
 };

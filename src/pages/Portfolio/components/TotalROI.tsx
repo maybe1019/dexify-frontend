@@ -27,7 +27,7 @@ function TotalROI() {
           </span>
         </div>
         <div className="flex-grow text-xs transition-none h-[256px]">
-          <FundChart xAxis={true} yAxis={true} data={data} />
+          <FundChart xAxis={true} yAxis={true} data={data} dataKey="value" />
         </div>
       </div>
     </div>

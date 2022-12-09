@@ -8,18 +8,23 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import {
+  formatDateTimeToString,
+  formatTimestampToString,
+} from '../../helpers/utils/utils';
 
 type FundChartProps = {
-  data: any;
+  data: any[];
   xAxis: boolean;
   yAxis: boolean;
+  dataKey: string;
 };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className=" p-2 bg-white/50 dark:bg-black/50">
-        <p className=" text-sm">{label}</p>
+        <p className=" text-sm">{formatDateTimeToString(new Date(label))}</p>
         <p className="text-primary">AUM: ${payload[0].value}</p>
       </div>
     );
@@ -28,7 +33,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
+const FundChart = ({ data, xAxis, yAxis, dataKey }: FundChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
@@ -50,12 +55,23 @@ const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        {xAxis && <XAxis dataKey="title" height={20} />}
+        {xAxis && (
+          <XAxis
+            dataKey="timestamp"
+            height={20}
+            type="number"
+            domain={['dataMin', 'dataMax']}
+            tickCount={data.length}
+            tickFormatter={(v) =>
+              formatTimestampToString(v, data[2].timestamp - data[1].timestamp)
+            }
+          />
+        )}
         {yAxis && <YAxis width={45} />}
         <Tooltip content={<CustomTooltip />} />
         <Area
           type="monotone"
-          dataKey="value"
+          dataKey={dataKey}
           stroke="#d946ef"
           strokeWidth="2"
           fill="url(#colorView)"
