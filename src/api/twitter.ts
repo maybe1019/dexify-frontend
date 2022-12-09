@@ -32,7 +32,7 @@ export const saveTwitterUserInfo = async (
     });
     return data;
   } catch (error) {
-    console.log(error);
+    console.error('saveTwitterUserInfo: ', error);
     utils.notification.danger('Error', (error as any).response.data.error);
   }
 };
@@ -49,7 +49,7 @@ export const logoutUser = async (address: string, signature: string) => {
     localStorage.removeItem('oauth_token_secret');
     return data;
   } catch (error) {
-    console.log(error);
+    console.error('logoutUser: ', error);
     utils.notification.danger('Error', (error as any).response.data.error);
   }
 };
@@ -63,7 +63,7 @@ export const getTweetsWithUserInfo = async (address: string) => {
     });
     return data;
   } catch (error) {
-    console.log(error);
+    console.error('getTweetsWithUserInfo: ', error);
     utils.notification.danger('Error', (error as any).response.data.error);
   }
 };

@@ -25,7 +25,6 @@ const Portfolio = () => {
   const init = async () => {
     const funds = await getFundsPerInvestor(account?.toLowerCase() as string);
     const res = await formatFundsPerInvestor(allFunds, funds);
-    console.log('res: ', res);
     setFunds(res);
   };
 

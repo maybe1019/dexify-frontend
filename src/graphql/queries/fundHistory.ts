@@ -1,10 +1,10 @@
 import { DocumentNode, gql } from '@apollo/client';
 import { PORTFOLIO_FIELDS } from '../fragments';
 
-const fundPortfolioHistory = (id: string, timestamp: number): DocumentNode => {
+const fundHistory = (id: string, timestamp: number): DocumentNode => {
   return gql`
     ${PORTFOLIO_FIELDS}
-    query getFundPortfolioHistory {
+    query getFundHistory {
       fund(id: "${id}") {
         trackedAssets {
           id
@@ -24,9 +24,27 @@ const fundPortfolioHistory = (id: string, timestamp: number): DocumentNode => {
         ) {
           ...portfolioFragment
         }
+
+        sharesHistory (
+          where: { timestamp_gte: ${timestamp} }
+          orderBy: timestamp
+          orderDirection: asc
+        ) {
+          timestamp
+          totalSupply
+        }
+        lastShare: sharesHistory (
+          where: { timestamp_lt: ${timestamp} }
+          orderBy: timestamp
+          orderDirection: desc
+          first: 1
+        ) {
+          timestamp
+          totalSupply
+        }
       }
     }
   `;
 };
 
-export default fundPortfolioHistory;
+export default fundHistory;

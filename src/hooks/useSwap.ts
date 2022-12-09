@@ -57,7 +57,7 @@ const getParaswapData = async (
       dest: to.address,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error('getParaswapData: ', error);
     utils.notification.danger('Error', error.message);
     return false;
   }
@@ -121,7 +121,6 @@ export const useSwap = () => {
             routes,
           ]);
         }
-        console.log(paths);
 
         const integrationData = abiCoder.encode(
           [
@@ -149,8 +148,6 @@ export const useSwap = () => {
           ],
         );
 
-        console.log('integrationCallArgs: ', integrationCallArgs);
-
         const receipt = await comptrollerContract.callOnExtension(
           IntegrationManagerAddress,
           0,
@@ -161,7 +158,7 @@ export const useSwap = () => {
         utils.notification.success('Success', 'Succeed in swap');
         setLoading(false);
       } catch (error: any) {
-        console.log(error);
+        console.error('useSwap->callback: ', error);
         utils.notification.danger('Error', error.message);
       } finally {
         setLoading(false);

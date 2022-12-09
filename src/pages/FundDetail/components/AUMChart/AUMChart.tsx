@@ -14,6 +14,7 @@ const AUMChart = ({ fund }: AUMChartProps) => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [risePercentage, setRisePercentage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dataKey, setDataKey] = useState<string>('aum');
 
   useEffect(() => {
     onChangePeriod(7);
@@ -21,10 +22,24 @@ const AUMChart = ({ fund }: AUMChartProps) => {
 
   const onChangePeriod = async (days: number) => {
     setLoading(true);
-    const aumHistory = await getAumHistoryOf(fund, days);
-    setChartData(aumHistory);
-    setRisePercentage((fund.aum / aumHistory[0].aum) * 100 - 100);
+    const fundHistory = (await getAumHistoryOf(fund, days)).map((v: any) => ({
+      ...v,
+      value: v.aum,
+    }));
+
+    setChartData(fundHistory);
+    setRisePercentage((fund.aum / fundHistory[0].aum) * 100 - 100);
     setLoading(false);
+  };
+
+  const onChangeDataKey = (dk: string) => {
+    setDataKey(dk);
+    const tmp = chartData.map((v: any) => ({
+      ...v,
+      value: v[dk],
+    }));
+    setRisePercentage((tmp[tmp.length - 1].value / tmp[0].value) * 100 - 100);
+    setChartData(tmp);
   };
 
   return (
@@ -44,7 +59,30 @@ const AUMChart = ({ fund }: AUMChartProps) => {
         <span className="text-text-2 dark:text-text-2-dark text-xs">
           ${formatFloatFixed(fund.aum)}
         </span>
+
+        <div className="text-xs bg-bg-1 dark:bg-bg-1-dark p-1 rounded-md flex gap-1">
+          <button
+            className={
+              'py-1 px-2 rounded-md' +
+              (dataKey === 'aum' ? ' bg-white dark:bg-bg-2-dark' : '')
+            }
+            onClick={() => onChangeDataKey('aum')}
+          >
+            AUM
+          </button>
+          <button
+            className={
+              'py-1 px-2 rounded-md' +
+              (dataKey === 'sharePrice' ? ' bg-white dark:bg-bg-2-dark' : '')
+            }
+            onClick={() => onChangeDataKey('sharePrice')}
+          >
+            SharePrice
+          </button>
+        </div>
+
         <DatePeriodDropDown onChange={onChangePeriod} />
+
         <span className="text-green-500 flex text-sm ml-auto">
           <span
             className={
@@ -64,7 +102,7 @@ const AUMChart = ({ fund }: AUMChartProps) => {
       </div>
       <div className="relative flex-grow text-xs transition-none h-52 md:h-[375px] pr-3 pt-3">
         {loading && <ComponentSpinner />}
-        <FundChart xAxis={true} yAxis={true} data={chartData} dataKey="aum" />
+        <FundChart xAxis={true} yAxis={true} data={chartData} />
       </div>
     </div>
   );

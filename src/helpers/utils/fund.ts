@@ -1,6 +1,6 @@
 import utils from '.';
 import { getTokenPriceHistory } from '../../api/token';
-import { getFundPortfolioHistory } from './graphql';
+import { getFundHistory as getFundHistory } from './graphql';
 import { calcDate, getTokenInfo, getTokenPriceAt, miliseconds } from './utils';
 
 const getHoldingsFromStatesAt = (states: any[], timestamp: number): any[] => {
@@ -171,10 +171,9 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
         days,
       );
       const internal = chartXPoints.pop() as number;
-      const { portfolioList, trackedAssets } = await getFundPortfolioHistory(
-        dexfund.id,
-        chartXPoints[0],
-      );
+      const { portfolioList, trackedAssets, totalSupplyList } =
+        await getFundHistory(dexfund.id, chartXPoints[0]);
+      totalSupplyList.reverse();
 
       const assetIds = trackedAssets
         .map((id) => utils.utils.getTokenInfo(id)?.coingeckoId)
@@ -188,6 +187,7 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
 
       let i = 0;
       let aum = 0;
+      let totalSupply = 1;
       const aumChartData: any[] = [];
 
       chartXPoints.forEach((xPoint, index) => {
@@ -196,9 +196,16 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
           assetPrices,
           xPoint,
         );
+
+        totalSupply = totalSupplyList.find(
+          (ts: any) => ts.timestamp <= xPoint,
+        ).totalSupply;
+
         aumChartData.push({
           timestamp: xPoint,
           aum: aum,
+          sharePrice: aum === 0 ? 0 : aum / totalSupply,
+          totalSupply,
         });
         if (index < chartXPoints.length - 1) {
           while (true) {
@@ -213,9 +220,16 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
                 assetPrices,
                 xPoint,
               );
+
+              totalSupply = totalSupplyList.find(
+                (ts: any) => ts.timestamp <= timestamp,
+              ).totalSupply;
+
               aumChartData.push({
                 timestamp: timestamp,
                 aum: aum,
+                sharePrice: aum === 0 ? 0 : aum / totalSupply,
+                totalSupply,
               });
             } else {
               break;
@@ -259,8 +273,6 @@ const getShareFromHistoryAt = (history: any[], timestamp: number): number => {
 
 export const formatFundsPerInvestor = (allFunds: FundData[], funds: any[]) =>
   new Promise<any[]>(async (resolve) => {
-    console.log('funds: ', funds);
-
     const res: any[] = await Promise.all(
       funds.map(async (fund: any) => {
         const myFund: any = {};

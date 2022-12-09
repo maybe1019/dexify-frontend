@@ -41,7 +41,7 @@ export const useWithdraw = (fundAddr: string) => {
           'Your shares have been withdrawn',
         );
       } catch (error: any) {
-        console.log(error);
+        console.error('redeemSharesDetailed: ', error);
         utils.notification.danger('Error', error.message);
       } finally {
         setLoading(false);

@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import {
   formatDateTimeToString,
+  formatFloatFixed,
   formatTimestampToString,
 } from '../../helpers/utils/utils';
 
@@ -17,15 +18,32 @@ type FundChartProps = {
   data: any[];
   xAxis: boolean;
   yAxis: boolean;
-  dataKey: string;
 };
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = (props: any) => {
+  const { active, payload, label, data } = props;
   if (active && payload && payload.length) {
     return (
-      <div className=" p-2 bg-white/50 dark:bg-black/50">
-        <p className=" text-sm">{formatDateTimeToString(new Date(label))}</p>
-        <p className="text-primary">AUM: ${payload[0].value}</p>
+      <div className=" p-2 bg-white/50 dark:bg-black/50 w-40">
+        <div className=" text-sm my-2">
+          {formatDateTimeToString(new Date(label))}
+        </div>
+        <div className="text-primary text-sm my-1 flex justify-between">
+          <div>AUM:</div>
+          <div>
+            ${' '}
+            {formatFloatFixed(data.find((d: any) => d.timestamp === label).aum)}
+          </div>
+        </div>
+        <div className="text-secondary text-sm my-1 flex justify-between">
+          <div>Share Price:</div>
+          <div>
+            ${' '}
+            {formatFloatFixed(
+              data.find((d: any) => d.timestamp === label).sharePrice,
+            )}
+          </div>
+        </div>
       </div>
     );
   }
@@ -33,7 +51,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-const FundChart = ({ data, xAxis, yAxis, dataKey }: FundChartProps) => {
+const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
@@ -68,10 +86,10 @@ const FundChart = ({ data, xAxis, yAxis, dataKey }: FundChartProps) => {
           />
         )}
         {yAxis && <YAxis width={45} />}
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={<CustomTooltip data={data} />} />
         <Area
           type="monotone"
-          dataKey={dataKey}
+          dataKey="value"
           stroke="#d946ef"
           strokeWidth="2"
           fill="url(#colorView)"
