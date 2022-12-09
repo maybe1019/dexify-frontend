@@ -5,12 +5,14 @@ import DatePeriodDropDown from '../../../../components/DatePeriodDropDown';
 import { getAumHistoryOf } from '../../../../helpers/utils/fund';
 import { formatFloatFixed } from '../../../../helpers/utils/utils';
 import { ComponentSpinner } from '../../../../components/Spinner';
+import { ReactComponent as TwitterIcon } from '../../../../assets/images/svg/twitter-icon.svg';
 
 type AUMChartProps = {
   fund: FundData;
+  managerInfo: User;
 };
 
-const AUMChart = ({ fund }: AUMChartProps) => {
+const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [risePercentage, setRisePercentage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,7 +51,7 @@ const AUMChart = ({ fund }: AUMChartProps) => {
   return (
     <div className="card overflow-hidden py-7 relative">
       <div className="flex justify-between items-center mx-10">
-        <div className="flex items-center mt-1">
+        <div className="flex items-center">
           <img
             src="/images/default-user.png"
             alt="default-user"
@@ -57,6 +59,25 @@ const AUMChart = ({ fund }: AUMChartProps) => {
           />
           <p className="text-base font-bold sm:text-xl mx-4">{fund.name}</p>
         </div>
+        {managerInfo && managerInfo.twitterName && (
+          <>
+            <div className="relative flex items-center gap-4">
+              <img
+                src={managerInfo.twitterImage}
+                alt="user"
+                className="w-10 h-10 rounded-full"
+              />
+              <TwitterIcon
+                width={16}
+                height={16}
+                className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
+              />
+              <div className="font-bold text-lg text-[#03a9f4]">
+                @{managerInfo.twitterScreenName}
+              </div>
+            </div>
+          </>
+        )}
       </div>
       <div className="flex items-center justify-center my-4 mx-6 gap-4 md:mx-12 md:gap-12 text-center ">
         <span className="text-text-2 dark:text-text-2-dark text-xs">AUM</span>

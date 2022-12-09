@@ -12,7 +12,7 @@ export const twitterLogin = () => {
       window.location.href = `https://api.twitter.com/oauth/authorize?oauth_token=${data.oauth_token}`;
     } catch (error) {
       console.error(error);
-      utils.notification.danger('Error', (error as any).response.data.error);
+      utils.notification.danger('Error', (error as any).response.data.message);
     }
   })();
 };
@@ -34,6 +34,8 @@ export const saveTwitterUserInfo = async (
   } catch (error) {
     console.error('saveTwitterUserInfo: ', error);
     utils.notification.danger('Error', (error as any).response.data.error);
+    console.error(error);
+    utils.notification.danger('Error', (error as any).response.data.message);
   }
 };
 
@@ -49,8 +51,8 @@ export const logoutUser = async (address: string, signature: string) => {
     localStorage.removeItem('oauth_token_secret');
     return data;
   } catch (error) {
-    console.error('logoutUser: ', error);
-    utils.notification.danger('Error', (error as any).response.data.error);
+    console.error(error);
+    utils.notification.danger('Error', (error as any).response.data.message);
   }
 };
 

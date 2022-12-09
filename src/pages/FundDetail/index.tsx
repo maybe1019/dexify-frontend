@@ -25,6 +25,7 @@ import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
 import { useWithdraw } from '../../hooks/useWithdraw';
 import PageMeta from '../../layouts/PageMeta';
 import { PageName } from '../../helpers/enums';
+import { useTweets } from '../../hooks/useTweets';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -42,8 +43,7 @@ const FundDetail = () => {
 
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
 
-  // eslint-disable-next-line
-  const [fund, setFund] = useState<FundData>(
+  const [fund] = useState<FundData>(
     allFunds.find((value) => value.id === fundAddress) as FundData,
   );
   const denominationAsset =
@@ -57,6 +57,8 @@ const FundDetail = () => {
     setFundInfoStep('');
   };
   useOutsideHandler(targetDom, handleStep);
+
+  const { tweetsLoading, tweetsData } = useTweets(fund.manager);
 
   const {
     investFundDenomination,
@@ -110,7 +112,13 @@ const FundDetail = () => {
   return (
     <>
       <PageMeta pageName={PageName.FUNDDETAIL} />
-      <div className="lg:grid grid-cols-8 gap-4 relative pt-[100px] sm:pt-[60px] lg:top-[-70px]">
+      <div
+        className={
+          'lg:grid grid-cols-8 gap-4 relative' +
+          (account?.toLowerCase() === fund.manager &&
+            ' pt-[100px] sm:pt-[60px] lg:top-[-70px]')
+        }
+      >
         {denominationAsset && (
           <InvestModal
             isOpen={isOpenActionModal === 1}
@@ -128,32 +136,35 @@ const FundDetail = () => {
           />
         )}
         {/* ---------- Mobile only ------------ */}
-        <div className="w-full absolute z-20 lg:hidden top-0 sm:top-[-50px]">
-          <div className="">
-            <Disclosure>
-              {({ open }) => (
-                <>
-                  <Disclosure.Button className="w-full flex bg-secondary rounded-2xl p-5">
-                    <div className="flex m-auto items-center gap-3 text-text-1-dark">
-                      <span>Swap</span>
-                      <ChevronUpIcon
-                        className={`${
-                          open ? 'rotate-180 transform' : ''
-                        } h-5 w-5`}
-                      />
-                    </div>
-                  </Disclosure.Button>
-                  <Disclosure.Panel className="w-full pt-4 pb-2 text-sm text-gray-500">
-                    <div className="grid gap-4 w-full">
-                      <Swap fundAddress={fundAddress as string} />
-                      <PriceChart />
-                    </div>
-                  </Disclosure.Panel>
-                </>
-              )}
-            </Disclosure>
+        {fund.manager === account?.toLowerCase() && (
+          <div className="w-full absolute z-20 lg:hidden top-0 sm:top-[-50px]">
+            <div className="">
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="w-full flex bg-secondary rounded-2xl p-5">
+                      <div className="flex m-auto items-center gap-3 text-text-1-dark">
+                        <span>Swap</span>
+                        <ChevronUpIcon
+                          className={`${
+                            open ? 'rotate-180 transform' : ''
+                          } h-5 w-5`}
+                        />
+                      </div>
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="w-full pt-4 pb-2 text-sm text-gray-500">
+                      <div className="grid gap-4 w-full">
+                        <Swap fundAddress={fundAddress as string} />
+                        <PriceChart />
+                      </div>
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            </div>
           </div>
-        </div>
+        )}
+
         <Tab.Group>
           <Tab.List className="flex lg:hidden card bg-primary dark:bg-bg-2-dark p-2 mb-4">
             <Tab
@@ -198,12 +209,16 @@ const FundDetail = () => {
           <div ref={targetDom}>
             {fundInfoStep === 'Tweets' && (
               <div className="absolute lg:hidden w-full bg-white dark:bg-bg-2-dark z-10">
-                <Tweets />
+                <Tweets
+                  tweetsData={tweetsData}
+                  loading={tweetsLoading}
+                  isManager={account?.toLowerCase() === fund.manager}
+                />
               </div>
             )}
             {fundInfoStep === fundInfoTabList[0] && (
               <div className="absolute lg:hidden w-full card z-10">
-                <Bio />
+                <Bio fund={fund} managerInfo={tweetsData.user} />
               </div>
             )}
             {fundInfoStep === fundInfoTabList[1] && (
@@ -219,7 +234,7 @@ const FundDetail = () => {
           </div>
           {/* ---------- Mobile only ------------ */}
 
-          <AUMChart fund={fund as FundData} />
+          <AUMChart fund={fund as FundData} managerInfo={tweetsData?.user} />
           <AssetsInfo fund={fund as FundData} />
           <div className="mx-auto">
             <button
@@ -238,40 +253,42 @@ const FundDetail = () => {
         </div>
 
         <div className="lg:col-span-3 hidden lg:flex flex-col gap-4 mt-4">
-          <Tab.Group>
-            <Tab.List className="hidden lg:flex bg-primary bg-transparent w-[calc(100%-24px)] mx-auto">
-              <Tab
-                className={({ selected }) =>
-                  classNames(
-                    'w-full py-4 text-lg font-mediu rounded-tl-lg rounded-tr-lg',
-                    ' focus:outline-none',
-                    'border-b-2 border-b-gray-500/50',
-                    selected
-                      ? 'text-primary border-b-primary'
-                      : 'text-text-3 dark:text-text-3-dark hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
-                  )
-                }
-                onClick={() => setManageStep(false)}
-              >
-                Fund Info
-              </Tab>
-              <Tab
-                className={({ selected }) =>
-                  classNames(
-                    'w-full py-4 text-lg font-medium rounded-tl-lg rounded-tr-lg',
-                    ' focus:outline-none',
-                    'border-b-2 border-b-gray-500/50',
-                    selected
-                      ? 'text-primary border-b-primary'
-                      : 'text-text-3 dark:text-text-3-dark hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
-                  )
-                }
-                onClick={() => setManageStep(true)}
-              >
-                Manage
-              </Tab>
-            </Tab.List>
-          </Tab.Group>
+          {fund.manager === account?.toLowerCase() && (
+            <Tab.Group>
+              <Tab.List className="hidden lg:flex bg-primary bg-transparent w-[calc(100%-24px)] mx-auto">
+                <Tab
+                  className={({ selected }) =>
+                    classNames(
+                      'w-full py-4 text-lg font-mediu rounded-tl-lg rounded-tr-lg',
+                      ' focus:outline-none',
+                      'border-b-2 border-b-gray-500/50',
+                      selected
+                        ? 'text-primary border-b-primary'
+                        : 'text-text-3 dark:text-text-3-dark hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
+                    )
+                  }
+                  onClick={() => setManageStep(false)}
+                >
+                  Fund Info
+                </Tab>
+                <Tab
+                  className={({ selected }) =>
+                    classNames(
+                      'w-full py-4 text-lg font-medium rounded-tl-lg rounded-tr-lg',
+                      ' focus:outline-none',
+                      'border-b-2 border-b-gray-500/50',
+                      selected
+                        ? 'text-primary border-b-primary'
+                        : 'text-text-3 dark:text-text-3-dark hover:bg-white/[0.12] hover:text-black dark:hover:text-white',
+                    )
+                  }
+                  onClick={() => setManageStep(true)}
+                >
+                  Manage
+                </Tab>
+              </Tab.List>
+            </Tab.Group>
+          )}
           {manageStep ? (
             <>
               <Swap fundAddress={fundAddress as string} />
@@ -279,8 +296,12 @@ const FundDetail = () => {
             </>
           ) : (
             <>
-              <Tweets />
-              <FundInfo fund={fund} />
+              <Tweets
+                tweetsData={tweetsData}
+                loading={tweetsLoading}
+                isManager={account?.toLowerCase() === fund.manager}
+              />
+              <FundInfo fund={fund} tweetsData={tweetsData} />
             </>
           )}
         </div>

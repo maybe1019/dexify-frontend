@@ -43,11 +43,11 @@ export const loadBnbPrices = async () => {
       'wbnb',
       from,
       Date.now(),
-      miliseconds['1h'],
+      milliseconds['1h'],
     );
 
     from = bnbPrices[bnbPrices.length - 1][0];
-    if (Date.now() - from > miliseconds['1h']) {
+    if (Date.now() - from > milliseconds['1h']) {
       bnbPrices = bnbPrices.concat(
         res.wbnb.map((t: any): number[] => [
           t.timestamp as number,
@@ -118,13 +118,13 @@ export const formatTimestampToString = (
   unit: number,
 ): string => {
   const date = new Date(timestamp);
-  const milisecDay = 1000 * 60 * 60 * 24;
-  if (unit < milisecDay) {
+  const millisecondsDay = 1000 * 60 * 60 * 24;
+  if (unit < millisecondsDay) {
     return `${months[date.getMonth()]} ${date.getDate()} ${
       date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-    }:00`;
+    }:00 ${date.getFullYear()}`;
   } else {
-    return `${months[date.getMonth()]} ${date.getDate()}`;
+    return `${months[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
   }
 };
 
@@ -160,7 +160,7 @@ export const getTokenInfo = (symbol: string): Token | undefined => {
   return undefined;
 };
 
-export const miliseconds = {
+export const milliseconds = {
   '1s': 1000,
   '1m': 1000 * 60,
   '30m': 1000 * 60 * 30,
@@ -176,11 +176,11 @@ export const getChartTimestampPoints = (
 ): number[] => {
   const res = [];
   const endTime = Date.now();
-  const startTime = Math.max(activedTime, endTime - days * miliseconds['1D']);
+  const startTime = Math.max(activedTime, endTime - days * milliseconds['1D']);
   const period = endTime - startTime;
   const internal = Math.max(
-    Math.floor(period / 30 / miliseconds['1h']) * miliseconds['1h'],
-    miliseconds['1h'],
+    Math.floor(period / 30 / milliseconds['1h']) * milliseconds['1h'],
+    milliseconds['1h'],
   );
 
   res.push(startTime);

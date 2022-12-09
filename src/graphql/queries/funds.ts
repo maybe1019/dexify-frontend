@@ -1,11 +1,11 @@
 import { DocumentNode, gql } from '@apollo/client';
-import { miliseconds } from '../../helpers/utils/utils';
+import { milliseconds } from '../../helpers/utils/utils';
 import { PORTFOLIO_FIELDS } from '../fragments';
 
 const funds = (): DocumentNode => {
   const now = Date.now();
-  const time1dAgo = Math.floor((now - miliseconds['1D']) / 1000);
-  const time7dAgo = Math.floor((now - miliseconds['1D'] * 7) / 1000);
+  const time1dAgo = Math.floor((now - milliseconds['1D']) / 1000);
+  const time7dAgo = Math.floor((now - milliseconds['1D'] * 7) / 1000);
   return gql`
     ${PORTFOLIO_FIELDS}
     query getAllFunds {
