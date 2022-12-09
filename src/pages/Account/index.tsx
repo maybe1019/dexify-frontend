@@ -34,6 +34,9 @@ const Account = () => {
   let imageFile: File;
 
   useEffect(() => {
+    setNewAccount(myAccountState.value);
+  }, [myAccountState]);
+  useEffect(() => {
     if (!account) {
       navigate('/');
     }

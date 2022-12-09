@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   getEntryFee,
   getManagementFee,
+  getMinMaxInvestment,
   getPerformanceFee,
 } from '../../../../helpers/utils/graphql';
 
@@ -13,6 +14,7 @@ function Fees({ fund }: FeesProp) {
   const [entryFee, setEntryFee] = useState<number>(-1);
   const [performanceFee, setPerformanceFee] = useState<number>(-1);
   const [managementFee, setManagementFee] = useState<number>(-1);
+  const [minInvestment, setMinInvestment] = useState<number>(-1);
 
   useEffect(() => {
     init();
@@ -25,6 +27,8 @@ function Fees({ fund }: FeesProp) {
     setPerformanceFee(pf);
     const mf = await getManagementFee(fund.comptrollerId);
     setManagementFee(mf);
+    const minMaxInvestment = await getMinMaxInvestment(fund.id);
+    setMinInvestment(minMaxInvestment.minInvestment);
   };
 
   return (
@@ -50,9 +54,12 @@ function Fees({ fund }: FeesProp) {
           <div className=" absolute skeleton w-full h-full left-0 top-0 z-50 rounded-xl"></div>
         )}
       </div>
-      <div className="grid grid-cols-5 gap-4 my-5">
+      <div className="grid grid-cols-5 gap-4 my-5 relative">
         <p className="col-span-3 text-md text-right">Minimum investment:</p>
-        <p className="col-span-2 text-md">${fund.minInvestment}</p>
+        <p className="col-span-2 text-md">${minInvestment}</p>
+        {minInvestment === -1 && (
+          <div className=" absolute skeleton w-full h-full left-0 top-0 z-50 rounded-xl"></div>
+        )}
       </div>
     </div>
   );

@@ -8,13 +8,14 @@ import metadata from './helpers/data/page-metadata.json';
 import { setAllFunds } from './store/reducers/allFundsSlice';
 import LazyLoadingSpinner from './components/LazyLoadingSpinner';
 import utils from './helpers/utils';
-import api from './api';
 import { setThemeMode } from './store/reducers/themeModeSlice';
 import { PageSpinner } from './components/Spinner';
 import { useEthers } from '@usedapp/core';
 import { updateMyAccountWithTwitter } from './store/reducers/myAccountSlice';
 import { ethers } from 'ethers';
 import { ThunkStatus } from './helpers/enums';
+import { loadBnbPrices } from './helpers/utils/utils';
+import { setPageLoading } from './store/reducers/pageLoadingSlice';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -28,12 +29,13 @@ function App() {
   const accountStatus = useAppSelector((state) => state.myAccount.status);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { library } = useEthers();
+  const { library, account } = useEthers();
+  dispatch(setPageLoading(accountStatus === ThunkStatus.PENDING));
 
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    initFundData();
+    init();
 
     const theme = localStorage.getItem('dexify-finance-theme');
     if (theme !== null) {
@@ -41,13 +43,12 @@ function App() {
     }
   }, []);
 
-  const initFundData = async () => {
-    await api.token.initPricesLast7D();
+  const init = async () => {
+    await loadBnbPrices();
 
     const funds = await utils.graphql.getFunds();
-    const tmpData: any[] = await Promise.all(
-      funds.map((fund) => utils.fund.formatFundData(fund)),
-    );
+    console.log('funds: ', funds);
+    const tmpData: any[] = funds.map((fund) => utils.fund.formatFundData(fund));
     dispatch(setAllFunds(tmpData));
     console.log(tmpData);
     setLoading(false);
@@ -59,22 +60,21 @@ function App() {
   );
 
   useEffect(() => {
-    if (oauth_token && oauth_verifier && library) {
-      dispatch(
-        updateMyAccountWithTwitter({
-          library: library as ethers.providers.JsonRpcProvider,
-          oauth_verifier,
-        }),
-      );
+    verifyTwitter();
+    async function verifyTwitter() {
+      if (oauth_token && oauth_verifier && account) {
+        await dispatch(
+          updateMyAccountWithTwitter({
+            library: library as ethers.providers.JsonRpcProvider,
+            oauth_verifier,
+            account,
+          }),
+        );
+        const location = localStorage.getItem('twitter_login_location');
+        navigate(`/${location}`);
+      }
     }
-  }, [library]);
-
-  useEffect(() => {
-    if (accountStatus === ThunkStatus.READY && oauth_token) {
-      const location = localStorage.getItem('twitter_login_location');
-      navigate(`/${location}`);
-    }
-  }, [accountStatus]);
+  }, [oauth_token, oauth_verifier, account]);
 
   useEffect(() => {
     const scrollColors: Record<string, string> = {

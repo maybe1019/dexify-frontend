@@ -1,5 +1,8 @@
+import { getTokenPriceHistory } from '../../api/token';
 import tokens from '../../config/tokenlists.json';
+import bnbPriceHisotry from '../data/bnb-prices.json';
 
+let bnbPrices = bnbPriceHisotry;
 const tokenList: Token[] = tokens;
 
 const months = [
@@ -33,9 +36,51 @@ export const calcDate = (
   return Math.floor((to - from) / day);
 };
 
-export const formatFloatFixed = (num: number) => {
-  if (num - parseFloat(num.toFixed(3)) === 0) {
-    return num;
+export const loadBnbPrices = async () => {
+  try {
+    let from = bnbPrices[bnbPrices.length - 1][0];
+    const res = await getTokenPriceHistory(
+      'wbnb',
+      from,
+      Date.now(),
+      miliseconds['1h'],
+    );
+
+    from = bnbPrices[bnbPrices.length - 1][0];
+    if (Date.now() - from > miliseconds['1h']) {
+      bnbPrices = bnbPrices.concat(
+        res.wbnb.map((t: any): number[] => [
+          t.timestamp as number,
+          t.price as number,
+        ]),
+      );
+    }
+  } catch (error) {
+    console.error('loadBnbPrices: ', error);
+  }
+};
+
+export const getBnbPriceAt = (timestamp: number): number => {
+  if (timestamp < bnbPriceHisotry[0][0]) {
+    return bnbPriceHisotry[0][1];
+  }
+  return (
+    bnbPriceHisotry
+      .map((f) => f)
+      .reverse()
+      .find((f) => f[0] <= timestamp) as Array<number>
+  )[1];
+};
+
+export const formatFloatFixed = (num: number): number => {
+  if (Math.abs(num) >= 100) {
+    return Math.floor(num);
+  }
+  if (Math.abs(num) >= 10) {
+    return parseFloat(num.toFixed(1));
+  }
+  if (Math.abs(num) >= 1) {
+    return parseFloat(num.toFixed(2));
   }
   return parseFloat(num.toFixed(3));
 };
@@ -97,13 +142,22 @@ export const formatDateTimeToString = (date: Date): string => {
   return res;
 };
 
-export const getTokenInfo = (symbol: string): Token => {
+export const getTokenInfo = (symbol: string): Token | undefined => {
   for (let i = 0; i < tokenList.length; i++) {
     if (tokenList[i].symbol.toLowerCase() === symbol.toLowerCase()) {
       return tokenList[i];
     }
+    if (tokenList[i].address.toLowerCase() === symbol.toLowerCase()) {
+      return tokenList[i];
+    }
+    if (tokenList[i].coingeckoId.toLowerCase() === symbol.toLowerCase()) {
+      return tokenList[i];
+    }
+    if (tokenList[i].name.toLowerCase() === symbol.toLowerCase()) {
+      return tokenList[i];
+    }
   }
-  return tokenList[0];
+  return undefined;
 };
 
 export const miliseconds = {
@@ -111,5 +165,33 @@ export const miliseconds = {
   '1m': 1000 * 60,
   '30m': 1000 * 60 * 30,
   '1h': 1000 * 60 * 60,
-  '1d': 1000 * 60 * 60 * 24,
+  '1D': 1000 * 60 * 60 * 24,
+  '1W': 1000 * 60 * 60 * 24 * 7,
+  '1M': 1000 * 60 * 60 * 24 * 30,
+};
+
+export const getChartTimestampPoints = (
+  activedTime: number,
+  days: number,
+): number[] => {
+  const res = [];
+  const endTime = Date.now();
+  const startTime = Math.max(activedTime, endTime - days * miliseconds['1D']);
+  const period = endTime - startTime;
+  const internal = Math.max(
+    Math.floor(period / 30 / miliseconds['1h']) * miliseconds['1h'],
+    miliseconds['1h'],
+  );
+
+  res.push(startTime);
+  let pt = (Math.floor(startTime / internal) + 1) * internal;
+  while (pt < endTime) {
+    res.push(pt);
+    pt += internal;
+  }
+  res.push(endTime);
+
+  res.push(internal);
+
+  return res;
 };

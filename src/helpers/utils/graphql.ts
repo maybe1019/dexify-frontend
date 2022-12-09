@@ -8,11 +8,17 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export const getMinMaxInvestment = (fundId: string): Promise<any> =>
+export const getMinMaxInvestment = (
+  fundId: string,
+): Promise<Record<string, number>> =>
   new Promise(async (resolve, reject) => {
     try {
       const query = queries.minMaxInvestment(fundId);
       const res = await client.query({ query });
+      if (res.data.minMaxInvestmentFundSettingsSetEvents.length === 0) {
+        resolve({ minInvestment: 0, maxInvestment: 1000000 });
+        return;
+      }
       resolve({
         minInvestment: parseInt(
           res.data.minMaxInvestmentFundSettingsSetEvents[0].minInvestmentAmount,
@@ -182,5 +188,27 @@ export const getFundsPerInvestor = (address: string) =>
     } catch (error) {
       console.error('getFundsPerInvestor: ', error);
       resolve([]);
+    }
+  });
+
+export const getFundPortfolioHistory = (fundId: string, timestamp: number) =>
+  new Promise<Record<string, any[]>>(async (resolve) => {
+    try {
+      const query = queries.fundPortfolioHistory(
+        fundId,
+        Math.floor(timestamp / 1000),
+      );
+      const res = await client.query({ query });
+      resolve({
+        portfolioList: res.data.fund.lastPortfolio.concat(
+          res.data.fund.portfolioHistory,
+        ),
+        trackedAssets: res.data.fund.trackedAssets.map(
+          (asset: any) => asset.id,
+        ),
+      });
+    } catch (error) {
+      console.error('getFundPortfolioHistory: ', error);
+      resolve({ portfolioList: [], trackedAssets: [] });
     }
   });

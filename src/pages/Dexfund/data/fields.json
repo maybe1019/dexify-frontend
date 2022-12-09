@@ -32,7 +32,7 @@
     "colorful": false
   },
   {
-    "name": "investorId",
+    "name": "investorCnt",
     "title": "No. of investors",
     "prefix": "",
     "suffix": "",
@@ -52,7 +52,7 @@
     "title": "24H",
     "prefix": "",
     "suffix": "%",
-    "type": "number",
+    "type": "string",
     "colorful": false
   },
   {
@@ -60,7 +60,7 @@
     "title": "7 days",
     "prefix": "",
     "suffix": "%",
-    "type": "number",
+    "type": "string",
     "colorful": false
   },
   {
@@ -68,7 +68,7 @@
     "title": "Inception",
     "prefix": "",
     "suffix": "%",
-    "type": "number",
+    "type": "string",
     "colorful": false
   },
   {

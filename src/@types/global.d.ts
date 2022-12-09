@@ -21,7 +21,7 @@ type Token = {
 };
 
 type HoldingToken = {
-  symbol: string;
+  id: string;
   aum: number;
   amount: number;
 };
@@ -34,13 +34,11 @@ type FundData = {
   aum: number;
   topAsset: string;
   topAssetAUM: number;
-  investorId: number;
+  investorCnt: number;
   age: number;
   aum24H: number;
   aum7D: number;
   aumFirst: number;
-  minInvestment: number;
-  maxInvestment: number;
   risk: number;
   denominationAsset: string;
   startTimestamp: number;

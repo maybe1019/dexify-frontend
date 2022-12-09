@@ -1,21 +1,7 @@
 import utils from '.';
-import {
-  getCoinPriceHistoryLast7D,
-  getTokenPriceHistory,
-} from '../../api/token';
-import {
-  getDailyStates,
-  getHourlyStates,
-  getMinMaxInvestment,
-} from './graphql';
-import {
-  calcDate,
-  formatFloatFixed,
-  formatTimestampToString,
-  getTokenInfo,
-  getTokenPriceAt,
-  miliseconds,
-} from './utils';
+import { getTokenPriceHistory } from '../../api/token';
+import { getFundPortfolioHistory } from './graphql';
+import { calcDate, getTokenInfo, getTokenPriceAt, miliseconds } from './utils';
 
 const getHoldingsFromStatesAt = (states: any[], timestamp: number): any[] => {
   if (states.length === 0) {
@@ -43,6 +29,23 @@ const getHoldingsFromStatesAt = (states: any[], timestamp: number): any[] => {
   return states[length - 1].first.portfolio.holdings as any[];
 };
 
+const calcAumFromHoldingsWithBnbPrice = (
+  holdings: any[],
+  coinPrices: any[],
+  timestamp: number,
+): number => {
+  let aum = 0;
+  const bnbPrice = utils.utils.getBnbPriceAt(timestamp);
+  holdings.forEach((holding) => {
+    const priceInBnb = parseFloat(
+      coinPrices.find((cp) => cp.id === holding.asset.id).price,
+    );
+    aum += parseFloat(holding.amount) * priceInBnb * bnbPrice;
+  });
+
+  return aum;
+};
+
 const calcAUMfromHoldings = (
   holdings: any[],
   coinPrices: any,
@@ -54,7 +57,7 @@ const calcAUMfromHoldings = (
     const amount = parseFloat(holdings[i].amount);
     const price = getTokenPriceAt(
       coinPrices,
-      getTokenInfo(holdings[i].asset.symbol).coingeckoId,
+      getTokenInfo(holdings[i].asset.id)?.coingeckoId as string,
       timestamp,
     );
     aum += price * amount;
@@ -63,193 +66,165 @@ const calcAUMfromHoldings = (
   return aum;
 };
 
-export const formatFundData = (fund: any): Promise<FundData> =>
-  new Promise(async (resolve) => {
-    const result: FundData = {
-      id: '',
-      name: '',
-      manager: '',
-      aum: 0,
-      topAsset: '',
-      topAssetAUM: 0,
-      investorId: 0,
-      age: 0,
-      aum24H: 0,
-      aum7D: 0,
-      aumFirst: 0,
-      risk: 1,
-      minInvestment: 0,
-      maxInvestment: 0,
-      denominationAsset: '',
-      startTimestamp: 0,
-      holdings: [],
-      comptrollerId: '',
-    };
-    try {
-      result.id = fund.id;
-      result.name = fund.name;
-      result.manager = fund.manager.id;
-      result.denominationAsset = fund.accessor.denominationAsset.symbol;
-      result.comptrollerId = fund.accessor.id;
-      result.startTimestamp = parseInt(fund.accessor.activationTime) * 1000;
-      result.investorId = parseInt(fund.investmentCount);
+export const formatFundData = (fund: any) => {
+  const result: FundData = {
+    id: '',
+    name: '',
+    manager: '',
+    aum: 0,
+    topAsset: '',
+    topAssetAUM: 0,
+    investorCnt: 0,
+    age: 0,
+    aum24H: 0,
+    aum7D: 0,
+    aumFirst: 0,
+    risk: 1,
+    denominationAsset: '',
+    startTimestamp: 0,
+    holdings: [],
+    comptrollerId: '',
+  };
 
-      const coinPricesLast7D = getCoinPriceHistoryLast7D();
+  result.id = fund.id;
+  result.name = fund.name;
+  result.manager = fund.manager.id;
+  result.denominationAsset = fund.accessor.denominationAsset.id;
+  result.comptrollerId = fund.accessor.id;
+  result.startTimestamp = parseInt(fund.inception) * 1000;
+  result.investorCnt = parseInt(fund.investmentCount);
 
-      result.aum = calcAUMfromHoldings(
-        fund.portfolio.holdings,
-        coinPricesLast7D,
-        Date.now(),
-      );
+  result.age = calcDate(result.startTimestamp, Date.now(), 'milisec');
 
-      // calc top asset and it's aum
-      if (fund.portfolio.holdings.length > 0) {
-        let topAssetAUM = 0;
-        let topAsset = '';
-        for (let i = 0; i < fund.portfolio.holdings.length; i++) {
-          const amount = parseFloat(fund.portfolio.holdings[i].amount);
-          const price = getTokenPriceAt(
-            coinPricesLast7D,
-            getTokenInfo(fund.portfolio.holdings[i].asset.symbol)?.coingeckoId,
-            Date.now(),
-          );
-
-          result.holdings.push({
-            symbol: fund.portfolio.holdings[i].asset.symbol,
-            aum: amount * price,
-            amount: amount,
-          });
-
-          if (amount * price > topAssetAUM) {
-            topAssetAUM = amount * price;
-            topAsset = fund.portfolio.holdings[i].asset.symbol;
-          }
-        }
-        result.topAsset = topAsset;
-        result.topAssetAUM = topAssetAUM;
-      }
-
-      result.age = calcDate(
-        parseInt(fund.accessor.activationTime),
-        Date.now() / 1000,
-        'sec',
-      );
-
-      if (fund.volume7D.length !== 0) {
-        const holdings7DAgo = getHoldingsFromStatesAt(
-          fund.volume7D,
-          Date.now() - 1000 * 3600 * 24 * 7,
-        );
-        const aum7D = calcAUMfromHoldings(
-          holdings7DAgo,
-          coinPricesLast7D,
-          Date.now() - 1000 * 3600 * 24 * 7,
-        );
-        result.aum7D = (result.aum / aum7D) * 100 - 100;
-
-        const holdings24HAgo = getHoldingsFromStatesAt(
-          fund.volume7D,
-          Date.now() - 1000 * 3600 * 24,
-        );
-        const aum24H = calcAUMfromHoldings(
-          holdings24HAgo,
-          coinPricesLast7D,
-          Date.now() - 1000 * 3600 * 24,
-        );
-        result.aum24H = aum24H;
-
-        const holdingsFirst = fund.volumeAll[0].first.portfolio.holdings;
-        const timestamp = parseInt(fund.volumeAll[0].first.timestamp) * 1000;
-        const prices = await getTokenPriceHistory(
-          '',
-          timestamp,
-          timestamp + miliseconds['1h'] * 2,
-          miliseconds['30m'],
-        );
-
-        const aumFirst = calcAUMfromHoldings(
-          holdingsFirst,
-          prices,
-          parseInt(fund.volumeAll[0].start) * 1000,
-        );
-        result.aumFirst = aumFirst;
-      }
-
-      try {
-        const minMaxInvestment = await getMinMaxInvestment(result.id);
-        result.minInvestment = minMaxInvestment.minInvestment;
-        result.maxInvestment = minMaxInvestment.maxInvestment;
-      } catch (error) {}
-
-      resolve(result);
-    } catch (error) {
-      console.error('formatFundData: ', error);
-      resolve(result);
+  // calculate aum, topAsset, topAssetAum
+  const bnbPrice = utils.utils.getBnbPriceAt(Date.now());
+  fund.portfolio.holdings.forEach((holding: any) => {
+    const amt = parseFloat(holding.amount);
+    const price = parseFloat(holding.price.price) * bnbPrice;
+    result.holdings.push({
+      amount: amt,
+      aum: amt * price,
+      id: holding.asset.id,
+    });
+    if (amt * price > result.topAssetAUM) {
+      result.topAsset = holding.asset.id;
+      result.topAssetAUM = amt * price;
     }
   });
+  result.aum = calcAumFromHoldingsWithBnbPrice(
+    fund.portfolio.holdings,
+    fund.trackedAssets.map((asset: any) => ({
+      id: asset.id,
+      price: asset.price.price,
+    })),
+    Date.now(),
+  );
+
+  // calculate aum of inception
+  if (fund.portfolioInception.length < 2) {
+    result.aumFirst = 0;
+  } else {
+    result.aumFirst = calcAumFromHoldingsWithBnbPrice(
+      fund.portfolioInception[1].holdings,
+      fund.portfolioInception[1].holdings.map((hd: any) => ({
+        id: hd.asset.id,
+        price: hd.price.price,
+      })),
+      result.startTimestamp,
+    );
+  }
+
+  if (fund.portfolio1dAgo.length === 0) {
+    result.aum24H = result.aumFirst;
+  } else {
+    result.aum24H = calcAumFromHoldingsWithBnbPrice(
+      fund.portfolio1dAgo[0].holdings,
+      fund.trackedAssets.map((asset: any) => ({
+        id: asset.id,
+        price: asset.price1dAgo[0].price,
+      })),
+      Date.now() - utils.utils.miliseconds['1D'],
+    );
+  }
+
+  if (fund.portfolio7dAgo.length === 0) {
+    result.aum7D = result.aumFirst;
+  } else {
+    result.aum7D = calcAumFromHoldingsWithBnbPrice(
+      fund.portfolio7dAgo[0].holdings,
+      fund.trackedAssets.map((asset: any) => ({
+        id: asset.id,
+        price: asset.price7dAgo[0].price,
+      })),
+      Date.now() - utils.utils.miliseconds['1D'] * 7,
+    );
+  }
+
+  return result;
+};
 
 export const getAumHistoryOf = (dexfund: FundData, days: number) =>
   new Promise<any[]>(async (resolve) => {
     try {
-      let states: any[] = [];
-      const unitDay = utils.utils.miliseconds['1d'];
-      let limit = 0;
-      let unit = unitDay;
-
-      let startAt = Math.max(
+      const chartXPoints = utils.utils.getChartTimestampPoints(
         dexfund.startTimestamp,
-        Date.now() - days * unitDay,
+        days,
+      );
+      const internal = chartXPoints.pop() as number;
+      const { portfolioList, trackedAssets } = await getFundPortfolioHistory(
+        dexfund.id,
+        chartXPoints[0],
       );
 
-      if (days === 0) {
-        limit = dexfund.age;
-        states = await getDailyStates(dexfund.id, limit);
-        unit = Math.floor((dexfund.age * unitDay) / 30);
-        startAt = dexfund.startTimestamp;
-      } else if (days === 1) {
-        limit = 24;
-        states = await getHourlyStates(dexfund.id, limit);
-        unit = unitDay / 24;
-      } else if (days === 7) {
-        limit = days * 24;
-        states = await getHourlyStates(dexfund.id, limit);
-        unit = Math.floor((Math.min(dexfund.age, days) * unitDay) / 30);
-      } else {
-        limit = days;
-        states = await getDailyStates(dexfund.id, limit);
-        if (Math.min(dexfund.age, days) <= 30) {
-          unit = unitDay;
-        } else {
-          unit = Math.floor((Math.min(dexfund.age, days) * unitDay) / 30);
-        }
-      }
-
-      const coinPrices = await getTokenPriceHistory(
-        '',
-        startAt,
+      const assetIds = trackedAssets
+        .map((id) => utils.utils.getTokenInfo(id)?.coingeckoId)
+        .join(',');
+      const assetPrices = await getTokenPriceHistory(
+        assetIds,
+        chartXPoints[0],
         Date.now(),
-        unit,
+        Math.floor(internal / 2),
       );
 
-      const aumHistory: any[] = [];
-      let timestamp = startAt;
-      for (; timestamp <= Date.now(); timestamp += unit) {
-        const holdings = getHoldingsFromStatesAt(states, timestamp);
-        const aum = calcAUMfromHoldings(holdings, coinPrices, timestamp);
-        aumHistory.push({
-          title: formatTimestampToString(timestamp, unit),
-          value: formatFloatFixed(aum),
-        });
-      }
+      let i = 0;
+      let aum = 0;
+      const aumChartData: any[] = [];
 
-      timestamp = Date.now();
-      const aum = dexfund.aum;
-      aumHistory.push({
-        title: formatTimestampToString(timestamp, unit),
-        value: formatFloatFixed(aum),
+      chartXPoints.forEach((xPoint, index) => {
+        aum = calcAUMfromHoldings(
+          portfolioList[i].holdings,
+          assetPrices,
+          xPoint,
+        );
+        aumChartData.push({
+          timestamp: xPoint,
+          aum: aum,
+        });
+        if (index < chartXPoints.length - 1) {
+          while (true) {
+            if (i + 1 === portfolioList.length) {
+              break;
+            }
+            const timestamp = parseInt(portfolioList[i + 1].timestamp) * 1000;
+            if (timestamp <= chartXPoints[index + 1]) {
+              i++;
+              aum = calcAUMfromHoldings(
+                portfolioList[i].holdings,
+                assetPrices,
+                xPoint,
+              );
+              aumChartData.push({
+                timestamp: timestamp,
+                aum: aum,
+              });
+            } else {
+              break;
+            }
+          }
+        }
       });
 
-      resolve(aumHistory);
+      resolve(aumChartData);
     } catch (error) {
       console.error('getAumHistoryOf: ', error);
       resolve([]);
@@ -299,7 +274,7 @@ export const formatFundsPerInvestor = (allFunds: FundData[], funds: any[]) =>
         let totalSupply = 0;
         let investorShare = 0;
         let timestamp = 0;
-        timestamp = Date.now() - miliseconds['1d'];
+        timestamp = Date.now() - miliseconds['1D'];
 
         totalSupply = getTotalSupplyFromStatesAt(fund.dailyStates, timestamp);
         investorShare = getShareFromHistoryAt(
@@ -322,9 +297,9 @@ export const formatFundsPerInvestor = (allFunds: FundData[], funds: any[]) =>
 
         const holdings = getHoldingsFromStatesAt(fund.dailyStates, timestamp);
         const coinPrices = await getTokenPriceHistory(
-          '',
+          'all',
           timestamp,
-          timestamp + miliseconds['1d'],
+          timestamp + miliseconds['1D'],
           miliseconds['1h'],
         );
         const aum = calcAUMfromHoldings(holdings, coinPrices, timestamp);

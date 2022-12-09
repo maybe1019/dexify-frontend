@@ -6,9 +6,7 @@ import {
   getTokenPriceAt,
   miliseconds,
 } from '../../../../helpers/utils/utils';
-import untypedField from '../../../Dexfund/data/fund-detail-fields.json';
-
-const fields: any = untypedField;
+import fields from '../../../Dexfund/data/fund-detail-fields.json';
 
 type AssetsInfoProps = {
   fund: FundData;
@@ -24,20 +22,21 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
 
   const init = async () => {
     const prices = await getTokenPriceHistory(
-      '',
-      Date.now() - miliseconds['1d'],
+      'all',
+      Date.now() - miliseconds['1D'],
       Date.now(),
       miliseconds['1h'],
     );
     const tmp: any[] = fund.holdings.map((asset) => {
       const price = getTokenPriceAt(
         prices,
-        getTokenInfo(asset.symbol).coingeckoId,
-        Date.now() - miliseconds['1d'],
+        getTokenInfo(asset.id)?.coingeckoId as string,
+        Date.now() - miliseconds['1D'],
       );
       const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
+      const token = getTokenInfo(asset.id);
       return {
-        assets: asset.symbol,
+        assets: `${token?.name} (${token?.symbol})`,
         aum: asset.aum,
         price: asset.aum / asset.amount,
         daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(1)}`,
