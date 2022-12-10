@@ -96,8 +96,6 @@ const Account = () => {
       return;
     }
 
-    console.log(imageFile);
-
     dispatch(
       createOrUpdateMyAccount({
         library: library as ethers.providers.JsonRpcProvider,
