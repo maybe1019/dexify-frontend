@@ -1,81 +1,46 @@
 import { DocumentNode, gql } from '@apollo/client';
+import { milliseconds } from '../../helpers/utils/utils';
 
-const fundsPerInvestor = (address: string): DocumentNode => gql`
-  query getFundsPerInvestor {
-    funds {
-      id
-      name
-      inception
-      investmentCount
-      shares {
-        totalSupply
-      }
-      portfolio {
-        holdings {
-          amount
-          asset {
+const fundsPerInvestor = (address: string): DocumentNode => {
+  const now = Date.now();
+  const time24hAgo = now - milliseconds['1D'];
+  const time7DAgo = now - milliseconds['1W'];
+
+  return gql`
+    query getFundsPerInvestor {
+      funds {
+        id
+        name
+        inception
+        investmentCount
+        shares {
+          totalSupply
+        }
+        investments(where: {investor: "${address.toLowerCase()}" }) {
+          investor {
             id
-            symbol
-            price {
-              price
-            }
+            firstSeen
+            investorSince
           }
-        }
-      }
-      investments(where: {investor: "${address.toLowerCase()}" }) {
-        investor {
-          id
-          firstSeen
-          investorSince
-        }
-        shares
-        stateHistory(orderBy: timestamp, orderDirection: desc) {
           shares
-          timestamp
-        }
-      }
-      dailyStates(orderBy: start, orderDirection: desc) {
-        start
-        end
-        first {
-          shares {
-            totalSupply
+          stateHistory(orderBy: timestamp, orderDirection: desc) {
+            shares
             timestamp
           }
-          portfolio {
-            holdings {
-              amount
-              asset {
-                name
-                symbol
-                price {
-                  price
-                }
-              }
-            }
-          }
         }
-        last {
+        totalSupply24hAgo: stateHistory(where: { timestamp_lte: ${time24hAgo} }, orderBy: timestamp, orderDirection: desc, first: 1) {
           shares {
             totalSupply
-            timestamp
-          }
-          portfolio {
-            holdings {
-              amount
-              asset {
-                name
-                symbol
-                price {
-                  price
-                }
-              }
-            }
-          }
+          }      
+        }
+        totalSupply7DAgo: stateHistory(where: { timestamp_lte: ${time7DAgo} }, orderBy: timestamp, orderDirection: desc, first: 1) {
+          shares {
+            totalSupply
+          }      
         }
       }
     }
-  }
-`;
+  `;
+};
 
 export default fundsPerInvestor;

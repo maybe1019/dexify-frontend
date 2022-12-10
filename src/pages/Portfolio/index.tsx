@@ -10,6 +10,7 @@ import { getFundsPerInvestor } from '../../helpers/utils/graphql';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { formatFundsPerInvestor } from '../../helpers/utils/fund';
+import UserDexfund from '../../components/UserDexfund';
 
 const Portfolio = () => {
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
@@ -35,18 +36,18 @@ const Portfolio = () => {
         <TotalAUM funds={funds} />
         <DexfundSplit funds={funds} />
         <div className="lg:col-span-2 xl:col-span-1">
-          <TotalROI />
+          <TotalROI funds={funds} />
         </div>
       </div>
       <h1 className="text-[22px] font-[500] m-12 mb-6 text-center lg:text-left">
         My Dexfunds
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        {Array(3)
-          .fill(1)
-          .map((item, i) => (
-            <div key={i}>{/* <UserDexfund dexfund={'sd'} /> */}</div>
-          ))}
+        {funds.map((fund: any, i) => (
+          <div key={i}>
+            <UserDexfund dexfund={fund.fundData} />
+          </div>
+        ))}
       </div>
     </div>
   );

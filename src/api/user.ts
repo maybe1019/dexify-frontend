@@ -20,8 +20,25 @@ export const getUser = (address: string): Promise<User> =>
         }
       });
       res.data.address = address;
-      const user: User = res.data;
-      resolve(user);
+      const user: Record<string, string> = {
+        id: '',
+        address: '',
+        email: '',
+        title: '',
+        bio: '',
+        name: '',
+        image: '',
+        twitterName: '',
+        twitterScreenName: '',
+        twitterImage: '',
+      };
+
+      Object.keys(user).map((key) => {
+        if (res.data[key]) {
+          user[key] = res.data[key];
+        }
+      });
+      resolve(user as User);
     } catch (error) {
       reject(error);
     }

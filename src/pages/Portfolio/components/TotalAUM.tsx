@@ -1,31 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import utils from '../../../helpers/utils';
+import api from '../../../api';
 
 type TotalAUMProps = {
   funds: any[];
 };
 
+const FundLink = ({ fund, title }: { fund: FundData; title: string }) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [imageUrl, setImageUrl] = useState<string>('/images/default-user.png');
+
+  useEffect(() => {
+    if (!fund) {
+      setLoading(true);
+      return;
+    }
+    init();
+  }, [fund]);
+
+  const init = async () => {
+    try {
+      const manager: User = await api.user.getUser(fund.manager);
+      if (manager.image !== '') {
+        setImageUrl(manager.image);
+      } else if (manager.twitterImage !== '') {
+        setImageUrl(manager.twitterImage);
+      }
+    } catch (error) {}
+    setLoading(false);
+  };
+
+  return (
+    <div>
+      {loading ? (
+        <div className="flex items-center">
+          <div className="skeleton rounded-full w-10 h-10"></div>
+          <p className="skeleton text-sm font-[500] sm:text-base mx-2 grow h-4"></p>
+        </div>
+      ) : (
+        <div className="flex items-center cursor-pointer">
+          <img
+            src={imageUrl}
+            alt="manager"
+            className="w-10 rounded-full h-10"
+          />
+          <p className="text-sm font-[500] sm:text-base ml-3 mr-1">
+            {fund.name}
+          </p>
+          <p className="text-xs sm:text-sm text-text-3 dark:text-text-3-dark font-[500]">
+            {' '}
+            - {title}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
 function TotalAUM({ funds }: TotalAUMProps) {
-  const getBiggestFund = (): any => {
-    let s = 0;
-    for (let i = 1; i < funds.length; i++) {
-      if (funds[i].investorAum > funds[s].investorAum) {
-        s = i;
-      }
-    }
-    return funds[s];
-  };
-
-  const getBestPerformance = (): any => {
-    let s = 0;
-    for (let i = 1; i < funds.length; i++) {
-      if (funds[i].roi > funds[s].roi) {
-        s = i;
-      }
-    }
-    return funds[s];
-  };
-
   return (
     <div className="card overflow-hidden min-h-[340px] flex flex-col justify-between">
       <div className="text-text-1 dark:text-text-1-dark text-xl header p-6 font-bold">
@@ -33,7 +65,7 @@ function TotalAUM({ funds }: TotalAUMProps) {
       </div>
       <div>
         <div className="flex flex-col my-3">
-          <div className="flex py-3 px-6 border-b border-[#8882]">
+          <div className="flex my-3 px-6 border-b border-[#8882]">
             <span className="text-sm text-text-3 dark:text-text-3-dark">
               Total AUM
             </span>
@@ -51,50 +83,44 @@ function TotalAUM({ funds }: TotalAUMProps) {
             <span className="text-sm text-text-2 dark:text-text-2-dark ml-auto">
               ${' '}
               {utils.utils.formatFloatFixed(
-                funds.reduce((a, b) => a + b.investorAum24H, 0),
+                funds.reduce((a, b) => a + b.investorAum24hAgo, 0),
               )}
             </span>
           </div>
           <div className="flex py-3 px-6 border-b border-[#8882]">
             <span className="text-sm text-text-3 dark:text-text-3-dark">
-              At first
+              7 Days Ago
             </span>
             <span className="text-sm text-text-2 dark:text-text-2-dark ml-auto">
               ${' '}
               {utils.utils.formatFloatFixed(
-                funds.reduce((a, b) => a + b.investorAumFirst, 0),
+                funds.reduce((a, b) => a + b.investorAum7DAgo, 0),
               )}
             </span>
           </div>
         </div>
       </div>
       <div className="flex flex-col justify-around p-7 gap-y-3">
-        <div className="flex items-center">
-          <img
-            src="/images/default-user.png"
-            alt="default-user"
-            className="w-10 rounded-full"
-          />
-          <p className="text-sm font-[500] sm:text-base mx-2">
-            {getBiggestFund()?.fundData.name}
-          </p>
-          <p className="text-xs sm:text-sm text-text-3 dark:text-text-3-dark font-[500]">
-            Dexfund - Biggest fund
-          </p>
-        </div>
-        <div className="flex items-center mt-1">
-          <img
-            src="/images/default-user.png"
-            alt="default-user"
-            className="w-10 rounded-full"
-          />
-          <p className="text-sm font-[500] sm:text-base mx-2">
-            {getBestPerformance()?.fundData.name}
-          </p>
-          <p className="text-xs sm:text-sm text-text-3 dark:text-text-3-dark font-[500]">
-            Dexfund - Best performing
-          </p>
-        </div>
+        <FundLink
+          fund={
+            funds.map((f) => f).sort((a, b) => b.investorAum - a.investorAum)[0]
+              ?.fundData
+          }
+          title="Biggest fund"
+        />
+        <FundLink
+          fund={
+            funds
+              .map((f) => f)
+              .sort(
+                (a, b) =>
+                  b.investorAum -
+                  b.investorAum24hAgo -
+                  (a.investorAum - a.investorAum24hAgo),
+              )[0]?.fundData
+          }
+          title="Best performing"
+        />
       </div>
     </div>
   );

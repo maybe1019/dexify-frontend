@@ -49,10 +49,8 @@ function App() {
     await loadBnbPrices();
 
     const funds = await utils.graphql.getFunds();
-    console.log('funds: ', funds);
     const tmpData: any[] = funds.map((fund) => utils.fund.formatFundData(fund));
     dispatch(setAllFunds(tmpData));
-    console.log(tmpData);
     setLoading(false);
   };
 

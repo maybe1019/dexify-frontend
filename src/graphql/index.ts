@@ -9,6 +9,7 @@ import managementFee from './queries/managementFee';
 import fundTransactions from './queries/fundTransactions';
 import fundsPerInvestor from './queries/fundsPerInvestor';
 import fundHistory from './queries/fundHistory';
+import fundShareHistoryPerInvestor from './queries/fundShareHistoryPerInvestor';
 
 export default {
   funds,
@@ -21,5 +22,6 @@ export default {
   managementFee,
   fundTransactions,
   fundsPerInvestor,
-  fundHistory: fundHistory,
+  fundHistory,
+  fundShareHistoryPerInvestor,
 };

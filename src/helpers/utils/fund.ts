@@ -1,33 +1,7 @@
 import utils from '.';
 import { getTokenPriceHistory } from '../../api/token';
-import { getFundHistory } from './graphql';
+import { getFundHistory, getFundSharehistoryPerInvestor } from './graphql';
 import { calcDate, getTokenInfo, getTokenPriceAt, milliseconds } from './utils';
-
-const getHoldingsFromStatesAt = (states: any[], timestamp: number): any[] => {
-  if (states.length === 0) {
-    return [];
-  }
-
-  timestamp /= 1000;
-  const length = states.length;
-  if (timestamp < parseInt(states[length - 1].start)) {
-    return states[length - 1].first.portfolio.holdings as any[];
-  }
-
-  let i = 0;
-  for (i = 0; i < length; i++) {
-    const start = parseInt(states[i].start);
-    const end = parseInt(states[i].end);
-    if (timestamp >= end) {
-      return states[i].last.portfolio.holdings as any[];
-    }
-    if (timestamp >= start) {
-      return states[i].first.portfolio.holdings as any[];
-    }
-  }
-
-  return states[length - 1].first.portfolio.holdings as any[];
-};
 
 const calcAumFromHoldingsWithBnbPrice = (
   holdings: any[],
@@ -171,8 +145,16 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
         days,
       );
       const internal = chartXPoints.pop() as number;
-      const { portfolioList, trackedAssets, totalSupplyList } =
-        await getFundHistory(dexfund.id, chartXPoints[0]);
+
+      let portfolioList: any[] = [];
+      let trackedAssets: any[] = [];
+      let totalSupplyList: any[] = [];
+
+      const fundHistory = await getFundHistory(dexfund.id, chartXPoints[0]);
+      portfolioList = fundHistory.portfolioList;
+      trackedAssets = fundHistory.trackedAssets;
+      totalSupplyList = fundHistory.totalSupplyList;
+
       totalSupplyList.reverse();
 
       const assetIds = trackedAssets
@@ -245,90 +227,142 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
     }
   });
 
-const getTotalSupplyFromStatesAt = (
-  states: any[],
-  timestamp: number,
-): number => {
-  timestamp = Math.floor(timestamp / 1000);
-  for (let i = 0; i < states.length; i++) {
-    if (parseInt(states[i].end) <= timestamp) {
-      return parseFloat(states[i].last.shares.totalSupply);
-    }
-    if (parseInt(states[i].start) <= timestamp) {
-      return parseFloat(states[i].first.shares.totalSupply);
-    }
-  }
-  return 1;
-};
-
-const getShareFromHistoryAt = (history: any[], timestamp: number): number => {
-  timestamp = Math.floor(timestamp / 1000);
-  for (let i = 0; i < history.length; i++) {
-    if (timestamp >= parseInt(history[i].timestamp)) {
-      return parseFloat(history[i].shares);
-    }
-  }
-  return 0;
-};
-
 export const formatFundsPerInvestor = (allFunds: FundData[], funds: any[]) =>
   new Promise<any[]>(async (resolve) => {
-    console.log('funds: ', funds);
+    try {
+      const now = Date.now();
+      const time24hAgo = now - milliseconds['1D'];
+      const time7DAgo = now - milliseconds['1W'];
 
-    const res: any[] = await Promise.all(
-      funds.map(async (fund: any) => {
-        const myFund: any = {};
-        const fundData = allFunds.find((f) => f.id === fund.id) as FundData;
-        myFund.aum = fundData.aum;
+      const res: any[] = await Promise.all(
+        funds.map(async (fund: any) => {
+          const investorPortfolio: any = {};
+          const fundData = allFunds.find((f) => f.id === fund.id) as FundData;
 
-        myFund.investorAum =
-          (myFund.aum * parseFloat(fund.investments[0].shares)) /
-          parseFloat(fund.shares.totalSupply);
+          const stateHistory = fund.investments[0].stateHistory;
 
-        let totalSupply = 0;
-        let investorShare = 0;
-        let timestamp = 0;
-        timestamp = Date.now() - milliseconds['1D'];
+          investorPortfolio.investorSince =
+            parseInt(fund.investments[0].investor.investorSince) * 1000;
+          investorPortfolio.fundAum = fundData.aum;
+          investorPortfolio.investorAum =
+            (fundData.aum * parseFloat(fund.investments[0].shares)) /
+            parseFloat(fund.shares.totalSupply);
 
-        totalSupply = getTotalSupplyFromStatesAt(fund.dailyStates, timestamp);
-        investorShare = getShareFromHistoryAt(
-          fund.investments[0].stateHistory,
-          timestamp,
-        );
-        myFund.investorAum24H = (fundData.aum24H * investorShare) / totalSupply;
+          // investor aum of 7 days ago
+          if (fund.totalSupply7DAgo.length === 0) {
+            investorPortfolio.investorAum24hAgo = 0;
+          } else {
+            const totalSupply = parseFloat(
+              fund.totalSupply7DAgo[0].shares.totalSupply,
+            );
+            const share = parseFloat(
+              stateHistory.find(
+                (state: any) => parseInt(state.timestamp) * 1000 <= time7DAgo,
+              )?.shares,
+            );
+            if (share) {
+              investorPortfolio.investorAum24hAgo =
+                (fundData.aum7D * share) / totalSupply;
+            } else {
+              investorPortfolio.investorAum7DAgo = 0;
+            }
+          }
 
-        timestamp =
-          parseInt(
-            fund.investments[0].stateHistory[
-              fund.investments[0].stateHistory.length - 1
-            ].timestamp,
-          ) * 1000;
-        totalSupply = getTotalSupplyFromStatesAt(fund.dailyStates, timestamp);
-        investorShare = getShareFromHistoryAt(
-          fund.investments[0].stateHistory,
-          timestamp,
-        );
+          // investor aum of 24 hours ago
+          if (fund.totalSupply24hAgo.length === 0) {
+            investorPortfolio.investorAum24hAgo = 0;
+          } else {
+            const totalSupply = parseFloat(
+              fund.totalSupply24hAgo[0].shares.totalSupply,
+            );
+            const share = parseFloat(
+              stateHistory.find(
+                (state: any) => parseInt(state.timestamp) * 1000 <= time24hAgo,
+              )?.shares,
+            );
+            if (share) {
+              investorPortfolio.investorAum24hAgo =
+                (fundData.aum24H * share) / totalSupply;
+            } else {
+              investorPortfolio.investorAum24hAgo = 0;
+            }
+          }
 
-        const holdings = getHoldingsFromStatesAt(fund.dailyStates, timestamp);
-        const coinPrices = await getTokenPriceHistory(
-          'all',
-          timestamp,
-          timestamp + milliseconds['1D'],
-          milliseconds['1h'],
-        );
-        const aum = calcAUMfromHoldings(holdings, coinPrices, timestamp);
-        myFund.investorAumFirst = (aum * investorShare) / totalSupply;
+          investorPortfolio.fundData = fundData;
 
-        const roiEnd = myFund.aum / parseFloat(fund.shares.totalSupply);
-        const roiStart = aum / totalSupply;
-        myFund.roi =
-          (roiEnd - roiStart) * parseFloat(fund.investments[0].shares);
+          return investorPortfolio;
+        }),
+      );
 
-        myFund.fundData = fundData;
+      resolve(res);
+    } catch (error) {
+      console.error('formatFundsPerInvestor: ', error);
+      resolve([]);
+    }
+  });
 
-        return myFund;
-      }),
-    );
+export const formatFundHistoryPerInvestor = (
+  fund: any,
+  investor: string,
+  days: number,
+) =>
+  new Promise<any[]>(async (resolve, reject) => {
+    try {
+      const fundData: FundData = fund.fundData;
+      const aumHistory = await getAumHistoryOf(
+        fundData,
+        Math.min(
+          days,
+          Math.ceil((Date.now() - fund.investorSince) / milliseconds['1D']),
+        ),
+      );
+      const sharesHistory = await getFundSharehistoryPerInvestor(
+        fundData.id,
+        investor,
+        aumHistory[0].timestamp,
+      );
+      sharesHistory.sort((a: any, b: any) => a.timestamp - b.timestamp);
 
-    resolve(res);
+      const fundDetail: any[] = [];
+
+      let i;
+      for (
+        i = 0;
+        i < aumHistory.length &&
+        aumHistory[i].timestamp < sharesHistory[0].timestamp;
+        i++
+      ) {
+        fundDetail.push({
+          ...aumHistory[i],
+          roi: 0,
+          investorAum: sharesHistory[0].shares * aumHistory[i].sharePrice,
+        });
+      }
+
+      let investAmt = aumHistory[i].sharePrice * sharesHistory[0].shares;
+      for (let j = 0; j < sharesHistory.length; j++) {
+        const to = sharesHistory[j + 1]
+          ? sharesHistory[j + 1].timestamp
+          : 9999999999999;
+        for (; i < aumHistory.length && aumHistory[i].timestamp < to; i++) {
+          const investorAum =
+            aumHistory[i].sharePrice * sharesHistory[j].shares;
+          fundDetail.push({
+            ...aumHistory[i],
+            roi: investorAum - investAmt,
+            investorAum,
+          });
+        }
+        if (j + 1 < sharesHistory.length) {
+          const amt =
+            (sharesHistory[j + 1].shares - sharesHistory[j].shares) *
+            aumHistory[i].sharePrice;
+          investAmt += amt;
+        }
+      }
+
+      resolve(fundDetail);
+    } catch (error) {
+      reject(error);
+    }
   });
