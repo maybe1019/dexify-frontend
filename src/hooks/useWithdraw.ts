@@ -43,7 +43,7 @@ export const useWithdraw = (fundAddr: string) => {
       } catch (error: any) {
         console.error('redeemSharesDetailed: ', error);
         const err = error?.reason?.split(':');
-        const errorTitle = err[0].toUpperCase();
+        const errorTitle = err ? err[0].toUpperCase() : error.message;
         utils.notification.danger(
           errorTitle,
           error?.reason?.slice(errorTitle.length + 1),

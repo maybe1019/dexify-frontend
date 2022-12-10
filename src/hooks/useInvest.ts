@@ -67,7 +67,7 @@ export const useInvest = (fundAddr: string) => {
       } catch (error: any) {
         console.error('investFundDenomination: ', error);
         const err = error?.reason?.split(':');
-        const errorTitle = err[0].toUpperCase();
+        const errorTitle = err ? err[0].toUpperCase() : error.message;
         utils.notification.danger(
           errorTitle,
           error?.reason?.slice(errorTitle.length + 1),
