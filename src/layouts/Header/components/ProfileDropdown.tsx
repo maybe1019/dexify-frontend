@@ -36,8 +36,10 @@ const ProfileDropdown = () => {
             >
               <img
                 src={
-                  myAccount.image !== ''
-                    ? myAccount.image
+                  myAccount
+                    ? myAccount.image ||
+                      myAccount.twitterImage ||
+                      '/images/default-user.png'
                     : '/images/default-user.png'
                 }
                 alt="avatar"
