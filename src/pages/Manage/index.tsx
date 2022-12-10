@@ -24,11 +24,7 @@ const Manage = () => {
     walletAddress: account,
   });
 
-  const onChangeValue = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const name = e.target.name;
     const newFormData: any = { ...formData };
