@@ -31,7 +31,9 @@ const Account = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [imageFile, setImageFile] = useState<File | undefined>();
 
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>(
+    myAccountState.value.image || myAccountState.value.twitterImage,
+  );
 
   useEffect(() => {
     setNewAccount(myAccountState.value);

@@ -1,6 +1,6 @@
 import { useEthers } from '@usedapp/core';
 import { isAddress } from 'ethers/lib/utils';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { twitterLogin } from '../../api/twitter';
 import utils from '../../helpers/utils';
@@ -24,11 +24,7 @@ const Manage = () => {
     walletAddress: account,
   });
 
-  const onChangeValue = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const name = e.target.name;
     const newFormData: any = { ...formData };
@@ -39,9 +35,12 @@ const Manage = () => {
   const { createNewFund, loading, disabled } = useCreateNewFund();
   // Page loading
   const dispatch = useDispatch();
-  dispatch(setPageLoading(loading));
+  useEffect(() => {
+    dispatch(setPageLoading(loading));
+  }, [loading]);
 
   const onCreateNewFund = async () => {
+    console.log(formData);
     if (!account) {
       utils.notification.warning('Error', 'Please connect wallet first');
       return;
@@ -53,7 +52,7 @@ const Manage = () => {
       );
       return;
     }
-    if (Object.keys(formData).length !== 7) {
+    if (Object.keys(formData).length !== 6) {
       utils.notification.warning('Please fill in all fields', '');
       return;
     }

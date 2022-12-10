@@ -55,7 +55,13 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
       <div className="flex justify-between items-center mx-10">
         <div className="flex items-center">
           <img
-            src="/images/default-user.png"
+            src={
+              managerInfo
+                ? managerInfo.image ||
+                  managerInfo.twitterImage ||
+                  '/images/default-user.png'
+                : '/images/default-user.png'
+            }
             alt="default-user"
             className="w-12 rounded-full"
           />
