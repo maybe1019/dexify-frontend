@@ -215,3 +215,33 @@ export const getFundHistory = (fundId: string, timestamp: number) =>
       resolve({ portfolioList: [], trackedAssets: [] });
     }
   });
+
+export const getFundSharehistoryPerInvestor = (
+  fundId: string,
+  investorId: string,
+  from: number,
+) =>
+  new Promise<any[]>(async (resolve) => {
+    try {
+      const query = queries.fundShareHistoryPerInvestor(
+        fundId,
+        investorId,
+        Math.floor(from / 1000),
+      );
+      const { data } = await client.query({ query });
+
+      const investment = data.fund.investments[0];
+
+      const sharesHistory = investment.stateHistory
+        .concat(investment.lastState)
+        .map((state: any) => ({
+          shares: parseFloat(state.shares),
+          timestamp: parseInt(state.timestamp) * 1000,
+        }));
+
+      resolve(sharesHistory);
+    } catch (error) {
+      console.error('getFundSharehistoryPerInvestor: ', error);
+      resolve([]);
+    }
+  });
