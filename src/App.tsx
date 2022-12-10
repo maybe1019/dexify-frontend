@@ -30,7 +30,9 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { library, account } = useEthers();
-  dispatch(setPageLoading(accountStatus === ThunkStatus.PENDING));
+  useEffect(() => {
+    dispatch(setPageLoading(accountStatus === ThunkStatus.PENDING));
+  }, [accountStatus]);
 
   const [loading, setLoading] = useState<boolean>(true);
 

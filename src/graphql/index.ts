@@ -8,7 +8,7 @@ import entranceDirectBurnFees from './queries/entranceDirectBurnFees';
 import managementFee from './queries/managementFee';
 import fundTransactions from './queries/fundTransactions';
 import fundsPerInvestor from './queries/fundsPerInvestor';
-import fundPortfolioHistory from './queries/fundPortfolioHistory';
+import fundHistory from './queries/fundHistory';
 
 export default {
   funds,
@@ -21,5 +21,5 @@ export default {
   managementFee,
   fundTransactions,
   fundsPerInvestor,
-  fundPortfolioHistory,
+  fundHistory: fundHistory,
 };

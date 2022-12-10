@@ -30,7 +30,7 @@ export const getUser = (address: string): Promise<User> =>
 export const postUser = (
   signature: string,
   address: string,
-  file: File,
+  file: File | undefined,
   newAccount: User,
 ): Promise<User> =>
   new Promise(async (resolve, reject) => {
@@ -42,7 +42,9 @@ export const postUser = (
       data.append('bio', newAccount.bio);
       data.append('name', newAccount.name);
       data.append('title', newAccount.title);
-      // data.append("file", file)
+      if (file) {
+        data.append('file', file);
+      }
 
       const res = await axios.post(`${baseUri}/user`, data);
       resolve(res.data as User);

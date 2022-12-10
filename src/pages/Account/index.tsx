@@ -29,9 +29,11 @@ const Account = () => {
   const [newAccount, setNewAccount] = useState<User>(myAccountState.value);
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [imageFile, setImageFile] = useState<File | undefined>();
 
-  const [imageUrl, setImageUrl] = useState<string>('');
-  let imageFile: File;
+  const [imageUrl, setImageUrl] = useState<string>(
+    myAccountState.value.image || myAccountState.value.twitterImage,
+  );
 
   useEffect(() => {
     setNewAccount(myAccountState.value);
@@ -84,7 +86,7 @@ const Account = () => {
 
   const handleFile = (files: FileList) => {
     if (files && files[0]) {
-      imageFile = files[0];
+      setImageFile(files[0]);
       setImageUrl(URL.createObjectURL(files[0]));
     }
   };
@@ -93,6 +95,8 @@ const Account = () => {
     if (newAccount.title === '') {
       return;
     }
+
+    console.log(imageFile);
 
     dispatch(
       createOrUpdateMyAccount({
@@ -124,7 +128,10 @@ const Account = () => {
           {imageUrl !== '' && (
             <button
               className="w-6 h-6 flex items-center justify-center rounded-full absolute right-[-10px] top-[-10px] z-20 bg-bg-1 dark:bg-bg-1-dark shadow-lg"
-              onClick={() => setImageUrl('')}
+              onClick={() => {
+                setImageUrl('');
+                setImageFile(undefined);
+              }}
             >
               <XMarkIcon width={16} className="hover:text-primary" />
             </button>
