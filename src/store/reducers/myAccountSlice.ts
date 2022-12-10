@@ -79,7 +79,7 @@ export const logoutTwitterUser = createAsyncThunk(
       );
       return result;
     } catch (error) {
-      utils.notification.danger('ERROR', (error as any).message);
+      utils.notification.danger('ERROR', (error as any).response.data.message);
       return rejectWithValue('');
     }
   },
@@ -108,7 +108,7 @@ export const updateMyAccountWithTwitter = createAsyncThunk(
       if (!result) return rejectWithValue('');
       return result;
     } catch (error) {
-      utils.notification.danger('ERROR', (error as any).message);
+      utils.notification.danger('ERROR', (error as any).response.data.message);
       console.error('updateMyAccountWithTwitter: ', error);
       return rejectWithValue('');
     }

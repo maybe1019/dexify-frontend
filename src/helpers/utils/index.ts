@@ -5,9 +5,9 @@ import * as fund from './fund';
 import * as graphql from './graphql';
 
 export default {
-  ethers: ethers,
-  notification: notification,
-  utils: utils,
+  ethers,
+  notification,
+  utils,
   fund,
   graphql,
 };

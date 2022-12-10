@@ -42,9 +42,7 @@ const Tweets = ({ tweetsData, loading, isManager }: TweetsProps) => {
         ) : (
           <div className="relative w-full h-full">
             <div className="text-center top-44 absolute w-full">
-              <p className="font-semibold text-lg">
-                Not found the manager's tweets
-              </p>
+              <p className="font-semibold text-lg">No tweets from manager</p>
               {isManager && !tweetsData.user?.twitterName && (
                 <button
                   onClick={onTwitterLogin}

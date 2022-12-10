@@ -31,11 +31,9 @@ export const saveTwitterUserInfo = async (
       oauth_verifier,
     });
     return data;
-  } catch (error) {
-    console.error('saveTwitterUserInfo: ', error);
-    utils.notification.danger('Error', (error as any).response.data.error);
-    console.error(error);
-    utils.notification.danger('Error', (error as any).response.data.message);
+  } catch (error: any) {
+    console.error('Save Twitter User: ', error.response.data);
+    utils.notification.danger('Error', error.response.data.message);
   }
 };
 
@@ -50,9 +48,9 @@ export const logoutUser = async (address: string, signature: string) => {
     localStorage.removeItem('oauth_token');
     localStorage.removeItem('oauth_token_secret');
     return data;
-  } catch (error) {
-    console.error(error);
-    utils.notification.danger('Error', (error as any).response.data.message);
+  } catch (error: any) {
+    console.error('Twitter disconnect: ', error.response.data);
+    utils.notification.danger('Error', error.response.data.message);
   }
 };
 
@@ -64,8 +62,7 @@ export const getTweetsWithUserInfo = async (address: string) => {
       },
     });
     return data;
-  } catch (error) {
-    console.error('getTweetsWithUserInfo: ', error);
-    utils.notification.danger('Error', (error as any).response.data.error);
+  } catch (error: any) {
+    console.error('GET Tweets: ', error.response.data);
   }
 };
