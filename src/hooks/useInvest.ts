@@ -66,7 +66,12 @@ export const useInvest = (fundAddr: string) => {
         );
       } catch (error: any) {
         console.error('investFundDenomination: ', error);
-        utils.notification.danger('Error', error.message);
+        const err = error?.reason?.split(':');
+        const errorTitle = err ? err[0].toUpperCase() : error.message;
+        utils.notification.danger(
+          errorTitle,
+          error?.reason?.slice(errorTitle.length + 1),
+        );
       } finally {
         setLoading(false);
       }

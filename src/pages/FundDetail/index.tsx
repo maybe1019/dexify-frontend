@@ -75,7 +75,6 @@ const FundDetail = () => {
   // Page loading
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log(investLoading || withdrawLoading);
     dispatch(setPageLoading(investLoading || withdrawLoading));
   }, [investLoading, withdrawLoading]);
 
