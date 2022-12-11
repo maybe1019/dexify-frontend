@@ -220,7 +220,7 @@ const FundDetail = () => {
             )}
             {fundInfoStep === fundInfoTabList[0] && (
               <div className="absolute lg:hidden w-full card z-10">
-                <Bio fund={fund} managerInfo={tweetsData.user} />
+                <Bio fund={fund} managerInfo={tweetsData?.user} />
               </div>
             )}
             {fundInfoStep === fundInfoTabList[1] && (

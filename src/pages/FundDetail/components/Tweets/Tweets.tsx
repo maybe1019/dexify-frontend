@@ -31,7 +31,7 @@ const Tweets = ({ tweetsData, loading, isManager }: TweetsProps) => {
               <div>
                 <p className="text-sm mx-4">{tweetsData.user.twitterName}</p>
                 <p className="text-[10px] text-[#5E889B] mx-4">
-                  {tweetsData.user.twitterScreenName}
+                  @{tweetsData.user.twitterScreenName}
                 </p>
                 <p className="text-[15px] text-text-2 dark:text-text-2-dark mx-4">
                   {item.text}

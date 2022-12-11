@@ -10,6 +10,7 @@ export enum PageName {
   PORTFOLIO = 'portfolio',
   MANAGE = 'manage',
   FUNDDETAIL = 'fund-detail',
+  NOTFOUND = 'not-found',
 }
 
 export enum ThunkStatus {
