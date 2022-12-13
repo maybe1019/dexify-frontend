@@ -1,7 +1,7 @@
 import { useComptrollerLib } from './contracts/useComptrollerContract';
 import { useState, useCallback } from 'react';
 import utils from '../helpers/utils';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useCheckNetwork } from './contracts/useCheckNetwork';
 import { useEthers } from '@usedapp/core';
 import {
@@ -9,7 +9,7 @@ import {
   UniswapV2AdapterAddress,
 } from '../helpers/constants';
 import { useVaultLibContract } from './contracts/useVaultLibContract';
-import { parseEther } from '@ethersproject/units';
+import { parseUnits } from '@ethersproject/units';
 
 export const useSwap = () => {
   const { library } = useEthers();
@@ -21,7 +21,13 @@ export const useSwap = () => {
   const abiCoder = new ethers.utils.AbiCoder();
 
   const swap = useCallback(
-    async (fundAddr: string, amount: number, from: Token, to: Token) => {
+    async (
+      fundAddr: string,
+      amount: number,
+      from: Token,
+      to: Token,
+      maxAmount: BigNumber | undefined,
+    ) => {
       try {
         if (isWrongNetwork) throw new Error('Wrong Network');
         setLoading(true);
@@ -33,7 +39,15 @@ export const useSwap = () => {
 
         const integrationData = abiCoder.encode(
           ['address[]', 'uint256', 'uint256'],
-          [[from.address, to.address], parseEther(amount.toString()), '1'],
+          [
+            [from.address, to.address],
+            maxAmount ||
+              parseUnits(
+                amount.toLocaleString('en-US', { useGrouping: false }),
+                from.decimals,
+              ),
+            '1',
+          ],
         );
         const integrationCallArgs = abiCoder.encode(
           ['address', 'bytes4', 'bytes'],
