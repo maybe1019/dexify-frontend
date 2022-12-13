@@ -24,7 +24,7 @@ function Swap({ fundAddress }: { fundAddress: string }) {
 
   const onSwap = async () => {
     console.log('swap button clicked');
-    await swap(fundAddress, priceRoute, swapToken, receiveToken);
+    await swap(fundAddress, swapAmount, swapToken, receiveToken);
   };
 
   const swapFromAndToTokens = () => {

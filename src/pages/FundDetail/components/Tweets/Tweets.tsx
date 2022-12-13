@@ -43,7 +43,7 @@ const Tweets = ({ tweetsData, loading, isManager }: TweetsProps) => {
           <div className="relative w-full h-full">
             <div className="text-center top-44 absolute w-full">
               <p className="font-semibold text-lg">No tweets from manager</p>
-              {isManager && !tweetsData.user?.twitterName && (
+              {isManager && !tweetsData?.user?.twitterName && (
                 <button
                   onClick={onTwitterLogin}
                   className="ml-auto px-4 mt-5 py-2 bg-blue-500/50 dark:bg-blue-900/50 rounded-lg font-bold text-slate-800 dark:text-slate-200 hover:bg-blue-400 dark:hover:bg-blue-900"

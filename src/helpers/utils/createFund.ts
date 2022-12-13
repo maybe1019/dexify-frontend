@@ -38,7 +38,7 @@ export const prepareFundData = (
   policyManagerSettingsData.push(
     getMinMaxDepositPolicyArgs(
       parseEther(minimumInvestment.toString()),
-      parseEther((minimumInvestment + 100000000).toString()),
+      parseEther(Number.MAX_SAFE_INTEGER.toString()),
     ),
   );
   const policyArgsData = getPolicyArgsData(policies, policyManagerSettingsData);
