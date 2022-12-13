@@ -28,7 +28,6 @@ const Portfolio = () => {
   const init = async () => {
     const funds = await getFundsPerInvestor(account?.toLowerCase() as string);
     const res = await formatFundsPerInvestor(allFunds, funds);
-    console.log(res);
     setFunds(res);
     setDataLoading(false);
   };
@@ -36,7 +35,7 @@ const Portfolio = () => {
   return (
     <div>
       <PageMeta pageName={PageName.PORTFOLIO} />
-      {funds.length === 0 ? (
+      {funds.length === 0 && !dataLoading ? (
         <div className=" h-[calc(100vh-100px)] sm:h-[calc(100vh-200px)] flex flex-col justify-center items-center">
           <img
             src="/images/no-history.png"
