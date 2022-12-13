@@ -128,20 +128,24 @@ const UserDexfund = ({ dexfund, dataLoading }: UserDexfundProps) => {
         <div className="grow overflow-hidden p-2 rounded-xl flex flex-col gap-3 shadow relative">
           {chartLoading && <ComponentSpinner />}
           <div className="flex justify-between items-center py-2 px-1">
-            <span
-              className={
-                'flex text-sm gap-1 ' +
-                (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
-              }
-            >
-              {risePercentage > 0 && '+'}
-              {risePercentage.toFixed(1)}%
-              {risePercentage >= 0 ? (
-                <ChevronUpIcon width={12} strokeWidth={4} />
-              ) : (
-                <ChevronDownIcon width={12} />
-              )}
-            </span>
+            {!isFinite(risePercentage) ? (
+              <span className="text-sm text-green-500">- - -</span>
+            ) : (
+              <span
+                className={
+                  'flex text-sm gap-1 ' +
+                  (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
+                }
+              >
+                {risePercentage > 0 && '+'}
+                {risePercentage.toFixed(1)}%
+                {risePercentage >= 0 ? (
+                  <ChevronUpIcon width={12} strokeWidth={4} />
+                ) : (
+                  <ChevronDownIcon width={12} />
+                )}
+              </span>
+            )}
             <DatePeriodDropDown onChange={setChartDays} />
           </div>
           <div className="flex-grow text-xs transition-none h-[160px] md:h-auto">
