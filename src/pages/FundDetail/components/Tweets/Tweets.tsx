@@ -1,6 +1,8 @@
 import React from 'react';
 import { twitterLogin } from '../../../../api/twitter';
 import { ComponentSpinner } from '../../../../components/Spinner';
+import { ReactComponent as TwitterIcon } from '../../../../assets/images/svg/twitter-icon.svg';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 
 type TweetsProps = {
   tweetsData: { tweets: Array<any>; user: User };
@@ -40,18 +42,28 @@ const Tweets = ({ tweetsData, loading, isManager }: TweetsProps) => {
             </div>
           ))
         ) : (
-          <div className="relative w-full h-full">
-            <div className="text-center top-44 absolute w-full">
-              <p className="font-semibold text-lg">No tweets from manager</p>
-              {isManager && !tweetsData.user?.twitterName && (
-                <button
-                  onClick={onTwitterLogin}
-                  className="ml-auto px-4 mt-5 py-2 bg-blue-500/50 dark:bg-blue-900/50 rounded-lg font-bold text-slate-800 dark:text-slate-200 hover:bg-blue-400 dark:hover:bg-blue-900"
-                >
-                  Connect Twitter
-                </button>
-              )}
+          <div className="relative w-full h-full flex flex-col gap-3 items-center justify-center">
+            <div className="relative">
+              <TwitterIcon fill="gray" width={64} height={64} opacity={0.35} />
+              <div className="absolute h-7 w-7 flex justify-center items-center bottom-[2px] right-[2px] bg-gray-300 dark:bg-gray-500 rounded-full border-white border-4 dark:border-bg-2-dark">
+                <XMarkIcon
+                  width={18}
+                  color={'gray'}
+                  className=" text-gray-400"
+                />
+              </div>
             </div>
+            <p className="font-bold text-lg text-gray-500/50 text-[24px]">
+              NO TWEETS
+            </p>
+            {isManager && !tweetsData.user?.twitterName && (
+              <button
+                onClick={onTwitterLogin}
+                className="px-4 py-2 bg-blue-500/50 dark:bg-blue-900/50 rounded-lg font-bold text-slate-800 dark:text-slate-200 hover:bg-blue-400 dark:hover:bg-blue-900"
+              >
+                Connect Twitter
+              </button>
+            )}
           </div>
         )}
       </div>
