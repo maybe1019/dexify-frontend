@@ -97,11 +97,17 @@ function App() {
       );
     }
 
+    document
+      .getElementsByTagName('body')
+      .item(0)
+      ?.classList.remove('light', 'dark');
+    document.getElementsByTagName('body')[0].classList.add(themeMode);
+
     localStorage.setItem('dexify-finance-theme', themeMode);
   }, [themeMode]);
 
   return (
-    <div className={`${themeMode}`}>
+    <div>
       <Suspense fallback={<LazyLoadingSpinner />}>
         <Helmet>
           <meta property="og:title" content={metadata.default.title} />
