@@ -6,9 +6,14 @@ import { ethers } from 'ethers';
 import { useCheckNetwork } from './contracts/useCheckNetwork';
 import { useEthers } from '@usedapp/core';
 import {
-  ParaSwapV4AdapterAddress,
   IntegrationManagerAddress,
+  UniswapV2AdapterAddress,
 } from '../helpers/constants';
+import {
+  uniswapV2TakeOrderArgs,
+  callOnIntegrationArgs,
+  takeOrderSelector,
+} from '@enzymefinance/protocol';
 
 const getParaswapData = async (
   fundAddr: string,
@@ -50,6 +55,7 @@ const getParaswapData = async (
       srcUSD,
       destUSD,
       gasCostUSD,
+      srcAmount,
       destAmount,
       srcDecs: from.decimals,
       destDecs: to.decimals,
@@ -96,62 +102,77 @@ export const useSwap = () => {
         const comptrollerContract = getComptrollerLibContract(fundAddr);
         if (!comptrollerContract) throw new Error('Not found fund');
         if (!swapPaths) throw new Error('Not found contract Data');
-        const paths = [];
-        for (let j = 0; j < swapPaths[0].contractData[0].path.length; j++) {
-          const routes = [];
-          for (
-            let i = 0;
-            i < swapPaths[0].contractData[0].path[j].adapters.length;
-            i++
-          ) {
-            const route =
-              swapPaths[0].contractData[0].path[j].adapters[i].route[0];
-            routes.push([
-              route.targetExchange,
-              route.targetExchange,
-              route.percent,
-              route.payload,
-              route.networkFee,
-            ]);
-          }
 
-          paths.push([
-            swapPaths[0].contractData[0].path[j].to,
-            swapPaths[0].contractData[0].path[j].totalNetworkFee,
-            routes,
-          ]);
-        }
+        // const paths = [];
+        // for (let j = 0; j < swapPaths[0].contractData[0].path.length; j++) {
+        //   const routes = [];
+        //   for (
+        //     let i = 0;
+        //     i < swapPaths[0].contractData[0].path[j].adapters.length;
+        //     i++
+        //   ) {
+        //     const route =
+        //       swapPaths[0].contractData[0].path[j].adapters[i].route[0];
+        //     routes.push([
+        //       route.targetExchange,
+        //       route.targetExchange,
+        //       route.percent,
+        //       route.payload,
+        //       route.networkFee,
+        //     ]);
+        //   }
 
+        //   paths.push([
+        //     swapPaths[0].contractData[0].path[j].to,
+        //     swapPaths[0].contractData[0].path[j].totalNetworkFee,
+        //     routes,
+        //   ]);
+        // }
+        console.log([
+          [from.address, to.address],
+          swapPaths[0].srcAmount.toString(),
+          swapPaths[0].destAmount.toString(),
+        ]);
         const integrationData = abiCoder.encode(
+          ['address[]', 'uint256', 'uint256'],
           [
-            'uint256',
-            'uint256',
-            'address',
-            'uint256',
-            'tuple(address,uint256,tuple(address,address,uint256,bytes,uint256)[])[]',
-          ],
-          [
+            [from.address, to.address],
+            swapPaths[0].srcAmount.toString(),
             swapPaths[0].destAmount.toString(),
-            swapPaths[0].destAmount.toString(),
-            swapPaths[0].src,
-            swapPaths[0].destAmount.toString(),
-            paths,
           ],
         );
+        // const takeOrderFragment = ethers.utils.FunctionFragment.fromString(
+        //   'takeOrder(address,bytes,bytes)',
+        // );
+        // const takeOrderSelector = sighash(takeOrderFragment);
+        // const integrationCallArgs = abiCoder.encode(
+        //   ['address', 'bytes4', 'bytes'],
+        //   [
+        //     UniswapV2AdapterAddress,
+        //     takeOrderSelector, // takeOrder
+        //     integrationData,
+        //   ],
+        // );
 
-        const integrationCallArgs = abiCoder.encode(
-          ['address', 'bytes4', 'bytes'],
-          [
-            ParaSwapV4AdapterAddress,
-            '0x03e38a2b', // takeOrder
-            integrationData,
-          ],
-        );
-
+        // const receipt = await comptrollerContract.callOnExtension(
+        //   IntegrationManagerAddress,
+        //   0,
+        //   integrationCallArgs,
+        // );
+        const takeOrderArgs = uniswapV2TakeOrderArgs({
+          minIncomingAssetAmount: swapPaths[0].destAmount.toString(),
+          outgoingAssetAmount: swapPaths[0].srcAmount.toString(),
+          path: [from.address, to.address],
+        });
+        const callArgs = callOnIntegrationArgs({
+          adapter: UniswapV2AdapterAddress,
+          encodedCallArgs: takeOrderArgs,
+          selector: takeOrderSelector,
+        });
         const receipt = await comptrollerContract.callOnExtension(
           IntegrationManagerAddress,
           0,
-          integrationCallArgs,
+          callArgs,
         );
         await receipt.wait();
 
