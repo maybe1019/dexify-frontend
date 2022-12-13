@@ -14,7 +14,7 @@ type AssetsInfoProps = {
 
 function AssetsInfo({ fund }: AssetsInfoProps) {
   const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     init();
@@ -27,22 +27,30 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
       Date.now(),
       milliseconds['1h'],
     );
-    const tmp: any[] = fund.holdings.map((asset) => {
-      const price = getTokenPriceAt(
-        prices,
-        getTokenInfo(asset.id)?.coingeckoId as string,
-        Date.now() - milliseconds['1D'],
-      );
-      const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
-      const token = getTokenInfo(asset.id);
-      return {
-        assets: `${token?.name} (${token?.symbol})`,
-        aum: asset.aum,
-        price: asset.aum / asset.amount,
-        daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(1)}`,
-        allocation: (asset.aum / fund.aum) * 100,
-      };
-    });
+    const totalAum = fund.holdings.reduce((a, b) => ({
+      ...a,
+      aum: a.aum + b.aum,
+    })).aum;
+    const tmp: any[] = fund.holdings
+      .filter((asset) => asset.aum > 0)
+      .map((asset) => {
+        const price = getTokenPriceAt(
+          prices,
+          getTokenInfo(asset.id)?.coingeckoId as string,
+          Date.now() - milliseconds['1D'],
+        );
+        const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
+        const token = getTokenInfo(asset.id);
+        return {
+          assets: `${token?.name} (${token?.symbol})`,
+          aum: asset.aum,
+          price: asset.aum / asset.amount,
+          daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(
+            1,
+          )}`,
+          allocation: (asset.aum / totalAum) * 100,
+        };
+      });
     setData(tmp);
     setLoading(false);
   };
@@ -54,7 +62,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
         fields={fields}
         pagination={false}
         minWidth={400}
-        rowCnt={10}
+        rowCnt={5}
         loading={loading}
       />
     </div>
