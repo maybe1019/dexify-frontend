@@ -11,9 +11,10 @@ import { getAumHistoryOf } from '../../helpers/utils/fund';
 
 type UserDexfundProps = {
   dexfund: FundData;
+  dataLoading?: boolean;
 };
 
-const UserDexfund = ({ dexfund }: UserDexfundProps) => {
+const UserDexfund = ({ dexfund, dataLoading }: UserDexfundProps) => {
   const [chartDays, setChartDays] = useState<number>(7);
   const [chartData, setChartData] = useState<any[]>([]);
   const [risePercentage, setRisePercentage] = useState<number>(0);
