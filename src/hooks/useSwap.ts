@@ -9,7 +9,7 @@ import {
   UniswapV2AdapterAddress,
 } from '../helpers/constants';
 import { useVaultLibContract } from './contracts/useVaultLibContract';
-import { parseEther } from '@ethersproject/units';
+import { parseUnits } from '@ethersproject/units';
 
 export const useSwap = () => {
   const { library } = useEthers();
@@ -33,7 +33,14 @@ export const useSwap = () => {
 
         const integrationData = abiCoder.encode(
           ['address[]', 'uint256', 'uint256'],
-          [[from.address, to.address], parseEther(amount.toString()), '1'],
+          [
+            [from.address, to.address],
+            parseUnits(
+              amount.toLocaleString('en-US', { useGrouping: false }),
+              from.decimals,
+            ),
+            '1',
+          ],
         );
         const integrationCallArgs = abiCoder.encode(
           ['address', 'bytes4', 'bytes'],
