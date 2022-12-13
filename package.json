@@ -25,6 +25,7 @@
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-easy-crop": "^4.6.3",
     "react-helmet": "^6.1.0",
     "react-loader-spinner": "^5.3.4",
     "react-notifications-component": "^4.0.1",

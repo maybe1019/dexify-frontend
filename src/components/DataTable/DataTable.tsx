@@ -4,6 +4,8 @@ import Pagination from './Pagination';
 import colors from '../../helpers/data/color-array.json';
 import { shortenAddress } from '@usedapp/core';
 import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
+import { Link } from 'react-router-dom';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 type DataType = {
   name: string;
@@ -123,6 +125,10 @@ const DataTable = ({
                           ) : (
                             ''
                           )
+                        ) : field.type === 'link' ? (
+                          <Link to={d[field.name]}>
+                            <ArrowTopRightOnSquareIcon width={16} />
+                          </Link>
                         ) : (
                           d[field.name]
                         )}{' '}

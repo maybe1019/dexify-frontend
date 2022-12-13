@@ -15,6 +15,7 @@ import { setPageLoading } from '../../store/reducers/pageLoadingSlice';
 import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-icon.svg';
 import { twitterLogin } from '../../api/twitter';
 import PageMeta from '../../layouts/PageMeta';
+import ImageCropModal from '../../components/ImageCropModal';
 
 const Account = () => {
   const myAccountState = useSelector((state: RootState) => state.myAccount);
@@ -29,14 +30,15 @@ const Account = () => {
   const [newAccount, setNewAccount] = useState<User>(myAccountState.value);
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [cropmodalOpen, setCropmodalOpen] = useState<boolean>(false);
+  const [originImageUrl, setOriginImageUrl] = useState<string>('');
   const [imageFile, setImageFile] = useState<File | undefined>();
-
-  const [imageUrl, setImageUrl] = useState<string>(
-    myAccountState.value.image || myAccountState.value.twitterImage,
-  );
+  const [imageUrl, setImageUrl] = useState<string>('');
 
   useEffect(() => {
     setNewAccount(myAccountState.value);
+    if (myAccountState.value.image !== '/images/default-user.png')
+      setOriginImageUrl(myAccountState.value.image);
   }, [myAccountState]);
   useEffect(() => {
     if (!account) {
@@ -84,10 +86,23 @@ const Account = () => {
     }
   };
 
+  const handleCroppedImage = async (croppedImage: string) => {
+    const response = await fetch(croppedImage);
+    const data = await response.blob();
+    const metadata = {
+      type: 'image/png',
+    };
+    const file = new File([data], 'avatar.png', metadata);
+    setImageUrl(croppedImage);
+    setImageFile(file);
+    setCropmodalOpen(false);
+  };
+
   const handleFile = (files: FileList) => {
     if (files && files[0]) {
       setImageFile(files[0]);
-      setImageUrl(URL.createObjectURL(files[0]));
+      setOriginImageUrl(URL.createObjectURL(files[0]));
+      setCropmodalOpen(true);
     }
   };
 
@@ -127,6 +142,7 @@ const Account = () => {
             <button
               className="w-6 h-6 flex items-center justify-center rounded-full absolute right-[-10px] top-[-10px] z-20 bg-bg-1 dark:bg-bg-1-dark shadow-lg"
               onClick={() => {
+                setOriginImageUrl('');
                 setImageUrl('');
                 setImageFile(undefined);
               }}
@@ -260,6 +276,12 @@ const Account = () => {
           onConfirm={handleUpdate}
         />
       </div>
+      <ImageCropModal
+        isOpen={cropmodalOpen}
+        image={originImageUrl}
+        onClose={() => setCropmodalOpen(false)}
+        onCrop={handleCroppedImage}
+      />
     </>
   );
 };

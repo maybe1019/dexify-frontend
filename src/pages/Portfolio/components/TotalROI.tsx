@@ -7,7 +7,12 @@ import ROIChart from './ROIChart';
 import { formatFloatFixed } from '../../../helpers/utils/utils';
 import { ComponentSpinner } from '../../../components/Spinner';
 
-function TotalROI({ funds }: { funds: any[] }) {
+type TotalROIProps = {
+  funds: any[];
+  dataLoading: boolean;
+};
+
+function TotalROI({ funds, dataLoading }: TotalROIProps) {
   const { account } = useEthers();
 
   const [days, setDays] = useState<number>(7);
@@ -20,10 +25,10 @@ function TotalROI({ funds }: { funds: any[] }) {
   };
 
   useEffect(() => {
-    if (funds.length > 0 && account) {
+    if (funds.length > 0 && account && dataLoading === false) {
       calcROIHistory();
     }
-  }, [funds, account, days]); //eslint-disable-line
+  }, [funds, account, days, dataLoading]); //eslint-disable-line
 
   const calcROIHistory = async () => {
     setLoading(true);
@@ -88,31 +93,38 @@ function TotalROI({ funds }: { funds: any[] }) {
         Total ROI
       </div>
       <div className="overflow-hidden p-6">
-        <div className="flex gap-8 items-center mb-6 text-center">
-          <span className="text-text-2 dark:text-text-2-dark text-xs">ROI</span>
-          <span className="text-text-2 dark:text-text-2-dark text-xs">
-            12,542
-          </span>
-          <DatePeriodDropDown onChange={onChangePeriod} />
-          <span
-            className={
-              'flex text-sm mx-auto ' +
-              (riseValue >= 0 ? 'text-green-500 ' : 'text-red-500 ')
-            }
-          >
-            <span className="mr-1">$ {Math.abs(riseValue)}</span>
-            {riseValue >= 0 ? (
-              <ChevronUpIcon width={12} strokeWidth={4} />
+        {dataLoading ? (
+          <div className="w-full rounded-md h-[26px] skeleton mb-6"></div>
+        ) : (
+          <div className="flex gap-8 items-center mb-6 text-center justify-between">
+            <DatePeriodDropDown onChange={onChangePeriod} />
+            {loading ? (
+              <div className="h-6 w-20 skeleton rounded-md"></div>
             ) : (
-              <ChevronDownIcon width={12} strokeWidth={4} />
+              <span
+                className={
+                  'flex text-sm w-20 text-center ' +
+                  (riseValue >= 0 ? 'text-green-500 ' : 'text-red-500 ')
+                }
+              >
+                <span className="mr-1">$ {Math.abs(riseValue)}</span>
+                {riseValue >= 0 ? (
+                  <ChevronUpIcon width={12} strokeWidth={4} />
+                ) : (
+                  <ChevronDownIcon width={12} strokeWidth={4} />
+                )}
+              </span>
             )}
-          </span>
-        </div>
-        <div className="flex-grow text-xs transition-none h-[280px] relative p-4">
-          {loading && <ComponentSpinner />}
-
-          <ROIChart xAxis={true} yAxis={true} data={chartData} />
-        </div>
+          </div>
+        )}
+        {dataLoading ? (
+          <div className="h-[280px] w-full skeleton rounded-md"></div>
+        ) : (
+          <div className="flex-grow text-xs transition-none h-[280px] relative p-4">
+            {loading && <ComponentSpinner />}
+            <ROIChart xAxis={true} yAxis={true} data={chartData} />
+          </div>
+        )}
       </div>
     </div>
   );

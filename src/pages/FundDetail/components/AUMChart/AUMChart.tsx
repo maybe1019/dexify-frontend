@@ -28,15 +28,19 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
       ...v,
       value: v[dataKey],
     }));
-    if (fundHistory[0].totalSupply === 0) {
+    while (fundHistory.length > 0 && fundHistory[0].totalSupply === 0) {
       fundHistory.shift();
     }
 
     setChartData(fundHistory);
-    setRisePercentage(
-      (fundHistory[fundHistory.length - 1].value / fundHistory[0].value) * 100 -
-        100,
-    );
+    if (fundHistory.length > 0) {
+      setRisePercentage(
+        (fundHistory[Math.max(fundHistory.length - 1, 0)].value /
+          fundHistory[0].value) *
+          100 -
+          100,
+      );
+    }
     setLoading(false);
   };
 
@@ -63,7 +67,7 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
                 : '/images/default-user.png'
             }
             alt="default-user"
-            className="w-12 rounded-full"
+            className="w-12 h-12 overflow-hidden rounded-full"
           />
           <p className="text-base font-bold sm:text-xl mx-4">{fund.name}</p>
         </div>
@@ -73,7 +77,7 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
               <img
                 src={managerInfo.twitterImage}
                 alt="user"
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full overflow-hidden"
               />
               <TwitterIcon
                 width={16}
@@ -87,56 +91,74 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
           </>
         )}
       </div>
-      <div className="flex items-center justify-center my-4 mx-6 gap-4 md:mx-12 md:gap-12 text-center ">
-        <span className="text-text-2 dark:text-text-2-dark text-xs">AUM</span>
-        <span className="text-text-2 dark:text-text-2-dark text-xs">
-          ${formatFloatFixed(fund.aum)}
-        </span>
 
-        <div className="text-xs bg-bg-1 dark:bg-bg-1-dark p-1 rounded-md flex gap-1">
-          <button
-            className={
-              'py-1 px-2 rounded-md' +
-              (dataKey === 'aum' ? ' bg-white dark:bg-bg-2-dark' : '')
-            }
-            onClick={() => onChangeDataKey('aum')}
-          >
-            AUM
-          </button>
-          <button
-            className={
-              'py-1 px-2 rounded-md' +
-              (dataKey === 'sharePrice' ? ' bg-white dark:bg-bg-2-dark' : '')
-            }
-            onClick={() => onChangeDataKey('sharePrice')}
-          >
-            SharePrice
-          </button>
+      {chartData.length < 2 && !loading ? (
+        <div className="flex-grow h-52 md:h-[375px] flex flex-col items-center justify-center gap-4">
+          <img src="/images/no-history.png" alt="no-history" className="w-40" />
+          <div className="text-gray-500/50 text-[24px] font-bold">No Data</div>
         </div>
+      ) : (
+        <div>
+          <div className="flex items-center justify-between my-4 mx-6 md:mx-12 text-center ">
+            <span className="text-text-2 dark:text-text-2-dark text-xs">
+              AUM
+            </span>
+            <span className="text-text-2 dark:text-text-2-dark text-xs">
+              ${formatFloatFixed(fund.aum)}
+            </span>
 
-        <DatePeriodDropDown onChange={onChangePeriod} />
+            <div className="text-xs bg-bg-1 dark:bg-bg-1-dark p-1 rounded-md flex gap-1">
+              <button
+                className={
+                  'py-1 px-2 rounded-md' +
+                  (dataKey === 'aum' ? ' bg-white dark:bg-bg-2-dark' : '')
+                }
+                onClick={() => onChangeDataKey('aum')}
+              >
+                AUM
+              </button>
+              <button
+                className={
+                  'py-1 px-2 rounded-md' +
+                  (dataKey === 'sharePrice'
+                    ? ' bg-white dark:bg-bg-2-dark'
+                    : '')
+                }
+                onClick={() => onChangeDataKey('sharePrice')}
+              >
+                SharePrice
+              </button>
+            </div>
 
-        <span className="text-green-500 flex text-sm ml-auto">
-          <span
-            className={
-              'flex text-sm gap-1 ' +
-              (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
-            }
-          >
-            {risePercentage > 0 && '+'}
-            {risePercentage.toFixed(1)}%
-            {risePercentage >= 0 ? (
-              <ChevronUpIcon width={12} strokeWidth={4} />
+            <DatePeriodDropDown onChange={onChangePeriod} />
+
+            {loading ? (
+              <div className="h-5 w-20 skeleton rounded-md"></div>
             ) : (
-              <ChevronDownIcon width={12} />
+              <span className="flex text-sm">
+                <span
+                  className={
+                    'flex text-sm gap-1 ' +
+                    (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
+                  }
+                >
+                  {risePercentage > 0 && '+'}
+                  {risePercentage.toFixed(1)}%
+                  {risePercentage >= 0 ? (
+                    <ChevronUpIcon width={12} strokeWidth={4} />
+                  ) : (
+                    <ChevronDownIcon width={12} />
+                  )}
+                </span>
+              </span>
             )}
-          </span>
-        </span>
-      </div>
-      <div className="relative flex-grow text-xs transition-none h-52 md:h-[375px] pr-3 pt-3">
-        {loading && <ComponentSpinner />}
-        <FundChart xAxis={true} yAxis={true} data={chartData} />
-      </div>
+          </div>
+          <div className="relative flex-grow text-xs transition-none h-52 md:h-[375px] pr-3 pt-3">
+            {loading && <ComponentSpinner />}
+            <FundChart xAxis={true} yAxis={true} data={chartData} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
