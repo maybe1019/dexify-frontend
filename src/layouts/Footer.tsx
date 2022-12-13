@@ -16,21 +16,21 @@ export const Footer = () => {
             target={'_blank'}
             className="hover:opacity-80 shadow-lg"
           >
-            <TwitterIcon width={32} height={32} />
+            <TwitterIcon width={28} height={28} />
           </a>
           <a
             href="https://t.me/DEXIFYHQ"
             target={'_blank'}
             className="hover:opacity-80 shadow-lg"
           >
-            <TelegramIcon width={32} height={32} />
+            <TelegramIcon width={28} height={28} />
           </a>
           <a
             href="https://www.linkedin.com/company/dexifyhq"
             target={'_blank'}
             className="hover:opacity-80 shadow-lg"
           >
-            <LinkedinIcon width={32} height={32} />
+            <LinkedinIcon width={28} height={28} />
           </a>
         </div>
       </div>
