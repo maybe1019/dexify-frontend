@@ -39,7 +39,7 @@ export const useCreateNewFund = () => {
           policyManagerConfigData,
           { nonce: nonce },
         );
-        deployFund.wait();
+        await deployFund.wait();
         utils.notification.success(
           'Congratulations',
           'A new fund has been created successfully.',
