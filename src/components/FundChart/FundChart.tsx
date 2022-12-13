@@ -81,7 +81,10 @@ const FundChart = ({ data, xAxis, yAxis }: FundChartProps) => {
             domain={['dataMin', 'dataMax']}
             tickCount={data.length}
             tickFormatter={(v) =>
-              formatTimestampToString(v, data[2].timestamp - data[1].timestamp)
+              formatTimestampToString(
+                v,
+                data?.[2]?.timestamp - data?.[1]?.timestamp,
+              )
             }
           />
         )}

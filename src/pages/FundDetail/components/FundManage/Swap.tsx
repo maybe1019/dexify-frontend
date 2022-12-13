@@ -7,6 +7,8 @@ import TokenListDropdown from './TokenListDropdown';
 import api from '../../../../api';
 import { useSwapData } from '../../../../hooks/useSwapData';
 import { useSwap } from '../../../../hooks/useSwap';
+import { useDispatch } from 'react-redux';
+import { setPageLoading } from '../../../../store/reducers/pageLoadingSlice';
 
 function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
@@ -20,12 +22,10 @@ function Swap({ fundAddress }: { fundAddress: string }) {
     swapAmount,
   );
 
-  const { swap } = useSwap();
+  const { loading: swapLoading, swap } = useSwap();
 
   const onSwap = async () => {
-    console.log('swap button clicked');
-    return;
-    await swap(fundAddress, priceRoute, swapToken, receiveToken);
+    await swap(fundAddress, swapAmount, swapToken, receiveToken);
   };
 
   const swapFromAndToTokens = () => {
@@ -35,11 +35,18 @@ function Swap({ fundAddress }: { fundAddress: string }) {
     setReceiveToken(tmpS);
   };
 
+  // Page loading
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setPageLoading(swapLoading));
+  }, [swapLoading]);
+
   const [tokenPrice, setTokenPrice] = useState<number>(1);
   const getTokenPrice = async (tokenCoingeckoId: string) => {
     const bnbPrice = await api.token.getTokenPrice(tokenCoingeckoId);
     setTokenPrice(bnbPrice);
   };
+
   useEffect(() => {
     getTokenPrice(swapToken.coingeckoId);
   }, [swapToken]);
