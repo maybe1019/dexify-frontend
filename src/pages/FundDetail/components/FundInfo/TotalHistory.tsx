@@ -20,6 +20,7 @@ function TotalHistory({ fund }: TotalHistoryProps) {
   const init = async () => {
     const fundTransactions = await getFundTransactions(fund.id);
     setFundTransactions(fundTransactions);
+    console.log('abc', fundTransactions);
     setTransactionLoading(false);
   };
 
