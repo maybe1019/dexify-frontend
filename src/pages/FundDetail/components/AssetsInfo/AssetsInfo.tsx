@@ -27,6 +27,10 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
       Date.now(),
       milliseconds['1h'],
     );
+    const totalAum = fund.holdings.reduce((a, b) => ({
+      ...a,
+      aum: a.aum + b.aum,
+    })).aum;
     const tmp: any[] = fund.holdings
       .filter((asset) => asset.aum > 0)
       .map((asset) => {
@@ -44,7 +48,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
           daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(
             1,
           )}`,
-          allocation: (asset.aum / fund.aum) * 100,
+          allocation: (asset.aum / totalAum) * 100,
         };
       });
     setData(tmp);
