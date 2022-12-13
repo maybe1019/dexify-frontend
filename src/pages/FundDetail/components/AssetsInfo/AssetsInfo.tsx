@@ -27,22 +27,26 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
       Date.now(),
       milliseconds['1h'],
     );
-    const tmp: any[] = fund.holdings.map((asset) => {
-      const price = getTokenPriceAt(
-        prices,
-        getTokenInfo(asset.id)?.coingeckoId as string,
-        Date.now() - milliseconds['1D'],
-      );
-      const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
-      const token = getTokenInfo(asset.id);
-      return {
-        assets: `${token?.name} (${token?.symbol})`,
-        aum: asset.aum,
-        price: asset.aum / asset.amount,
-        daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(1)}`,
-        allocation: (asset.aum / fund.aum) * 100,
-      };
-    });
+    const tmp: any[] = fund.holdings
+      .filter((asset) => asset.aum > 0)
+      .map((asset) => {
+        const price = getTokenPriceAt(
+          prices,
+          getTokenInfo(asset.id)?.coingeckoId as string,
+          Date.now() - milliseconds['1D'],
+        );
+        const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
+        const token = getTokenInfo(asset.id);
+        return {
+          assets: `${token?.name} (${token?.symbol})`,
+          aum: asset.aum,
+          price: asset.aum / asset.amount,
+          daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(
+            1,
+          )}`,
+          allocation: (asset.aum / fund.aum) * 100,
+        };
+      });
     setData(tmp);
     setLoading(false);
   };
