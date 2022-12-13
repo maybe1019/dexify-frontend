@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from '../../../../components/DataTable';
 import { getFundTransactions } from '../../../../helpers/utils/graphql';
+import {
+  formatFloatFixed,
+  getTokenInfo,
+} from '../../../../helpers/utils/utils';
 import untypedField from '../../../Dexfund/data/history-fields.json';
 
 const fields: any = untypedField;
@@ -12,15 +16,18 @@ type TotalHistoryProps = {
 function TotalHistory({ fund }: TotalHistoryProps) {
   const [fundTransactions, setFundTransactions] = useState<any[]>([]);
   const [transactionLoading, setTransactionLoading] = useState<boolean>(true);
+  const [totalInvest, setTotalInvest] = useState<number>(0);
 
   useEffect(() => {
     init();
   }, []); //eslint-disable-line
 
   const init = async () => {
-    const fundTransactions = await getFundTransactions(fund.id);
+    const { fundTransactions, totalInvestedAmount } = await getFundTransactions(
+      fund.id,
+    );
     setFundTransactions(fundTransactions);
-    console.log('abc', fundTransactions);
+    setTotalInvest(totalInvestedAmount);
     setTransactionLoading(false);
   };
 
@@ -34,9 +41,22 @@ function TotalHistory({ fund }: TotalHistoryProps) {
         rowCnt={5}
         loading={transactionLoading}
       />
-      <div className="xl:grid xl:grid-cols-2 mx-4 py-2">
-        <p className="sm:text-xl text-center">Total PNL: 34% </p>
-        <p className="sm:text-xl text-center">Total Invested: 9,000</p>
+      <div className="text-lg p-4">
+        {transactionLoading ? (
+          <div className="skeleton rounded-md h-[28px] w-full"></div>
+        ) : (
+          <div className="flex items-center justify-between">
+            <div>Total Invested:</div>
+            <div className="flex items-center gap-1">
+              <img
+                src={getTokenInfo(fund.denominationAsset)?.logoURI}
+                alt="token"
+                className="w-5 h-5"
+              />{' '}
+              {formatFloatFixed(totalInvest)}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

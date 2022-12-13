@@ -123,22 +123,29 @@ export const getManagementFee = (comptrollerId: string) =>
   });
 
 export const getFundTransactions = (fundId: string) =>
-  new Promise<any[]>(async (resolve) => {
+  new Promise<any>(async (resolve) => {
     try {
       const query = queries.fundTransactions(fundId);
       const res = await client.query({ query });
       const data = res.data;
 
-      const boughtEvents = data.sharesBoughtEvents.map((item: any) => ({
-        timestamp: parseInt(item.timestamp),
-        date: formatDateTimeToString(new Date(parseInt(item.timestamp) * 1000)),
-        from: item.transaction.from,
-        to: item.transaction.to,
-        type: 'INVEST',
-        amount: parseFloat(item.investmentAmount),
-        symbol: item.asset.symbol,
-        investor: shortenAddress(item.investor.id),
-      }));
+      let investedAmount = 0;
+
+      const boughtEvents = data.sharesBoughtEvents.map((item: any) => {
+        investedAmount += parseFloat(item.investmentAmount);
+        return {
+          timestamp: parseInt(item.timestamp),
+          date: formatDateTimeToString(
+            new Date(parseInt(item.timestamp) * 1000),
+          ),
+          from: item.transaction.from,
+          to: item.transaction.to,
+          type: 'INVEST',
+          amount: parseFloat(item.investmentAmount),
+          symbol: item.asset.symbol,
+          investor: shortenAddress(item.investor.id),
+        };
+      });
 
       const redeemEvents = data.sharesRedeemedEvents.map((item: any) => ({
         timestamp: parseInt(item.timestamp),
@@ -166,10 +173,16 @@ export const getFundTransactions = (fundId: string) =>
       const result = boughtEvents.concat(withdrawnEvents);
       result.sort((a: any, b: any) => b.timestamp - a.timestamp);
 
-      resolve(result);
+      resolve({
+        fundTransactions: result,
+        totalInvestedAmount: investedAmount,
+      });
     } catch (error) {
       console.error('getFundTransactions: ', error);
-      resolve([]);
+      resolve({
+        fundTransactions: [],
+        totalInvestedAmount: 0,
+      });
     }
   });
 
