@@ -63,7 +63,7 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
                 : '/images/default-user.png'
             }
             alt="default-user"
-            className="w-12 rounded-full"
+            className="w-12 h-12 overflow-hidden rounded-full"
           />
           <p className="text-base font-bold sm:text-xl mx-4">{fund.name}</p>
         </div>
@@ -73,7 +73,7 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
               <img
                 src={managerInfo.twitterImage}
                 alt="user"
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full overflow-hidden"
               />
               <TwitterIcon
                 width={16}
@@ -87,7 +87,7 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
           </>
         )}
       </div>
-      <div className="flex items-center justify-center my-4 mx-6 gap-4 md:mx-12 md:gap-12 text-center ">
+      <div className="flex items-center justify-between my-4 mx-6 md:mx-12 text-center ">
         <span className="text-text-2 dark:text-text-2-dark text-xs">AUM</span>
         <span className="text-text-2 dark:text-text-2-dark text-xs">
           ${formatFloatFixed(fund.aum)}
@@ -116,22 +116,26 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
 
         <DatePeriodDropDown onChange={onChangePeriod} />
 
-        <span className="text-green-500 flex text-sm ml-auto">
-          <span
-            className={
-              'flex text-sm gap-1 ' +
-              (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
-            }
-          >
-            {risePercentage > 0 && '+'}
-            {risePercentage.toFixed(1)}%
-            {risePercentage >= 0 ? (
-              <ChevronUpIcon width={12} strokeWidth={4} />
-            ) : (
-              <ChevronDownIcon width={12} />
-            )}
+        {loading ? (
+          <div className="h-5 w-20 skeleton rounded-md"></div>
+        ) : (
+          <span className="flex text-sm">
+            <span
+              className={
+                'flex text-sm gap-1 ' +
+                (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
+              }
+            >
+              {risePercentage > 0 && '+'}
+              {risePercentage.toFixed(1)}%
+              {risePercentage >= 0 ? (
+                <ChevronUpIcon width={12} strokeWidth={4} />
+              ) : (
+                <ChevronDownIcon width={12} />
+              )}
+            </span>
           </span>
-        </span>
+        )}
       </div>
       <div className="relative flex-grow text-xs transition-none h-52 md:h-[375px] pr-3 pt-3">
         {loading && <ComponentSpinner />}
