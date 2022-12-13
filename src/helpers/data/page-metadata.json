@@ -23,5 +23,10 @@
     "title": "Fund-details | Dexify",
     "image": "https://dexify.finance/images/dexify.png",
     "description": "The best social DeFi asset management dApp on BNB. Create, manage or invest in decentralised portfolios from the best investors on the BNB Chain. Become a manager and earn fees and rewards! Or Invest with the best investors passively letting them manage your capital!"
+  },
+  "not-found": {
+    "title": "Not Found | Dexify",
+    "image": "https://dexify.finance/images/dexify.png",
+    "description": "The best social DeFi asset management dApp on BNB. Create, manage or invest in decentralised portfolios from the best investors on the BNB Chain. Become a manager and earn fees and rewards! Or Invest with the best investors passively letting them manage your capital!"
   }
 }

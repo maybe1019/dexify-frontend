@@ -16,6 +16,7 @@ import { ethers } from 'ethers';
 import { ThunkStatus } from './helpers/enums';
 import { loadBnbPrices } from './helpers/utils/utils';
 import { setPageLoading } from './store/reducers/pageLoadingSlice';
+import NotFound from './pages/NotFound';
 
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
 const Account = React.lazy(() => import('./pages/Account'));
@@ -131,15 +132,16 @@ function App() {
           {loading ? (
             <LazyLoadingSpinner />
           ) : (
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Dexfund />} />
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Dexfund />} />
                 <Route path="/funds/:fundAddress" element={<FundDetail />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/manage" element={<Manage />} />
                 <Route path="/account" element={<Account />} />
-              </Routes>
-            </Layout>
+              </Route>
+              <Route path="/*" element={<NotFound />} />
+            </Routes>
           )}
         </div>
         {pageLoading && <PageSpinner />}

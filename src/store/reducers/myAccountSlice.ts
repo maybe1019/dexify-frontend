@@ -29,7 +29,6 @@ export const getMyAccount = createAsyncThunk(
       const result = await serverAPIs.user.getUser(address);
       return result;
     } catch (error) {
-      utils.notification.danger('ERROR', (error as any).message);
       return rejectWithValue('');
     }
   },
