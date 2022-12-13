@@ -66,38 +66,57 @@ function TotalAUM({ funds, dataLoading }: TotalAUMProps) {
       </div>
       <div>
         <div className="flex flex-col my-3">
-          <div className="flex py-3 px-6 border-b border-[#8882]">
-            <span className="text-sm text-text-3 dark:text-text-3-dark">
-              Total AUM
-            </span>
-            <span className="text-sm text-text-2 dark:text-text-2-dark ml-auto">
-              ${' '}
-              {utils.utils.formatFloatFixed(
-                funds.reduce((a, b) => a + b.investorAum, 0),
-              )}
-            </span>
+          <div className="py-3 px-6 border-b border-[#8882]">
+            {dataLoading ? (
+              <div className="skeleton rounded-md h-5 w-full"></div>
+            ) : (
+              <div className="flex justify-between">
+                <span className="text-sm text-text-3 dark:text-text-3-dark">
+                  Total AUM
+                </span>
+                <span className="text-sm text-text-2 dark:text-text-2-dark ml-auto">
+                  ${' '}
+                  {utils.utils.formatFloatFixed(
+                    funds.reduce((a, b) => a + b.investorAum, 0),
+                  )}
+                </span>
+              </div>
+            )}
           </div>
-          <div className="flex py-3 px-6 border-b border-[#8882]">
-            <span className="text-sm text-text-3 dark:text-text-3-dark">
-              24 Hours Ago
-            </span>
-            <span className="text-sm text-text-2 dark:text-text-2-dark ml-auto">
-              ${' '}
-              {utils.utils.formatFloatFixed(
-                funds.reduce((a, b) => a + b.investorAum24hAgo, 0),
-              )}
-            </span>
+          <div className="py-3 px-6 border-b border-[#8882]">
+            {dataLoading ? (
+              <div className="skeleton rounded-md h-5 w-full"></div>
+            ) : (
+              <div className="flex justify-between">
+                <span className="text-sm text-text-3 dark:text-text-3-dark">
+                  24 Hours Ago
+                </span>
+                <span className="text-sm text-text-2 dark:text-text-2-dark">
+                  ${' '}
+                  {utils.utils.formatFloatFixed(
+                    funds.reduce((a, b) => a + b.investorAum24hAgo, 0),
+                  )}
+                </span>
+              </div>
+            )}
           </div>
-          <div className="flex py-3 px-6 border-b border-[#8882]">
-            <span className="text-sm text-text-3 dark:text-text-3-dark">
-              7 Days Ago
-            </span>
-            <span className="text-sm text-text-2 dark:text-text-2-dark ml-auto">
-              ${' '}
-              {utils.utils.formatFloatFixed(
-                funds.reduce((a, b) => a + b.investorAum7DAgo, 0),
-              )}
-            </span>
+          <div className="py-3 px-6 border-b border-[#8882]">
+            {dataLoading ? (
+              <div className="skeleton rounded-md h-5 w-full"></div>
+            ) : (
+              <div className="flex justify-between">
+                <span className="text-sm text-text-3 dark:text-text-3-dark">
+                  7 Days Ago
+                </span>
+                <span className="text-sm text-text-2 dark:text-text-2-dark">
+                  {isNaN(funds.reduce((a, b) => a + b.investorAum7DAgo, 0))
+                    ? '---'
+                    : `$ ${utils.utils.formatFloatFixed(
+                        funds.reduce((a, b) => a + b.investorAum7DAgo, 0),
+                      )}`}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
