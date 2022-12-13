@@ -4,6 +4,7 @@ import api from '../../../api';
 
 type TotalAUMProps = {
   funds: any[];
+  dataLoading: boolean;
 };
 
 const FundLink = ({ fund, title }: { fund: FundData; title: string }) => {
@@ -57,7 +58,7 @@ const FundLink = ({ fund, title }: { fund: FundData; title: string }) => {
   );
 };
 
-function TotalAUM({ funds }: TotalAUMProps) {
+function TotalAUM({ funds, dataLoading }: TotalAUMProps) {
   return (
     <div className="card overflow-hidden min-h-[340px] flex flex-col justify-between">
       <div className="text-text-1 dark:text-text-1-dark text-xl header p-6 font-bold">
@@ -65,7 +66,7 @@ function TotalAUM({ funds }: TotalAUMProps) {
       </div>
       <div>
         <div className="flex flex-col my-3">
-          <div className="flex my-3 px-6 border-b border-[#8882]">
+          <div className="flex py-3 px-6 border-b border-[#8882]">
             <span className="text-sm text-text-3 dark:text-text-3-dark">
               Total AUM
             </span>
