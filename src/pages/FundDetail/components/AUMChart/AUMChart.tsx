@@ -99,12 +99,9 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
         </div>
       ) : (
         <div>
-          <div className="flex items-center justify-between my-4 mx-6 md:mx-12 text-center ">
+          <div className="flex items-center justify-between my-4 mx-6 md:mx-12 text-center flex-wrap gap-2">
             <span className="text-text-2 dark:text-text-2-dark text-xs">
-              AUM
-            </span>
-            <span className="text-text-2 dark:text-text-2-dark text-xs">
-              ${formatFloatFixed(fund.aum)}
+              AUM: ${formatFloatFixed(fund.aum)}
             </span>
 
             <div className="text-xs bg-bg-1 dark:bg-bg-1-dark p-1 rounded-md flex gap-1">
@@ -135,10 +132,10 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
             {loading ? (
               <div className="h-5 w-20 skeleton rounded-md"></div>
             ) : (
-              <span className="flex text-sm">
+              <span className="flex text-sm w-20">
                 <span
                   className={
-                    'flex text-sm gap-1 ' +
+                    'flex text-sm gap-1 ml-auto ' +
                     (risePercentage >= 0 ? 'text-green-500' : 'text-red-500')
                   }
                 >
