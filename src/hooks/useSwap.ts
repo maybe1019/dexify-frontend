@@ -1,7 +1,7 @@
 import { useComptrollerLib } from './contracts/useComptrollerContract';
 import { useState, useCallback } from 'react';
 import utils from '../helpers/utils';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useCheckNetwork } from './contracts/useCheckNetwork';
 import { useEthers } from '@usedapp/core';
 import {
@@ -21,7 +21,13 @@ export const useSwap = () => {
   const abiCoder = new ethers.utils.AbiCoder();
 
   const swap = useCallback(
-    async (fundAddr: string, amount: number, from: Token, to: Token) => {
+    async (
+      fundAddr: string,
+      amount: number,
+      from: Token,
+      to: Token,
+      maxAmount: BigNumber | undefined,
+    ) => {
       try {
         if (isWrongNetwork) throw new Error('Wrong Network');
         setLoading(true);
@@ -35,10 +41,11 @@ export const useSwap = () => {
           ['address[]', 'uint256', 'uint256'],
           [
             [from.address, to.address],
-            parseUnits(
-              amount.toLocaleString('en-US', { useGrouping: false }),
-              from.decimals,
-            ),
+            maxAmount ||
+              parseUnits(
+                amount.toLocaleString('en-US', { useGrouping: false }),
+                from.decimals,
+              ),
             '1',
           ],
         );

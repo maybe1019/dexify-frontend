@@ -14,6 +14,7 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
   const [receiveToken, setReceiveToken] = useState<Token>(tokenLists[1]);
   const [swapAmount, setSwapAmount] = useState(1);
+  const [isMax, setIsMax] = useState(false);
   const tokenBalance = useTokenBalance(swapToken.address, fundAddress);
 
   const { loading, priceRoute, impactValue } = useSwapData(
@@ -25,7 +26,14 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const { loading: swapLoading, swap } = useSwap();
 
   const onSwap = async () => {
-    await swap(fundAddress, swapAmount, swapToken, receiveToken);
+    if (!tokenBalance) return;
+    await swap(
+      fundAddress,
+      swapAmount,
+      swapToken,
+      receiveToken,
+      isMax ? tokenBalance : undefined,
+    );
   };
 
   const swapFromAndToTokens = () => {
@@ -63,6 +71,7 @@ function Swap({ fundAddress }: { fundAddress: string }) {
                 value={swapAmount}
                 min={0}
                 onChange={(e: any) => {
+                  setIsMax(false);
                   if (e.target.value === '') {
                     setSwapAmount(0);
                     return;
@@ -105,9 +114,13 @@ function Swap({ fundAddress }: { fundAddress: string }) {
                   if (tokenBalance) {
                     const val =
                       (e.target.attributes[0].value *
-                        parseFloat(formatEther(tokenBalance))) /
+                        parseInt(tokenBalance.toString())) /
+                      10 ** swapToken.decimals /
                       4;
                     setSwapAmount(val);
+                    if (e.target.attributes[0].value === '4') {
+                      setIsMax(true);
+                    } else setIsMax(false);
                   }
                 }}
                 className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"
