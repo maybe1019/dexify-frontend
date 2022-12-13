@@ -14,7 +14,7 @@ type AssetsInfoProps = {
 
 function AssetsInfo({ fund }: AssetsInfoProps) {
   const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     init();
@@ -58,7 +58,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
         fields={fields}
         pagination={false}
         minWidth={400}
-        rowCnt={10}
+        rowCnt={5}
         loading={loading}
       />
     </div>

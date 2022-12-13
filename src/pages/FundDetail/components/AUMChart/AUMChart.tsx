@@ -92,7 +92,7 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
         )}
       </div>
 
-      {chartData.length < 2 ? (
+      {chartData.length < 2 && !loading ? (
         <div className="flex-grow h-52 md:h-[375px] flex flex-col items-center justify-center gap-4">
           <img src="/images/no-history.png" alt="no-history" className="w-40" />
           <div className="text-gray-500/50 text-[24px] font-bold">No Data</div>
