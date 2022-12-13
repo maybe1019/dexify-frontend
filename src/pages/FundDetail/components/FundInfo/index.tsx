@@ -13,9 +13,14 @@ const tabList = ['Bio', 'Fees', 'History'];
 type FundInfoProp = {
   fund: FundData;
   tweetsData: { tweets: Array<any>; user: User };
+  tweetsLoading: boolean;
 };
 
-export default function FundInfo({ fund, tweetsData }: FundInfoProp) {
+export default function FundInfo({
+  fund,
+  tweetsData,
+  tweetsLoading,
+}: FundInfoProp) {
   return (
     <div className="card overflow-hidden p-2">
       <Tab.Group>
@@ -39,7 +44,11 @@ export default function FundInfo({ fund, tweetsData }: FundInfoProp) {
         </Tab.List>
         <Tab.Panels className="mt-2">
           <Tab.Panel>
-            <Bio fund={fund} managerInfo={tweetsData?.user} />
+            <Bio
+              fund={fund}
+              managerInfo={tweetsData?.user}
+              loading={tweetsLoading}
+            />
           </Tab.Panel>
           <Tab.Panel>
             <Fees fund={fund} />

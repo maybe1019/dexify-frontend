@@ -30,6 +30,7 @@ const AllFundsTable = () => {
           volume24H: volume24H > 0 ? `+${volume24H}` : `${volume24H}`,
           volume7D: volume7D > 0 ? `+${volume7D}` : `${volume7D}`,
           volumeAll: volumeAll > 0 ? `+${volumeAll}` : `${volumeAll}`,
+          link: `/funds/${f.id}`,
         };
       });
       setDexifyData(data);
@@ -62,7 +63,7 @@ const AllFundsTable = () => {
           data={filteredData}
           fields={untypedFields}
           pagination={true}
-          minWidth={1000}
+          minWidth={1100}
           rowCnt={10}
           loading={allFunds.loading}
         />

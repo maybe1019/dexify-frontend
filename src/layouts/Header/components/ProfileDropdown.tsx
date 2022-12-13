@@ -4,7 +4,7 @@ import {
   ClipboardDocumentIcon,
 } from '@heroicons/react/24/solid';
 import { BSC, shortenAddress, useEthers } from '@usedapp/core';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../../store';
@@ -14,12 +14,25 @@ const ProfileDropdown = () => {
     useEthers();
   const myAccount = useSelector((state: RootState) => state.myAccount.value);
 
+  useEffect(() => {
+    if (!account) {
+      return;
+    }
+    if (chainId !== BSC.chainId) {
+      handleNetwork();
+    }
+  }, [account, chainId]);
+
+  const handleNetwork = async () => {
+    await switchNetwork(BSC.chainId);
+    activateBrowserWallet();
+  };
+
   const handleConnect = async () => {
     if (account && chainId === BSC.chainId) {
       deactivate();
     } else {
       activateBrowserWallet();
-      await switchNetwork(BSC.chainId);
     }
   };
 
