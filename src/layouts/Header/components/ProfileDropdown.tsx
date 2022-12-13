@@ -3,16 +3,19 @@ import {
   ChevronDownIcon,
   ClipboardDocumentIcon,
 } from '@heroicons/react/24/solid';
-import { BSC, shortenAddress, useEthers } from '@usedapp/core';
+import { BSC, shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
 import React, { Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../../store';
+import * as ethers from 'ethers';
+import { formatFloatFixed } from '../../../helpers/utils/utils';
 
 const ProfileDropdown = () => {
-  const { account, deactivate, activateBrowserWallet, chainId, switchNetwork } =
+  const { account, chainId, deactivate, activateBrowserWallet, switchNetwork } =
     useEthers();
   const myAccount = useSelector((state: RootState) => state.myAccount.value);
+  const etherBalance = useEtherBalance(account);
 
   useEffect(() => {
     if (!account) {
@@ -78,73 +81,86 @@ const ProfileDropdown = () => {
             leaveTo="opacity-0 translate-y-1"
           >
             <Popover.Panel className="absolute right-[-10px] z-10 mt-4 w-[300px] sm:px-0">
-              <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-bg-1 dark:bg-bg-1-dark p-4">
-                {myAccount.name ? (
-                  <div className="pt-2">
-                    <div className="py-2 flex justify-between">
-                      {myAccount.name}
-                      <ClipboardDocumentIcon
-                        color="gray"
-                        width={22}
-                        className="hover:opacity-70 cursor-pointer"
-                        onClick={() =>
-                          navigator.clipboard.writeText(myAccount.name)
-                        }
-                      />
+              {({ close }) => (
+                <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-bg-1 dark:bg-bg-1-dark p-4">
+                  {ethers.BigNumber.isBigNumber(etherBalance) && (
+                    <div className="text-center text-[32px] font-bold py-3">
+                      {formatFloatFixed(
+                        parseFloat(ethers.utils.formatEther(etherBalance)),
+                      )}{' '}
+                      BNB
                     </div>
-                    <div className="py-2 flex justify-between">
-                      {myAccount.email}
-                      <ClipboardDocumentIcon
-                        color="gray"
-                        width={22}
-                        className="hover:opacity-70 cursor-pointer"
-                        onClick={() =>
-                          navigator.clipboard.writeText(myAccount.email)
-                        }
-                      />
+                  )}
+                  {myAccount.name ? (
+                    <div className="pt-2">
+                      <div className="py-2 flex justify-between">
+                        {myAccount.name}
+                        <ClipboardDocumentIcon
+                          color="gray"
+                          width={22}
+                          className="hover:opacity-70 cursor-pointer"
+                          onClick={() =>
+                            navigator.clipboard.writeText(myAccount.name)
+                          }
+                        />
+                      </div>
+                      {myAccount.email !== '' && (
+                        <div className="py-2 flex justify-between">
+                          {myAccount.email}
+                          <ClipboardDocumentIcon
+                            color="gray"
+                            width={22}
+                            className="hover:opacity-70 cursor-pointer"
+                            onClick={() =>
+                              navigator.clipboard.writeText(myAccount.email)
+                            }
+                          />
+                        </div>
+                      )}
+                      <div className="py-2 flex justify-between">
+                        {shortenAddress(account)}
+                        <ClipboardDocumentIcon
+                          color="gray"
+                          width={22}
+                          className="hover:opacity-70 cursor-pointer"
+                          onClick={() => navigator.clipboard.writeText(account)}
+                        />
+                      </div>
+                      <Link
+                        to={'/account'}
+                        className=" block w-full mt-4 rounded-lg p-2 bg-secondary text-center text-white hover:opacity-90"
+                        onClick={() => close()}
+                      >
+                        Edit Account
+                      </Link>
                     </div>
-                    <div className="py-2 flex justify-between">
-                      {shortenAddress(account)}
-                      <ClipboardDocumentIcon
-                        color="gray"
-                        width={22}
-                        className="hover:opacity-70 cursor-pointer"
-                        onClick={() => navigator.clipboard.writeText(account)}
-                      />
+                  ) : (
+                    <div className="pt-2">
+                      <div className="py-2 flex justify-between">
+                        {shortenAddress(account)}
+                        <ClipboardDocumentIcon
+                          color="gray"
+                          width={22}
+                          className="hover:opacity-70 cursor-pointer"
+                          onClick={() => navigator.clipboard.writeText(account)}
+                        />
+                      </div>
+                      <Link
+                        to={'/account'}
+                        className=" block w-full mt-4 rounded-lg p-2 bg-secondary text-center text-white hover:opacity-90"
+                      >
+                        {myAccount.id ? 'Update Account' : 'Create Account'}
+                      </Link>
                     </div>
-                    <Link
-                      to={'/account'}
-                      className=" block w-full mt-4 rounded-lg p-2 bg-secondary text-center text-white hover:opacity-90"
-                    >
-                      Edit Account
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="pt-2">
-                    <div className="py-2 flex justify-between">
-                      {shortenAddress(account)}
-                      <ClipboardDocumentIcon
-                        color="gray"
-                        width={22}
-                        className="hover:opacity-70 cursor-pointer"
-                        onClick={() => navigator.clipboard.writeText(account)}
-                      />
-                    </div>
-                    <Link
-                      to={'/account'}
-                      className=" block w-full mt-4 rounded-lg p-2 bg-secondary text-center text-white hover:opacity-90"
-                    >
-                      {myAccount.id ? 'Update Account' : 'Create Account'}
-                    </Link>
-                  </div>
-                )}
-                <button
-                  className=" w-full bg-red-500 text-white p-2 rounded-lg mt-2 text-center hover:opacity-90"
-                  onClick={deactivate}
-                >
-                  Disconnect
-                </button>
-              </div>
+                  )}
+                  <button
+                    className=" w-full bg-red-500 text-white p-2 rounded-lg mt-2 text-center hover:opacity-90"
+                    onClick={deactivate}
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              )}
             </Popover.Panel>
           </Transition>
         </Popover>

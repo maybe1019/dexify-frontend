@@ -61,7 +61,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
         data={data}
         fields={fields}
         pagination={false}
-        minWidth={400}
+        minWidth={450}
         rowCnt={5}
         loading={loading}
       />

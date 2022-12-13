@@ -16,6 +16,7 @@ import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-i
 import { twitterLogin } from '../../api/twitter';
 import PageMeta from '../../layouts/PageMeta';
 import ImageCropModal from '../../components/ImageCropModal';
+import utils from '../../helpers/utils';
 
 const Account = () => {
   const myAccountState = useSelector((state: RootState) => state.myAccount);
@@ -108,6 +109,13 @@ const Account = () => {
 
   const handleUpdate = () => {
     if (newAccount.title === '') {
+      utils.notification.warning('Input your username.', '');
+      setIsDialogOpen(false);
+      return;
+    }
+    if (newAccount.name === '') {
+      utils.notification.warning('Input your name.', '');
+      setIsDialogOpen(false);
       return;
     }
 
