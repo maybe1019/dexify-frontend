@@ -4,8 +4,7 @@ import { ethers } from 'ethers';
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import ConfirmDialogModal from '../../components/ConfirmDialogModal';
-import { DialogType, PageName, ThunkStatus } from '../../helpers/enums';
+import { PageName, ThunkStatus } from '../../helpers/enums';
 import { RootState, useAppDispatch } from '../../store';
 import {
   createOrUpdateMyAccount,
@@ -30,7 +29,6 @@ const Account = () => {
 
   const [newAccount, setNewAccount] = useState<User>(myAccountState.value);
   const [dragActive, setDragActive] = useState<boolean>(false);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [cropmodalOpen, setCropmodalOpen] = useState<boolean>(false);
   const [originImageUrl, setOriginImageUrl] = useState<string>('');
   const [imageFile, setImageFile] = useState<File | undefined>();
@@ -110,12 +108,10 @@ const Account = () => {
   const handleUpdate = () => {
     if (newAccount.title === '') {
       utils.notification.warning('Input your username.', '');
-      setIsDialogOpen(false);
       return;
     }
     if (newAccount.name === '') {
       utils.notification.warning('Input your name.', '');
-      setIsDialogOpen(false);
       return;
     }
 
@@ -126,7 +122,6 @@ const Account = () => {
         newAccount,
       }),
     );
-    setIsDialogOpen(false);
   };
 
   const onTwitterLogin = () => {
@@ -269,20 +264,10 @@ const Account = () => {
         </div>
         <button
           className="p-3 w-full bg-primary rounded-lg text-white hover:opacity-90"
-          onClick={() => setIsDialogOpen(true)}
+          onClick={handleUpdate}
         >
           {myAccountState.value.id ? 'Update Account' : 'Create Account'}
         </button>
-        <ConfirmDialogModal
-          isOpen={isDialogOpen}
-          dialogType={
-            myAccountState.value.id
-              ? DialogType.UPDATE_ACCOUNT
-              : DialogType.CREATE_ACCOUNT
-          }
-          onCancel={() => setIsDialogOpen(false)}
-          onConfirm={handleUpdate}
-        />
       </div>
       <ImageCropModal
         isOpen={cropmodalOpen}
