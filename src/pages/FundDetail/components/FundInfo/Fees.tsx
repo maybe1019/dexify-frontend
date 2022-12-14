@@ -22,12 +22,12 @@ function Fees({ fund }: FeesProp) {
 
   const init = async () => {
     const ef = await getEntryFee(fund.id);
-    setEntryFee(ef);
     const pf = await getPerformanceFee(fund.comptrollerId);
-    setPerformanceFee(pf);
     const mf = await getManagementFee(fund.comptrollerId);
-    setManagementFee(mf);
     const minMaxInvestment = await getMinMaxInvestment(fund.id);
+    setEntryFee(ef);
+    setPerformanceFee(pf);
+    setManagementFee(mf);
     setMinInvestment(minMaxInvestment.minInvestment);
   };
 
