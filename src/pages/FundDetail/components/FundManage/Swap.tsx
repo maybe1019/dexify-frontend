@@ -25,6 +25,10 @@ function Swap({ fundAddress }: { fundAddress: string }) {
 
   const { loading: swapLoading, swap } = useSwap();
 
+  useEffect(() => {
+    console.log(swapToken, receiveToken);
+  }, [swapToken, receiveToken]);
+
   const onSwap = async () => {
     if (!tokenBalance) return;
     await swap(
