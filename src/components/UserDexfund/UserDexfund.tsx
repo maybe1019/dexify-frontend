@@ -8,6 +8,7 @@ import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
 import { ComponentSpinner } from '../Spinner';
 import { getMinMaxInvestment } from '../../helpers/utils/graphql';
 import { getAumHistoryOf } from '../../helpers/utils/fund';
+import { getUser } from '../../api/user';
 
 type UserDexfundProps = {
   dexfund: FundData;
@@ -20,6 +21,7 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
   const [risePercentage, setRisePercentage] = useState<number>(0);
   const [chartLoading, setChartLoading] = useState<boolean>(true);
   const [minInvestment, setMinInvestment] = useState<number>(-1);
+  const [managerImage, setManagerImage] = useState('');
 
   const navigate = useNavigate();
   const onChangeChartsDays = async () => {
@@ -38,6 +40,19 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
     const func = async () => {
       const minMaxInvestment = await getMinMaxInvestment(dexfund.id);
       setMinInvestment(minMaxInvestment.minInvestment);
+
+      try {
+        const user = await getUser(dexfund.manager);
+        if (user.image !== '') {
+          setManagerImage(user.image);
+        } else if (user.twitterImage !== '') {
+          setManagerImage(user.twitterImage);
+        } else {
+          setManagerImage('/images/default-user.png');
+        }
+      } catch (error) {
+        setManagerImage('/images/default-user.png');
+      }
     };
     func();
   }, [dexfund]);
@@ -50,11 +65,15 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
           navigate(`/funds/${dexfund.id}`);
         }}
       >
-        <img
-          src="/images/default-user.png"
-          alt="default-user"
-          className=" w-10 rounded-full"
-        />
+        {managerImage === '' ? (
+          <div className="skeleton rounded-full w-10 h-10"></div>
+        ) : (
+          <img
+            src={managerImage}
+            alt="manager image"
+            className=" w-10 h-10 rounded-full overflow-hidden"
+          />
+        )}
         <div className="grow max-w-[calc(100%-180px)]">
           <p className="text-lg font-[500] text-ellipsis overflow-hidden whitespace-nowrap">
             {dexfund.name}
