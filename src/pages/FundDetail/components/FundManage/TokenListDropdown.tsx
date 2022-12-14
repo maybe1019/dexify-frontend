@@ -42,23 +42,28 @@ function TokenListDropdown({
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-1"
       >
-        <Popover.Panel className="absolute right-0 z-10 mt-1 w-[200px] min-w-full px-1 text-xs">
-          <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-bg-1 dark:bg-bg-1-dark p-2 flex flex-col gap-1">
-            {tokenList
-              .filter((token) => token !== selectedToken && token !== oppToken)
-              .map((token) => (
-                <Popover.Button key={token.symbol}>
+        <Popover.Panel className="absolute right-0 z-10 mt-1 w-[200px] min-w-full px-1 text-xs max-h-screen overflow-auto">
+          {({ close }) => (
+            <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 bg-bg-1 dark:bg-bg-1-dark p-2 flex flex-col gap-1">
+              {tokenList
+                .filter(
+                  (token) => token !== selectedToken && token !== oppToken,
+                )
+                .map((token) => (
                   <div
                     className=" cursor-pointer hover:bg-bg-2 dark:hover:bg-bg-2-dark px-4 py-2 2xl:px-6 2xl:py-3 rounded flex text-lg gap-3 items-center"
-                    onClick={() => setToken(token)}
+                    onClick={() => {
+                      setToken(token);
+                      close();
+                    }}
                     key={token.symbol}
                   >
                     <img src={token.logoURI} alt="token" className="w-6 h-6" />
                     {token.symbol}
                   </div>
-                </Popover.Button>
-              ))}
-          </div>
+                ))}
+            </div>
+          )}
         </Popover.Panel>
       </Transition>
     </Popover>

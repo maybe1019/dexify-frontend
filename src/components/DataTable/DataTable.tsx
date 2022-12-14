@@ -136,7 +136,9 @@ const DataTable = ({
                         {field.type !== 'link' && (
                           <div className="tooltiptext">
                             {field.prefix}
-                            {d[field.name]}
+                            {field.type === 'token'
+                              ? getTokenInfo(d[field.name])?.symbol
+                              : d[field.name]}
                             {field.suffix}
                           </div>
                         )}
