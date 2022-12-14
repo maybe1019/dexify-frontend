@@ -133,11 +133,13 @@ const DataTable = ({
                           d[field.name]
                         )}{' '}
                         {field.suffix}
-                        <div className="tooltiptext">
-                          {field.prefix}
-                          {d[field.name]}
-                          {field.suffix}
-                        </div>
+                        {field.type !== 'link' && (
+                          <div className="tooltiptext">
+                            {field.prefix}
+                            {d[field.name]}
+                            {field.suffix}
+                          </div>
+                        )}
                       </td>
                     ))}
                   </tr>
