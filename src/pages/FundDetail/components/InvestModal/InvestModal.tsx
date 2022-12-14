@@ -3,11 +3,12 @@ import { useEthers, useTokenBalance } from '@usedapp/core';
 import { Fragment, useEffect, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
 import api from '../../../../api';
+import { BigNumber } from 'ethers';
 
 type Props = {
   isOpen: boolean;
   onCancel(): void;
-  onConfirm(amount: number): any;
+  onConfirm(amount: number | BigNumber): any;
   token: Token;
 };
 
@@ -18,10 +19,15 @@ export default function InvestModal({
   token,
 }: Props) {
   const [investAmount, setInvestAmount] = useState(0);
+  const [isMax, setIsMax] = useState(false);
   const { account } = useEthers();
   const denominationAssetBalance = useTokenBalance(token.address, account);
   const invest = () => {
-    onConfirm(investAmount);
+    onConfirm(
+      isMax && denominationAssetBalance
+        ? denominationAssetBalance
+        : investAmount,
+    );
   };
   const [bnbPrice, setBNBPrice] = useState<number>(1);
   const getBNBPrice = async () => {
@@ -67,7 +73,7 @@ export default function InvestModal({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all mt-8 bg-bg-1 dark:bg-bg-1-dark">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                 >
                   Invest for shares
                 </Dialog.Title>
@@ -83,6 +89,7 @@ export default function InvestModal({
                         value={investAmount}
                         min={0}
                         onChange={(e: any) => {
+                          setIsMax(false);
                           if (e.target.value === '') {
                             setInvestAmount(0);
                             return;
@@ -96,7 +103,7 @@ export default function InvestModal({
                         className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
                         placeholder="Input Amount"
                       />
-                      <p>{token.symbol}</p>
+                      <p className="dark:text-white">{token.symbol}</p>
                     </div>
                   </div>
                   {denominationAssetBalance && (
@@ -127,6 +134,9 @@ export default function InvestModal({
                                 )) /
                               4;
                             setInvestAmount(val);
+                            if (e.target.attributes[0].value === '4') {
+                              setIsMax(true);
+                            } else setIsMax(false);
                           }
                         }}
                         className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"

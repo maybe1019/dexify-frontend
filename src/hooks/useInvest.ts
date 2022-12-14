@@ -1,5 +1,5 @@
 import { useEthers } from '@usedapp/core';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useCallback, useState } from 'react';
 import { useCheckNetwork } from './contracts/useCheckNetwork';
 import {
@@ -27,8 +27,9 @@ export const useInvest = (fundAddr: string) => {
   const { getDenominationAssetAddr } = useComptrollerLibContract();
 
   const investFundDenomination = useCallback(
-    async (amount: number) => {
+    async (amount: number | BigNumber) => {
       try {
+        console.log(typeof amount === 'number');
         if (isWrongNetwork) throw new Error('Wrong Network');
         if (!account) throw new Error('Undefined wallet');
         if (amount <= 0) throw new Error('Amount should be greater than 0');
@@ -44,7 +45,9 @@ export const useInvest = (fundAddr: string) => {
 
         if (!assetContract) throw new Error('Not found asset');
         const allowance = await assetContract.allowance(account, accessorAddr);
-        if (parseFloat(formatEther(allowance)) < amount) {
+        const amt =
+          typeof amount === 'number' ? amount : parseFloat(formatEther(amount));
+        if (parseFloat(formatEther(allowance)) < amt) {
           const receipt = await assetContract.approve(
             accessorAddr,
             parseEther(Number.MAX_SAFE_INTEGER.toString()),
@@ -56,7 +59,7 @@ export const useInvest = (fundAddr: string) => {
         if (!comptrollerLabContract) throw new Error('Not found Fund');
         const buySharesTx = await comptrollerLabContract.buyShares(
           [account],
-          [parseEther(String(amount))],
+          typeof amount === 'number' ? [parseEther(String(amount))] : [amount],
           [1],
         );
         await buySharesTx.wait();

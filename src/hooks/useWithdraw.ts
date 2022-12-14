@@ -1,5 +1,5 @@
 import { useEthers } from '@usedapp/core';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useCallback, useState } from 'react';
 import { useCheckNetwork } from './contracts/useCheckNetwork';
 import { useComptrollerLib } from './contracts/useComptrollerContract';
@@ -19,7 +19,7 @@ export const useWithdraw = (fundAddr: string) => {
   const { getComptrollerLibContract } = useComptrollerLib();
 
   const redeemSharesDetailed = useCallback(
-    async (amount: number) => {
+    async (amount: number | BigNumber) => {
       try {
         if (isWrongNetwork) throw new Error('Wrong Network');
         if (amount <= 0) throw new Error('Amount should be greater than 0');
@@ -31,7 +31,7 @@ export const useWithdraw = (fundAddr: string) => {
         if (!comptrollerLabContract) throw new Error('Not found Fund');
         const redeemSharesDetailedTx =
           await comptrollerLabContract?.redeemSharesDetailed(
-            parseEther(String(amount)),
+            typeof amount === 'number' ? parseEther(String(amount)) : amount,
             [],
             [],
           );
