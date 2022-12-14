@@ -8,7 +8,7 @@ export const Footer = () => {
     <footer className="bg-bg-2 dark:bg-bg-2-dark">
       <div className="container mx-auto flex items-center justify-between p-4">
         <div className="opacity-70 text-sm font-bold">
-          ©2021 by DEXIFY Ltd | All Rights Reserved
+          ©2021 by DEXIFY Ltd <br className="sm:hidden" /> | All Rights Reserved
         </div>
         <div className="flex gap-4">
           <a
