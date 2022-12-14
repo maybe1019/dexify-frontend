@@ -21,6 +21,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
   }, [fund]); //eslint-disable-line
 
   const init = async () => {
+    console.log(fund.holdings);
     const prices = await getTokenPriceHistory(
       'all',
       Date.now() - milliseconds['1D'],
