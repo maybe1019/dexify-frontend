@@ -27,6 +27,7 @@ import PageMeta from '../../layouts/PageMeta';
 import { PageName } from '../../helpers/enums';
 import { useTweets } from '../../hooks/useTweets';
 import tokenLists from '../../config/tokenlists.json';
+import { BigNumber } from 'ethers';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -101,7 +102,7 @@ const FundDetail = () => {
     setIsOpenActionModal(step);
   };
 
-  const onInvest = async (amount: number) => {
+  const onInvest = async (amount: number | BigNumber) => {
     if (amount <= 0) {
       utils.notification.warning('Error', 'Amount should be greater than 0');
       return;
@@ -110,7 +111,7 @@ const FundDetail = () => {
     setIsOpenActionModal(0);
   };
 
-  const onWithdraw = async (amount: number) => {
+  const onWithdraw = async (amount: number | BigNumber) => {
     if (amount <= 0) {
       utils.notification.warning('Error', 'Amount should be greater than 0');
       return;
@@ -133,7 +134,7 @@ const FundDetail = () => {
           <InvestModal
             isOpen={isOpenActionModal === 1}
             onCancel={() => setIsOpenActionModal(0)}
-            onConfirm={(amount: number) => onInvest(amount)}
+            onConfirm={(amount: number | BigNumber) => onInvest(amount)}
             token={denominationAsset}
           />
         )}
@@ -141,7 +142,7 @@ const FundDetail = () => {
           <WithdrawMOdal
             isOpen={isOpenActionModal === 2}
             onCancel={() => setIsOpenActionModal(0)}
-            onConfirm={(amount: number) => onWithdraw(amount)}
+            onConfirm={(amount: number | BigNumber) => onWithdraw(amount)}
             fundAddress={fundAddress}
           />
         )}

@@ -2,12 +2,12 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
 import { useEthers, useToken, useTokenBalance } from '@usedapp/core';
-import { BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 
 type Props = {
   isOpen: boolean;
   onCancel(): void;
-  onConfirm(amount: number): any;
+  onConfirm(amount: number | BigNumber): any;
   fundAddress: string;
 };
 
@@ -18,11 +18,12 @@ export default function WithdrawModal({
   fundAddress,
 }: Props) {
   const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [isMax, setIsMax] = useState(false);
   const { account } = useEthers();
   const tokenInfo = useToken(fundAddress);
   const sharesBalance = useTokenBalance(fundAddress, account);
   const withdraw = () => {
-    onConfirm(withdrawAmount);
+    onConfirm(isMax && sharesBalance ? sharesBalance : withdrawAmount);
   };
 
   return (
@@ -60,7 +61,7 @@ export default function WithdrawModal({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all mt-8 bg-bg-1 dark:bg-bg-1-dark">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                 >
                   Withdraw my shares
                 </Dialog.Title>
@@ -76,6 +77,7 @@ export default function WithdrawModal({
                         value={withdrawAmount}
                         min={0}
                         onChange={(e: any) => {
+                          setIsMax(false);
                           if (e.target.value === '') {
                             setWithdrawAmount(0);
                             return;
@@ -89,7 +91,7 @@ export default function WithdrawModal({
                         className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
                         placeholder="Input Amount"
                       />
-                      <p>DXFY</p>
+                      <p className="dark:text-white">DXFY</p>
                       {/* {tokenInfo && <p>{tokenInfo.symbol}</p>} */}
                     </div>
                     {sharesBalance && tokenInfo && (
@@ -122,6 +124,9 @@ export default function WithdrawModal({
                                   parseFloat(formatEther(sharesBalance))) /
                                 4;
                               setWithdrawAmount(val);
+                              if (e.target.attributes[0].value === '4') {
+                                setIsMax(true);
+                              } else setIsMax(false);
                             }
                           }}
                           className=" bg-white dark:bg-bg-4-dark w-14 h-6 rounded-full mx-auto shadow-lg text-text-3 dark:text-text-3-dark hover:text-black hover:dark:text-white"
