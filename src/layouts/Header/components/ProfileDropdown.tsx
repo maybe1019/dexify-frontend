@@ -28,7 +28,9 @@ const ProfileDropdown = () => {
 
   const handleNetwork = async () => {
     await switchNetwork(BSC.chainId);
-    activateBrowserWallet();
+    setTimeout(() => {
+      activateBrowserWallet();
+    }, 500);
   };
 
   const handleConnect = async () => {
