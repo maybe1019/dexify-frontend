@@ -1,7 +1,13 @@
 import utils from '.';
 import { getTokenPriceHistory } from '../../api/token';
 import { getFundHistory, getFundSharehistoryPerInvestor } from './graphql';
-import { calcDate, getTokenInfo, getTokenPriceAt, milliseconds } from './utils';
+import {
+  calcDate,
+  getTokenInfo,
+  getTokenPriceAt,
+  getTokenPriceAtFromLocal,
+  milliseconds,
+} from './utils';
 
 const calcAumFromHoldingsWithBnbPrice = (
   holdings: any[],
@@ -71,28 +77,23 @@ export const formatFundData = (fund: any) => {
   result.age = calcDate(result.startTimestamp, Date.now(), 'milisec');
 
   // calculate aum, topAsset, topAssetAum
-  const bnbPrice = utils.utils.getBnbPriceAt(Date.now());
   fund.portfolio.holdings.forEach((holding: any) => {
     const amt = parseFloat(holding.amount);
-    const price = parseFloat(holding.price.price) * bnbPrice;
+    const price = getTokenPriceAtFromLocal(
+      (getTokenInfo(holding.asset.id as string) as Token).coingeckoId,
+      Date.now(),
+    );
     result.holdings.push({
       amount: amt,
       aum: amt * price,
       id: holding.asset.id,
     });
+    result.aum += amt * price;
     if (amt * price > result.topAssetAUM) {
       result.topAsset = holding.asset.id;
       result.topAssetAUM = amt * price;
     }
   });
-  result.aum = calcAumFromHoldingsWithBnbPrice(
-    fund.portfolio.holdings,
-    fund.trackedAssets.map((asset: any) => ({
-      id: asset.id,
-      price: asset.price.price,
-    })),
-    Date.now(),
-  );
 
   // calculate aum of inception
   if (fund.portfolioInception.length < 2) {

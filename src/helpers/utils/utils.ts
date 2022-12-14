@@ -3,6 +3,7 @@ import tokens from '../../config/tokenlists.json';
 import bnbPriceHisotry from '../data/bnb-prices.json';
 
 let bnbPrices = bnbPriceHisotry;
+let tokenPricesIn24H: Record<string, Record<string, number>[]> = {};
 const tokenList: Token[] = tokens;
 
 const months = [
@@ -43,7 +44,7 @@ export const loadBnbPrices = async () => {
       'wbnb',
       from,
       Date.now(),
-      milliseconds['1h'],
+      Math.floor((Date.now() - from) / 100),
     );
 
     from = bnbPrices[bnbPrices.length - 1][0];
@@ -55,6 +56,12 @@ export const loadBnbPrices = async () => {
         ]),
       );
     }
+    tokenPricesIn24H = await getTokenPriceHistory(
+      'all',
+      Date.now() - milliseconds['1D'],
+      Date.now(),
+      milliseconds['1h'],
+    );
   } catch (error) {
     console.error('loadBnbPrices: ', error);
   }
@@ -83,6 +90,13 @@ export const formatFloatFixed = (num: number): number => {
     return parseFloat(num.toFixed(2));
   }
   return parseFloat(num.toFixed(3));
+};
+
+export const getTokenPriceAtFromLocal = (
+  geckoId: string,
+  timestamp: number,
+): number => {
+  return getTokenPriceAt(tokenPricesIn24H, geckoId, timestamp);
 };
 
 export const getTokenPriceAt = (
