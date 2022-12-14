@@ -59,8 +59,13 @@ export const createOrUpdateMyAccount = createAsyncThunk(
         'Your account details have been saved.',
       );
       return result;
-    } catch (error) {
-      utils.notification.danger('ERROR', (error as any).message);
+    } catch (error: any) {
+      const err = error?.reason?.split(':');
+      const errorTitle = err ? err[0].toUpperCase() : error.message;
+      utils.notification.danger(
+        errorTitle,
+        error?.reason?.slice(errorTitle.length + 1),
+      );
       return rejectWithValue('');
     }
   },
@@ -77,8 +82,13 @@ export const logoutTwitterUser = createAsyncThunk(
         'Your twitter account have been disconnected.',
       );
       return result;
-    } catch (error) {
-      utils.notification.danger('ERROR', (error as any).response.data.message);
+    } catch (error: any) {
+      const err = error?.reason?.split(':');
+      const errorTitle = err ? err[0].toUpperCase() : error.message;
+      utils.notification.danger(
+        errorTitle,
+        error?.reason?.slice(errorTitle.length + 1),
+      );
       return rejectWithValue('');
     }
   },
@@ -106,9 +116,15 @@ export const updateMyAccountWithTwitter = createAsyncThunk(
       );
       if (!result) return rejectWithValue('');
       return result;
-    } catch (error) {
-      utils.notification.danger('ERROR', (error as any).response.data.message);
-      console.error('updateMyAccountWithTwitter: ', error);
+    } catch (error: any) {
+      const err = error?.reason?.split(':');
+      const errorTitle = err
+        ? err[0].toUpperCase()
+        : error.response.data.message;
+      utils.notification.danger(
+        errorTitle,
+        error?.reason?.slice(errorTitle.length + 1),
+      );
       return rejectWithValue('');
     }
   },
