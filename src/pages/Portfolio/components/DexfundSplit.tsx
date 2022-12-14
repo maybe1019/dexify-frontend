@@ -4,22 +4,11 @@ import colorArray from '../../../helpers/data/color-array.json';
 import utils from '../../../helpers/utils';
 
 const renderActiveShape = (props: any) => {
-  const {
-    cx,
-    cy,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle,
-    fill,
-    payload,
-  } = props;
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } =
+    props;
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-        {payload.name}
-      </text>
       <Sector
         cx={cx}
         cy={cy}
@@ -60,7 +49,13 @@ function DexfundSplit({ funds, dataLoading }: DexfundSplitProps) {
       ) : (
         <div className="sm:flex sm:justify-around px-2 my-auto">
           <div className="flex relative text-center">
-            <div className="mx-auto overflow-visible">
+            <div className="mx-auto overflow-visible relative">
+              <div
+                className="absolute left-[85px] top-[165px] text-center w-40 -translate-y-1/2 break-words drop-shadow-md"
+                style={{ color: colorArray[activeIndex] }}
+              >
+                {funds[activeIndex].fundData.name}
+              </div>
               <PieChart width={330} height={330}>
                 <Pie
                   stroke="none"
@@ -78,8 +73,8 @@ function DexfundSplit({ funds, dataLoading }: DexfundSplitProps) {
                   startAngle={180}
                   endAngle={-180}
                   cornerRadius={0}
-                  innerRadius={60}
-                  outerRadius={80}
+                  innerRadius={80}
+                  outerRadius={105}
                   paddingAngle={0}
                   isAnimationActive={true}
                   activeIndex={activeIndex}

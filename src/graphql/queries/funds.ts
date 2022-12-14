@@ -25,6 +25,7 @@ const funds = (): DocumentNode => {
 
         trackedAssets {
           id
+          symbol
           price {
             price
           }
@@ -44,10 +45,34 @@ const funds = (): DocumentNode => {
         
         portfolio1dAgo: portfolioHistory(where: {timestamp_lte: ${time1dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
           ...portfolioFragment
+          holdings {
+            asset {
+              price1dAgo: priceHistory(where:{ timestamp_lte: ${time1dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+                timestamp
+                price
+              }
+              price7dAgo: priceHistory(where:{ timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+                timestamp
+                price
+              }
+            }
+          }
         }
 
         portfolio7dAgo: portfolioHistory(where: {timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
           ...portfolioFragment
+          holdings {
+            asset {
+              price1dAgo: priceHistory(where:{ timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+                timestamp
+                price
+              }
+              price7dAgo: priceHistory(where:{ timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+                timestamp
+                price
+              }
+            }
+          }
         }
 
         portfolioInception:portfolioHistory(orderBy: timestamp, orderDirection: asc, first: 2) {

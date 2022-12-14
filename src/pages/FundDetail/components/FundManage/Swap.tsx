@@ -100,6 +100,8 @@ function Swap({ fundAddress, onTokensChanged }: SwapProps) {
                 oppToken={receiveToken}
                 selectedToken={swapToken}
                 setToken={setSwapToken}
+                fundAddress={fundAddress}
+                isSrc
               ></TokenListDropdown>
             </div>
           </div>
@@ -164,6 +166,7 @@ function Swap({ fundAddress, onTokensChanged }: SwapProps) {
                 oppToken={swapToken}
                 selectedToken={receiveToken}
                 setToken={setReceiveToken}
+                fundAddress={fundAddress}
               ></TokenListDropdown>
             </div>
           </div>
