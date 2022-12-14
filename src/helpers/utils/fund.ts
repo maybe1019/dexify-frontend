@@ -114,9 +114,9 @@ export const formatFundData = (fund: any) => {
   } else {
     result.aum24H = calcAumFromHoldingsWithBnbPrice(
       fund.portfolio1dAgo[0].holdings,
-      fund.trackedAssets.map((asset: any) => ({
-        id: asset.id,
-        price: asset.price1dAgo[0].price,
+      fund.portfolio1dAgo[0].holdings.map((holding: any) => ({
+        id: holding.asset.id,
+        price: holding.asset.price1dAgo[0].price,
       })),
       Date.now() - utils.utils.milliseconds['1D'],
     );
@@ -127,9 +127,9 @@ export const formatFundData = (fund: any) => {
   } else {
     result.aum7D = calcAumFromHoldingsWithBnbPrice(
       fund.portfolio7dAgo[0].holdings,
-      fund.trackedAssets.map((asset: any) => ({
-        id: asset.id,
-        price: asset.price7dAgo[0].price,
+      fund.portfolio7dAgo[0].holdings.map((holding: any) => ({
+        id: holding.asset.id,
+        price: holding.asset.price7dAgo[0].price,
       })),
       Date.now() - utils.utils.milliseconds['1D'] * 7,
     );
@@ -148,21 +148,16 @@ export const getAumHistoryOf = (dexfund: FundData, days: number) =>
       const internal = chartXPoints.pop() as number;
 
       let portfolioList: any[] = [];
-      let trackedAssets: any[] = [];
       let totalSupplyList: any[] = [];
 
       const fundHistory = await getFundHistory(dexfund.id, chartXPoints[0]);
       portfolioList = fundHistory.portfolioList;
-      trackedAssets = fundHistory.trackedAssets;
       totalSupplyList = fundHistory.totalSupplyList;
 
       totalSupplyList.reverse();
 
-      const assetIds = trackedAssets
-        .map((id) => utils.utils.getTokenInfo(id)?.coingeckoId)
-        .join(',');
       const assetPrices = await getTokenPriceHistory(
-        assetIds,
+        'all',
         chartXPoints[0],
         Date.now(),
         Math.floor(internal / 2),
