@@ -63,7 +63,7 @@ const AllFundsTable = () => {
           data={filteredData}
           fields={untypedFields}
           pagination={true}
-          minWidth={1080}
+          minWidth={1100}
           rowCnt={10}
           loading={allFunds.loading}
         />
