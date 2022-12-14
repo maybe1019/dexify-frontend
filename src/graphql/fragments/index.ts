@@ -7,6 +7,7 @@ export const PORTFOLIO_FIELDS = gql`
       amount
       asset {
         id
+        symbol
       }
       price {
         price
