@@ -10,7 +10,12 @@ import { useSwap } from '../../../../hooks/useSwap';
 import { useDispatch } from 'react-redux';
 import { setPageLoading } from '../../../../store/reducers/pageLoadingSlice';
 
-function Swap({ fundAddress }: { fundAddress: string }) {
+type SwapProps = {
+  fundAddress: string;
+  onTokensChanged: (token1: Token, Token2: Token) => void;
+};
+
+function Swap({ fundAddress, onTokensChanged }: SwapProps) {
   const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
   const [receiveToken, setReceiveToken] = useState<Token>(tokenLists[1]);
   const [swapAmount, setSwapAmount] = useState(1);
@@ -26,7 +31,7 @@ function Swap({ fundAddress }: { fundAddress: string }) {
   const { loading: swapLoading, swap } = useSwap();
 
   useEffect(() => {
-    console.log(swapToken, receiveToken);
+    onTokensChanged(swapToken, receiveToken);
   }, [swapToken, receiveToken]);
 
   const onSwap = async () => {

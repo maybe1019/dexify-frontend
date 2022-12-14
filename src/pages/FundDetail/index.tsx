@@ -26,6 +26,7 @@ import { useWithdraw } from '../../hooks/useWithdraw';
 import PageMeta from '../../layouts/PageMeta';
 import { PageName } from '../../helpers/enums';
 import { useTweets } from '../../hooks/useTweets';
+import tokenLists from '../../config/tokenlists.json';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -40,6 +41,8 @@ const FundDetail = () => {
   const [manageStep, setManageStep] = useState(false);
   const targetDom = createRef<HTMLDivElement>();
   const [isOpenActionModal, setIsOpenActionModal] = useState<number>(0); // closed: 0, invest:1, withdraw:2
+  const [swapToken, setSwapToken] = useState<Token>(tokenLists[0]);
+  const [receiveToken, setReceiveToken] = useState<Token>(tokenLists[1]);
 
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
 
@@ -48,6 +51,11 @@ const FundDetail = () => {
   );
   const denominationAsset =
     fund && (getTokenInfo(fund?.denominationAsset) as Token);
+
+  const onTokensChanged = (token1: Token, token2: Token) => {
+    setSwapToken(token1);
+    setReceiveToken(token2);
+  };
 
   const handleStep = (e?: any) => {
     if (e) {
@@ -155,9 +163,15 @@ const FundDetail = () => {
                       </div>
                     </Disclosure.Button>
                     <Disclosure.Panel className="w-full pt-4 pb-2 text-sm text-gray-500">
-                      <div className="grid gap-4 w-full">
-                        <Swap fundAddress={fundAddress as string} />
-                        <PriceChart />
+                      <div className="grid w-full">
+                        <Swap
+                          fundAddress={fundAddress as string}
+                          onTokensChanged={onTokensChanged}
+                        />
+                        <PriceChart
+                          swapToken={swapToken}
+                          receiveToken={receiveToken}
+                        />
                       </div>
                     </Disclosure.Panel>
                   </>
@@ -297,8 +311,11 @@ const FundDetail = () => {
           )}
           {manageStep ? (
             <>
-              <Swap fundAddress={fundAddress as string} />
-              <PriceChart />
+              <Swap
+                fundAddress={fundAddress as string}
+                onTokensChanged={onTokensChanged}
+              />
+              <PriceChart swapToken={swapToken} receiveToken={receiveToken} />
             </>
           ) : (
             <>
