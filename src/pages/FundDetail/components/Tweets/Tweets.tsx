@@ -56,7 +56,7 @@ const Tweets = ({ tweetsData, loading, isManager }: TweetsProps) => {
             <p className="font-bold text-lg text-gray-500/50 text-[24px]">
               NO TWEETS
             </p>
-            {isManager && !tweetsData.user?.twitterName && (
+            {isManager && !tweetsData?.user?.twitterName && (
               <button
                 onClick={onTwitterLogin}
                 className="px-4 py-2 bg-blue-500/50 dark:bg-blue-900/50 rounded-lg font-bold text-slate-800 dark:text-slate-200 hover:bg-blue-400 dark:hover:bg-blue-900"
