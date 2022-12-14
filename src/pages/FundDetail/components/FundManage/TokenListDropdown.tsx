@@ -1,12 +1,16 @@
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 
 type Props = {
   tokenList: Array<Token>;
   selectedToken: Token;
   oppToken: Token;
   setToken: React.Dispatch<React.SetStateAction<Token>>;
+  fundAddress: string;
+  isSrc?: boolean;
 };
 
 function TokenListDropdown({
@@ -14,7 +18,20 @@ function TokenListDropdown({
   selectedToken,
   oppToken,
   setToken,
+  fundAddress,
+  isSrc,
 }: Props) {
+  const fund = useSelector((state: RootState) =>
+    state.allFunds.value.find((item) => item.id === fundAddress),
+  );
+  const [holdingTokens, setHoldingTokens] = useState<string[]>([]);
+  useEffect(() => {
+    if (fund) {
+      const holdings = fund.holdings.map((v: any) => v.id);
+      setHoldingTokens(holdings);
+    }
+  }, [fund]);
+
   return (
     <Popover className="relative">
       <Popover.Button className={'outline-none w-full'}>
@@ -49,6 +66,13 @@ function TokenListDropdown({
                 .filter(
                   (token) => token !== selectedToken && token !== oppToken,
                 )
+                .filter((token) => {
+                  if (isSrc)
+                    return holdingTokens.includes(
+                      token.address.toLocaleLowerCase(),
+                    );
+                  return token;
+                })
                 .map((token) => (
                   <div
                     className=" cursor-pointer hover:bg-bg-2 dark:hover:bg-bg-2-dark px-4 py-2 2xl:px-6 2xl:py-3 rounded flex text-lg gap-3 items-center"
