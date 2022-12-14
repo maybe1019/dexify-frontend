@@ -14,7 +14,7 @@ type UserDexfundProps = {
   dataLoading?: boolean;
 };
 
-const UserDexfund = ({ dexfund, dataLoading }: UserDexfundProps) => {
+const UserDexfund = ({ dexfund }: UserDexfundProps) => {
   const [chartDays, setChartDays] = useState<number>(7);
   const [chartData, setChartData] = useState<any[]>([]);
   const [risePercentage, setRisePercentage] = useState<number>(0);
