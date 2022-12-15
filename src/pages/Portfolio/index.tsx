@@ -33,7 +33,10 @@ const Portfolio = () => {
 
   const init = async () => {
     const funds = await getFundsPerInvestor(account?.toLowerCase() as string);
-    const res = await formatFundsPerInvestor(allFunds, funds);
+    const res = (await formatFundsPerInvestor(allFunds, funds)).filter(
+      (fund: any) => fund.investorAum !== 0,
+    );
+
     setFunds(res);
     setDataLoading(false);
     const history = await getInvestorTransactions(account as string);
