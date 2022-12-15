@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --theme-bg-color: #EDF2F9;
+  --theme-bg-color: #edf2f9;
   --theme-scroll-bg-color: white;
   --theme-scroll-thumb-color: #aab;
   --theme-scroll-hover-color: #99a;
@@ -106,7 +106,6 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-
 .skeleton {
   animation-duration: 2s;
   animation-iteration-count: infinite;
@@ -121,15 +120,27 @@ input[type='number'] {
 }
 
 @keyframes skeleton-dark-frame {
-  0% {background-color: #162536;}
-  50% {background-color: #1f2f44;}
-  100% {background-color: #162536;}
+  0% {
+    background-color: #162536;
+  }
+  50% {
+    background-color: #1f2f44;
+  }
+  100% {
+    background-color: #162536;
+  }
 }
 
 @keyframes skeleton-light-frame {
-  0% {background-color: #e2e7f0;}
-  50% {background-color: #c8ced6;}
-  100% {background-color: #e2e7f0;}
+  0% {
+    background-color: #e2e7f0;
+  }
+  50% {
+    background-color: #c8ced6;
+  }
+  100% {
+    background-color: #e2e7f0;
+  }
 }
 
 .tooltip {
@@ -146,28 +157,61 @@ input[type='number'] {
   top: 100%;
   left: 10px;
   opacity: 0;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
   text-align: center;
   max-width: 90%;
   overflow: hidden;
   text-overflow: ellipsis;
-  
+
   @apply bg-bg-4 dark:bg-bg-4-dark;
 }
 
 .tooltip .tooltiptext::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 100%;
   left: 10px;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent  var(--theme-scroll-bg-color) transparent;
+  border-color: transparent transparent var(--theme-scroll-bg-color) transparent;
   @apply border-b-bg-4 dark:border-b-bg-4-dark;
 }
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+// input container and input in manage page
+.manage-input-container {
+  @apply relative;
+
+  input {
+    @apply bg-[#8881] rounded-lg p-4 pr-14 sm:p-6 text-sm sm:text-lg outline-none focus:shadow w-full;
+  }
+
+  .information-tag {
+    @apply absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 font-bold h-full z-10;
+    @apply flex items-center;
+
+    .i-icon {
+      @apply rounded-full border-2 border-text-2 dark:border-text-2-dark relative z-10;
+      @apply flex items-center justify-center w-5 h-5 text-sm sm:text-lg sm:w-6 sm:h-6;
+      @apply cursor-pointer opacity-75;
+      @apply hover:opacity-80;
+    }
+
+    .description {
+      @apply absolute -right-4 sm:-right-6 top-full w-80 invisible opacity-0 z-30;
+      @apply rounded-md bg-bg-4 dark:bg-bg-4-dark px-3 py-2;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+      .description {
+        @apply visible opacity-100;
+      }
+    }
+  }
 }
