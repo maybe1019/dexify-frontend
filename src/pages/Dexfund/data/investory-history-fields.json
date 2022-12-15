@@ -1,0 +1,42 @@
+[
+  {
+    "name": "date",
+    "title": "Date",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "fund",
+    "title": "Fund",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  },
+  {
+    "name": "assetId",
+    "title": "Asset",
+    "prefix": "",
+    "suffix": "",
+    "type": "token",
+    "colorful": false
+  },
+  {
+    "name": "amount",
+    "title": "Amount",
+    "prefix": "",
+    "suffix": "",
+    "type": "number",
+    "colorful": false
+  },
+  {
+    "name": "type",
+    "title": "Withdraw/Invest",
+    "prefix": "",
+    "suffix": "",
+    "type": "string",
+    "colorful": false
+  }
+]
