@@ -6,12 +6,17 @@ import TotalROI from './components/TotalROI';
 import DexfundSplit from './components/DexfundSplit';
 import { PageName } from '../../helpers/enums';
 import { useEthers } from '@usedapp/core';
-import { getFundsPerInvestor } from '../../helpers/utils/graphql';
+import {
+  getFundsPerInvestor,
+  getInvestorTransactions,
+} from '../../helpers/utils/graphql';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { formatFundsPerInvestor } from '../../helpers/utils/fund';
 import UserDexfund from '../../components/UserDexfund';
 import { Link } from 'react-router-dom';
+import fields from '../Dexfund/data/investory-history-fields.json';
+import DataTable from '../../components/DataTable';
 
 const Portfolio = () => {
   const allFunds = useSelector((state: RootState) => state.allFunds.value);
@@ -19,6 +24,7 @@ const Portfolio = () => {
 
   const [dataLoading, setDataLoading] = useState(true);
   const [funds, setFunds] = useState<any[]>([]);
+  const [investorHistory, setInvestorHitory] = useState<any[]>([]);
 
   useEffect(() => {
     if (!account) return;
@@ -30,6 +36,8 @@ const Portfolio = () => {
     const res = await formatFundsPerInvestor(allFunds, funds);
     setFunds(res);
     setDataLoading(false);
+    const history = await getInvestorTransactions(account as string);
+    setInvestorHitory(history);
   };
 
   return (
@@ -73,6 +81,19 @@ const Portfolio = () => {
                 />
               </div>
             ))}
+          </div>
+          <h1 className="text-[22px] font-[500] m-12 mb-6 text-center lg:text-left">
+            My Transactions
+          </h1>
+          <div>
+            <DataTable
+              data={investorHistory}
+              fields={fields}
+              pagination={true}
+              minWidth={550}
+              rowCnt={10}
+              loading={investorHistory.length === 0}
+            />
           </div>
         </div>
       )}

@@ -258,3 +258,58 @@ export const getFundSharehistoryPerInvestor = (
       resolve([]);
     }
   });
+
+export const getInvestorTransactions = (investorId: string) =>
+  new Promise<any[]>(async (resolve) => {
+    try {
+      const query = queries.investorTransactions(investorId);
+      const res = await client.query({ query });
+      const data = res.data;
+
+      const boughtEvents = data.sharesBoughtEvents.map((item: any) => {
+        return {
+          fund: item.fund.name,
+          timestamp: parseInt(item.timestamp),
+          date: formatDateTimeToString(
+            new Date(parseInt(item.timestamp) * 1000),
+          ),
+          from: item.transaction.from,
+          to: item.transaction.to,
+          type: 'INVEST',
+          amount: parseFloat(item.investmentAmount),
+          assetId: item.asset.id,
+        };
+      });
+
+      const redeemEvents = data.sharesRedeemedEvents.map((item: any) => ({
+        fund: item.fund.name,
+        timestamp: parseInt(item.timestamp),
+        date: formatDateTimeToString(new Date(parseInt(item.timestamp) * 1000)),
+        from: item.transaction.from,
+        to: item.transaction.to,
+        type: 'WITHDRAW',
+        payoutAssetAmounts: item.payoutAssetAmounts,
+      }));
+
+      const withdrawnEvents: any[] = [];
+
+      redeemEvents.map((item: any) => {
+        item.payoutAssetAmounts.map((payoutItem: any) => {
+          const event: any = {
+            ...item,
+            amount: parseFloat(payoutItem.amount),
+            assetId: payoutItem.asset.id,
+          };
+          withdrawnEvents.push(event);
+        });
+      });
+
+      const result = boughtEvents.concat(withdrawnEvents);
+      result.sort((a: any, b: any) => b.timestamp - a.timestamp);
+
+      resolve(result);
+    } catch (error) {
+      console.error('getFundTransactions: ', error);
+      resolve([]);
+    }
+  });

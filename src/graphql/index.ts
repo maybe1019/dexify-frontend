@@ -10,6 +10,7 @@ import fundTransactions from './queries/fundTransactions';
 import fundsPerInvestor from './queries/fundsPerInvestor';
 import fundHistory from './queries/fundHistory';
 import fundShareHistoryPerInvestor from './queries/fundShareHistoryPerInvestor';
+import investorTransactions from './queries/investorTransactions';
 
 export default {
   funds,
@@ -24,4 +25,5 @@ export default {
   fundsPerInvestor,
   fundHistory,
   fundShareHistoryPerInvestor,
+  investorTransactions,
 };
