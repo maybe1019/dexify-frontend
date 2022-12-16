@@ -13,6 +13,7 @@ import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-i
 import allowedTokenList from './data/tokenList.json';
 import PageMeta from '../../layouts/PageMeta';
 import { PageName } from '../../helpers/enums';
+import { useNavigate } from 'react-router-dom';
 
 const Manage = () => {
   const { account } = useEthers();
@@ -23,6 +24,7 @@ const Manage = () => {
   const [formData, setFormData] = useState<any>({
     walletAddress: account,
   });
+  const navigate = useNavigate();
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -68,7 +70,7 @@ const Manage = () => {
       formData?.performanceFee,
       formData?.minInvestment,
     );
-    await createNewFund(
+    const newFundAddr = await createNewFund(
       formData?.walletAddress,
       formData?.fundName,
       selectedTokenAddress,
@@ -76,6 +78,12 @@ const Manage = () => {
       feeArgsData,
       policyArgsData,
     );
+
+    if (!newFundAddr) {
+      navigate(`/`);
+    } else {
+      navigate(`/funds/${newFundAddr.toLowerCase()}`);
+    }
   };
 
   const onTwitterLogin = () => {
