@@ -40,7 +40,6 @@ const Manage = () => {
   }, [loading]);
 
   const onCreateNewFund = async () => {
-    console.log(formData);
     if (!account) {
       utils.notification.warning('Error', 'Please connect wallet first');
       return;
@@ -76,7 +75,6 @@ const Manage = () => {
       (formData?.lockTime as number) * 3600,
       feeArgsData,
       policyArgsData,
-      account,
     );
   };
 

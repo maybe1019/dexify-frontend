@@ -1,17 +1,21 @@
 import { useFundDeployerContract } from './contracts/useDeployerContract';
 import { useEthers } from '@usedapp/core';
 import { ethers } from 'ethers';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useCheckNetwork } from './contracts/useCheckNetwork';
 import utils from '../helpers/utils';
+import { useNavigate } from 'react-router-dom';
 
 export const useCreateNewFund = () => {
-  const { library } = useEthers();
+  const { library, account } = useEthers();
   const signer = (library as ethers.providers.JsonRpcProvider)?.getSigner();
+  const navigate = useNavigate();
   const { isWrongNetwork } = useCheckNetwork();
   const disabled = library === undefined || isWrongNetwork;
   const fundDeployerContract = useFundDeployerContract();
-
+  // const JsonRpcProvider = new ethers.providers.JsonRpcProvider(
+  //   'https://bsc-dataseed1.binance.org/',
+  // );
   const [loading, setLoading] = useState(false);
 
   const createNewFund = useCallback(
@@ -22,7 +26,6 @@ export const useCreateNewFund = () => {
       timeLockInSeconds: number,
       feeManagerConfig: string,
       policyManagerConfigData: string,
-      account: string,
     ) => {
       try {
         if (isWrongNetwork) throw new Error('Wrong Network');
@@ -58,6 +61,26 @@ export const useCreateNewFund = () => {
     },
     [signer, fundDeployerContract],
   );
+
+  const eventListener = useCallback(() => {
+    fundDeployerContract?.on('NewFundCreated', (vaultProxy, fundOwner) => {
+      console.log(vaultProxy, fundOwner);
+      if (!account) return;
+      if (fundOwner.toLowerCase() === account.toLowerCase())
+        navigate(`/funds/${vaultProxy}`);
+    });
+  }, [fundDeployerContract]);
+
+  const eventRemover = useCallback(() => {
+    fundDeployerContract?.removeAllListeners();
+  }, [fundDeployerContract]);
+
+  useEffect(() => {
+    eventListener();
+    return () => {
+      eventRemover();
+    };
+  }, [fundDeployerContract]);
 
   return { createNewFund, loading, disabled };
 };
