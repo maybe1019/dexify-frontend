@@ -6,12 +6,11 @@ import { useCheckNetwork } from './contracts/useCheckNetwork';
 import utils from '../helpers/utils';
 
 export const useCreateNewFund = () => {
-  const { library } = useEthers();
+  const { library, account } = useEthers();
   const signer = (library as ethers.providers.JsonRpcProvider)?.getSigner();
   const { isWrongNetwork } = useCheckNetwork();
   const disabled = library === undefined || isWrongNetwork;
   const fundDeployerContract = useFundDeployerContract();
-
   const [loading, setLoading] = useState(false);
 
   const createNewFund = useCallback(
@@ -22,7 +21,6 @@ export const useCreateNewFund = () => {
       timeLockInSeconds: number,
       feeManagerConfig: string,
       policyManagerConfigData: string,
-      account: string,
     ) => {
       try {
         if (isWrongNetwork) throw new Error('Wrong Network');
@@ -39,11 +37,21 @@ export const useCreateNewFund = () => {
           policyManagerConfigData,
           { nonce: nonce },
         );
-        await deployFund.wait();
+        const receipt = await deployFund.wait();
         utils.notification.success(
           'Congratulations',
           'A new fund has been created successfully.',
         );
+        if (!receipt.events)
+          return { newFundAddr: undefined, newComptrollerAddr: undefined };
+        const args = receipt.events.filter(
+          (e) => e?.['event'] === 'NewFundCreated',
+        )[0].args;
+
+        return {
+          newFundAddr: args?.[2] as string,
+          newComptrollerAddr: args?.[1] as string,
+        };
       } catch (error: any) {
         console.error('useCreateNewFund: ', error.code);
         const err = error?.reason?.split(':');
@@ -55,6 +63,7 @@ export const useCreateNewFund = () => {
       } finally {
         setLoading(false);
       }
+      return { newFundAddr: undefined, newComptrollerAddr: undefined };
     },
     [signer, fundDeployerContract],
   );

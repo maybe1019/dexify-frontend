@@ -13,7 +13,8 @@ import { ReactComponent as TwitterIcon } from '../../assets/images/svg/twitter-i
 import allowedTokenList from './data/tokenList.json';
 import PageMeta from '../../layouts/PageMeta';
 import { PageName } from '../../helpers/enums';
-import { Transition } from '@headlessui/react';
+import { useNavigate } from 'react-router-dom';
+import { setAllFunds } from '../../store/reducers/allFundsSlice';
 
 const Manage = () => {
   const { account } = useEthers();
@@ -24,6 +25,8 @@ const Manage = () => {
   const [formData, setFormData] = useState<any>({
     walletAddress: account,
   });
+  const allFunds = useAppSelector((state: RootState) => state.allFunds.value);
+  const navigate = useNavigate();
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -36,12 +39,12 @@ const Manage = () => {
   const { createNewFund, loading, disabled } = useCreateNewFund();
   // Page loading
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(setPageLoading(loading));
   }, [loading]);
 
   const onCreateNewFund = async () => {
-    console.log(formData);
     if (!account) {
       utils.notification.warning('Error', 'Please connect wallet first');
       return;
@@ -70,15 +73,41 @@ const Manage = () => {
       formData?.performanceFee,
       formData?.minInvestment,
     );
-    await createNewFund(
+    const { newFundAddr, newComptrollerAddr } = await createNewFund(
       formData?.walletAddress,
       formData?.fundName,
       selectedTokenAddress,
       (formData?.lockTime as number) * 3600,
       feeArgsData,
       policyArgsData,
-      account,
     );
+
+    if (!newFundAddr) {
+      navigate(`/`);
+    } else {
+      const newFund: FundData = {
+        id: newFundAddr.toLowerCase(),
+        name: formData.fundName,
+        manager: formData.walletAddress.toLowerCase(),
+        comptrollerId: newComptrollerAddr.toLowerCase(),
+        aum: 0,
+        topAsset: '',
+        topAssetAUM: 0,
+        investorCnt: 0,
+        age: 0,
+        aum24H: 0,
+        aum7D: 0,
+        aumFirst: 0,
+        risk: 1,
+        denominationAsset: selectedTokenAddress,
+        startTimestamp: Date.now(),
+        holdings: [],
+      };
+      const tmp = allFunds.map((f) => f);
+      tmp.push(newFund);
+      dispatch(setAllFunds(tmp));
+      navigate(`/funds/${newFundAddr.toLowerCase()}`);
+    }
   };
 
   const onTwitterLogin = () => {

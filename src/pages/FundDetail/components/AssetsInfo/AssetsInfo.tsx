@@ -21,37 +21,40 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
   }, [fund]); //eslint-disable-line
 
   const init = async () => {
-    const prices = await getTokenPriceHistory(
-      'all',
-      Date.now() - milliseconds['1D'],
-      Date.now(),
-      milliseconds['1h'],
-    );
-    const totalAum = fund.holdings.reduce((a, b) => ({
-      ...a,
-      aum: a.aum + b.aum,
-    })).aum;
-    const tmp: any[] = fund.holdings
-      .filter((asset) => asset.aum > 0)
-      .map((asset) => {
-        const price = getTokenPriceAt(
-          prices,
-          getTokenInfo(asset.id)?.coingeckoId as string,
-          Date.now() - milliseconds['1D'],
-        );
-        const dailyPercentage = (asset.aum / asset.amount / price) * 100 - 100;
-        const token = getTokenInfo(asset.id);
-        return {
-          assets: `${token?.name} (${token?.symbol})`,
-          aum: asset.aum,
-          price: asset.aum / asset.amount,
-          daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(
-            1,
-          )}`,
-          allocation: (asset.aum / totalAum) * 100,
-        };
-      });
-    setData(tmp);
+    if (fund.holdings.length > 0) {
+      const prices = await getTokenPriceHistory(
+        'all',
+        Date.now() - milliseconds['1D'],
+        Date.now(),
+        milliseconds['1h'],
+      );
+      const totalAum = fund.holdings.reduce((a, b) => ({
+        ...a,
+        aum: a.aum + b.aum,
+      })).aum;
+      const tmp: any[] = fund.holdings
+        .filter((asset) => asset.aum > 0)
+        .map((asset) => {
+          const price = getTokenPriceAt(
+            prices,
+            getTokenInfo(asset.id)?.coingeckoId as string,
+            Date.now() - milliseconds['1D'],
+          );
+          const dailyPercentage =
+            (asset.aum / asset.amount / price) * 100 - 100;
+          const token = getTokenInfo(asset.id);
+          return {
+            assets: `${token?.name} (${token?.symbol})`,
+            aum: asset.aum,
+            price: asset.aum / asset.amount,
+            daily: `${dailyPercentage > 0 ? '+' : ''}${dailyPercentage.toFixed(
+              1,
+            )}`,
+            allocation: (asset.aum / totalAum) * 100,
+          };
+        });
+      setData(tmp);
+    }
     setLoading(false);
   };
 
