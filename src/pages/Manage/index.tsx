@@ -99,50 +99,84 @@ const Manage = () => {
           Create a Dexfund
         </h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          <input
-            type="text"
-            name="walletAddress"
-            value={formData.walletAddress ?? account}
-            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
-            placeholder="Manager Wallet Address"
-            onChange={onChangeValue}
-          />
+          <div className="manage-input-container lg:col-span-2">
+            <input
+              type="text"
+              name="walletAddress"
+              value={formData.walletAddress ?? account}
+              placeholder="Manager Wallet Address"
+              onChange={onChangeValue}
+            />
+            <div className="information-tag">
+              <div className="i-icon">i</div>
+              <div className="description">
+                This is manager's wallet address.
+              </div>
+            </div>
+          </div>
+          <div className="manage-input-container lg:col-span-2">
+            <input
+              type="text"
+              name="fundName"
+              placeholder="Dexfund Name"
+              onChange={onChangeValue}
+            />
+            <div className="information-tag">
+              <div className="i-icon">i</div>
+              <div className="description">
+                This is the name of your dexfund.
+              </div>
+            </div>
+          </div>
+          <div className="manage-input-container">
+            <input
+              type="number"
+              name="performanceFee"
+              placeholder="Performance Fee (%)"
+              onChange={onChangeValue}
+            />
+            <div className="information-tag">
+              <div className="i-icon">i</div>
+              <div className="description">Performance Fee. (%)</div>
+            </div>
+          </div>
+          <div className="manage-input-container">
+            <input
+              type="number"
+              name="entryFee"
+              placeholder="Entry Fee (%)"
+              onChange={onChangeValue}
+            />
+            <div className="information-tag">
+              <div className="i-icon">i</div>
+              <div className="description">Entry Fee. (%)</div>
+            </div>
+          </div>
+          <div className="manage-input-container">
+            <input
+              type="number"
+              name="minInvestment"
+              placeholder="Minimum Investment"
+              onChange={onChangeValue}
+            />
+            <div className="information-tag">
+              <div className="i-icon">i</div>
+              <div className="description">Minimum Investment.</div>
+            </div>
+          </div>
+          <div className="manage-input-container">
+            <input
+              type="number"
+              name="lockTime"
+              placeholder="Lock Time (H)"
+              onChange={onChangeValue}
+            />
 
-          <input
-            type="text"
-            name="fundName"
-            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none lg:col-span-2 focus:shadow"
-            placeholder="Dexfund Name"
-            onChange={onChangeValue}
-          />
-          <input
-            type="number"
-            name="performanceFee"
-            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-            placeholder="Performance Fee (%)"
-            onChange={onChangeValue}
-          />
-          <input
-            type="number"
-            name="entryFee"
-            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-            placeholder="Entry Fee (%)"
-            onChange={onChangeValue}
-          />
-          <input
-            type="number"
-            name="minInvestment"
-            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-            placeholder="Minimum Investment"
-            onChange={onChangeValue}
-          />
-          <input
-            type="number"
-            name="lockTime"
-            className="bg-[#8881] rounded-lg p-4 sm:p-6 text-sm sm:text-lg outline-none focus:shadow"
-            placeholder="Lock Time (H)"
-            onChange={onChangeValue}
-          />
+            <div className="information-tag">
+              <div className="i-icon">i</div>
+              <div className="description">Lock Time. (H)</div>
+            </div>
+          </div>
         </div>
         <div className="flex flex-col md:flex-row gap-4 my-8">
           <div className=" text-sm min-w-[160px]">Select Starting Assets</div>
