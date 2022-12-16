@@ -91,7 +91,7 @@ export default function WithdrawModal({
                         className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
                         placeholder="Input Amount"
                       />
-                      <p className="dark:text-white">DXFY</p>
+                      <p className="dark:text-white">SHARES</p>
                       {/* {tokenInfo && <p>{tokenInfo.symbol}</p>} */}
                     </div>
                     {sharesBalance && tokenInfo && (
@@ -101,13 +101,13 @@ export default function WithdrawModal({
                           {parseFloat(
                             formatEther(tokenInfo.totalSupply as BigNumberish),
                           ).toFixed(2)}{' '}
-                          DXFY
+                          SHARES
                           {/* {tokenInfo.symbol} */}
                         </div>
                         <div className=" text-text-3 dark:text-text-3-dark text-sm ml-auto">
                           Balance:{' '}
                           {parseFloat(formatEther(sharesBalance)).toFixed(2)}{' '}
-                          DXFY
+                          SHARES
                           {/* {tokenInfo.symbol} */}
                         </div>
                       </div>
