@@ -14,6 +14,7 @@ import allowedTokenList from './data/tokenList.json';
 import PageMeta from '../../layouts/PageMeta';
 import { PageName } from '../../helpers/enums';
 import { useNavigate } from 'react-router-dom';
+import { setAllFunds } from '../../store/reducers/allFundsSlice';
 
 const Manage = () => {
   const { account } = useEthers();
@@ -24,6 +25,7 @@ const Manage = () => {
   const [formData, setFormData] = useState<any>({
     walletAddress: account,
   });
+  const allFunds = useAppSelector((state: RootState) => state.allFunds.value);
   const navigate = useNavigate();
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +39,7 @@ const Manage = () => {
   const { createNewFund, loading, disabled } = useCreateNewFund();
   // Page loading
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(setPageLoading(loading));
   }, [loading]);
@@ -70,7 +73,7 @@ const Manage = () => {
       formData?.performanceFee,
       formData?.minInvestment,
     );
-    const newFundAddr = await createNewFund(
+    const { newFundAddr, newComptrollerAddr } = await createNewFund(
       formData?.walletAddress,
       formData?.fundName,
       selectedTokenAddress,
@@ -82,6 +85,27 @@ const Manage = () => {
     if (!newFundAddr) {
       navigate(`/`);
     } else {
+      const newFund: FundData = {
+        id: newFundAddr.toLowerCase(),
+        name: formData.fundName,
+        manager: formData.walletAddress.toLowerCase(),
+        comptrollerId: newComptrollerAddr.toLowerCase(),
+        aum: 0,
+        topAsset: '',
+        topAssetAUM: 0,
+        investorCnt: 0,
+        age: 0,
+        aum24H: 0,
+        aum7D: 0,
+        aumFirst: 0,
+        risk: 1,
+        denominationAsset: selectedTokenAddress,
+        startTimestamp: Date.now(),
+        holdings: [],
+      };
+      const tmp = allFunds.map((f) => f);
+      tmp.push(newFund);
+      dispatch(setAllFunds(tmp));
       navigate(`/funds/${newFundAddr.toLowerCase()}`);
     }
   };

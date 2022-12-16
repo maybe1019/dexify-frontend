@@ -42,7 +42,7 @@ const AllFundsTable = () => {
     const searchBy: string = e.target.value;
     const tmp: any[] = dexifyData.filter(
       (d) =>
-        d.dexfund.toLowerCase().includes(searchBy) ||
+        d.name.toLowerCase().includes(searchBy) ||
         d.manager.toLowerCase().includes(searchBy),
     );
     setFilteredData(tmp);

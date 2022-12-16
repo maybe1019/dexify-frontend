@@ -42,12 +42,16 @@ export const useCreateNewFund = () => {
           'Congratulations',
           'A new fund has been created successfully.',
         );
-        if (!receipt.events) return undefined;
-        const newFundAddr = receipt.events.filter(
+        if (!receipt.events)
+          return { newFundAddr: undefined, newComptrollerAddr: undefined };
+        const args = receipt.events.filter(
           (e) => e?.['event'] === 'NewFundCreated',
-        )[0].args?.[2];
+        )[0].args;
 
-        return newFundAddr as string;
+        return {
+          newFundAddr: args?.[2] as string,
+          newComptrollerAddr: args?.[1] as string,
+        };
       } catch (error: any) {
         console.error('useCreateNewFund: ', error.code);
         const err = error?.reason?.split(':');
@@ -59,6 +63,7 @@ export const useCreateNewFund = () => {
       } finally {
         setLoading(false);
       }
+      return { newFundAddr: undefined, newComptrollerAddr: undefined };
     },
     [signer, fundDeployerContract],
   );
