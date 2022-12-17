@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { RootState } from '../../../store';
 import * as ethers from 'ethers';
 import { formatFloatFixed } from '../../../helpers/utils/utils';
+import utils from '../../../helpers/utils';
 
 const ProfileDropdown = () => {
   const { account, chainId, deactivate, activateBrowserWallet, switchNetwork } =
@@ -64,7 +65,7 @@ const ProfileDropdown = () => {
                 className=" w-11 h-11 block overflow-hidden rounded-full"
               />
               <div className="text-[18px] font-[500] hidden md:block">
-                {myAccount.title}
+                {myAccount && myAccount.title ? myAccount.title : 'New User'}
               </div>
               <ChevronDownIcon
                 width={10}
@@ -101,9 +102,10 @@ const ProfileDropdown = () => {
                           color="gray"
                           width={22}
                           className="hover:opacity-70 cursor-pointer"
-                          onClick={() =>
-                            navigator.clipboard.writeText(myAccount.name)
-                          }
+                          onClick={() => {
+                            navigator.clipboard.writeText(myAccount.name);
+                            utils.notification.success('Name copied.', '');
+                          }}
                         />
                       </div>
                       {myAccount.email !== '' && (
@@ -113,9 +115,10 @@ const ProfileDropdown = () => {
                             color="gray"
                             width={22}
                             className="hover:opacity-70 cursor-pointer"
-                            onClick={() =>
-                              navigator.clipboard.writeText(myAccount.email)
-                            }
+                            onClick={() => {
+                              navigator.clipboard.writeText(myAccount.email);
+                              utils.notification.success('Email copied.', '');
+                            }}
                           />
                         </div>
                       )}
@@ -125,7 +128,13 @@ const ProfileDropdown = () => {
                           color="gray"
                           width={22}
                           className="hover:opacity-70 cursor-pointer"
-                          onClick={() => navigator.clipboard.writeText(account)}
+                          onClick={() => {
+                            navigator.clipboard.writeText(account);
+                            utils.notification.success(
+                              'Wallet address copied.',
+                              '',
+                            );
+                          }}
                         />
                       </div>
                       <Link
@@ -144,7 +153,13 @@ const ProfileDropdown = () => {
                           color="gray"
                           width={22}
                           className="hover:opacity-70 cursor-pointer"
-                          onClick={() => navigator.clipboard.writeText(account)}
+                          onClick={() => {
+                            navigator.clipboard.writeText(account);
+                            utils.notification.success(
+                              'Wallet address copied.',
+                              '',
+                            );
+                          }}
                         />
                       </div>
                       <Link
