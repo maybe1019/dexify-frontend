@@ -65,7 +65,7 @@ const ProfileDropdown = () => {
                 className=" w-11 h-11 block overflow-hidden rounded-full"
               />
               <div className="text-[18px] font-[500] hidden md:block">
-                {myAccount.title}
+                {myAccount && myAccount.title ? myAccount.title : 'New User'}
               </div>
               <ChevronDownIcon
                 width={10}

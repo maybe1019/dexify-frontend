@@ -125,7 +125,6 @@ function App() {
             content={metadata.default.description}
           ></meta>
           <meta name="twitter:card" content="summary_large_image"></meta>
-          <meta property="og:image" content={metadata.default.image} />
           <link rel="icon" type="image/png" href="favicon.ico" />
         </Helmet>
         <div className="text-text-1 dark:text-text-1-dark">
