@@ -78,6 +78,7 @@ function App() {
   }, [oauth_token, oauth_verifier, account]);
 
   useEffect(() => {
+    if (themeMode === '') return;
     const scrollColors: Record<string, string> = {
       '--theme-bg-color': '#EDF2F9',
       '--theme-scroll-bg-color': '#fff',
