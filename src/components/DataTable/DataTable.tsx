@@ -4,7 +4,7 @@ import Pagination from './Pagination';
 import colors from '../../helpers/data/color-array.json';
 import { shortenAddress } from '@usedapp/core';
 import { formatFloatFixed, getTokenInfo } from '../../helpers/utils/utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 type DataType = {
@@ -37,6 +37,8 @@ const DataTable = ({
   const [sortBy, setSortBy] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<number>(1);
   const [showList, setShowList] = useState<any[]>(data);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setShowList(data);
@@ -100,12 +102,19 @@ const DataTable = ({
                 .map((d, index) => (
                   <tr
                     key={index}
-                    className=" border-b border-b-[#8881] last:border-b-0"
+                    className={`border-b border-b-[#8881] last:border-b-0 ${
+                      d.link ? 'cursor-pointer hover:bg-gray-500/5' : ''
+                    }`}
+                    onClick={() => {
+                      if (d.link) {
+                        navigate(d.link);
+                      }
+                    }}
                   >
                     {fields.map((field) => (
                       <td
                         key={field.title}
-                        className="px-3 py-3 md:py-4 font-[300] tooltip"
+                        className={`px-3 py-3 md:py-4 font-[300] tooltip`}
                         style={
                           field.colorful ? { color: colors[d[field.name]] } : {}
                         }

@@ -78,13 +78,5 @@
     "suffix": "",
     "type": "number",
     "colorful": true
-  },
-  {
-    "name": "link",
-    "title": "",
-    "prefix": "",
-    "suffix": "",
-    "type": "link",
-    "colorful": false
   }
 ]
