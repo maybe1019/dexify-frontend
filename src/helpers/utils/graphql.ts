@@ -283,6 +283,7 @@ export const getInvestorTransactions = (investorId: string) =>
           amount: parseFloat(item.investmentAmount),
           assetId: item.asset.id,
           txHash: item.transaction.id,
+          link: `https://bscscan.com/tx/${item.transaction.id}`,
         };
       });
 
@@ -295,6 +296,7 @@ export const getInvestorTransactions = (investorId: string) =>
         type: 'WITHDRAW',
         payoutAssetAmounts: item.payoutAssetAmounts,
         txHash: item.transaction.id,
+        link: `https://bscscan.com/tx/${item.transaction.id}`,
       }));
 
       const withdrawnEvents: any[] = [];
