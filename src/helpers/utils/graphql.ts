@@ -144,6 +144,8 @@ export const getFundTransactions = (fundId: string) =>
           amount: parseFloat(item.investmentAmount),
           symbol: item.asset.symbol,
           investor: shortenAddress(item.investor.id),
+          txHash: item.transaction.id,
+          link: `https://bscscan.com/tx/${item.transaction.id}`,
         };
       });
 
@@ -155,6 +157,8 @@ export const getFundTransactions = (fundId: string) =>
         type: 'WITHDRAW',
         payoutAssetAmounts: item.payoutAssetAmounts,
         investor: shortenAddress(item.investor.id),
+        txHash: item.transaction.id,
+        link: `https://bscscan.com/tx/${item.transaction.id}`,
       }));
 
       const withdrawnEvents: any[] = [];
@@ -278,6 +282,7 @@ export const getInvestorTransactions = (investorId: string) =>
           type: 'INVEST',
           amount: parseFloat(item.investmentAmount),
           assetId: item.asset.id,
+          txHash: item.transaction.id,
         };
       });
 
@@ -289,6 +294,7 @@ export const getInvestorTransactions = (investorId: string) =>
         to: item.transaction.to,
         type: 'WITHDRAW',
         payoutAssetAmounts: item.payoutAssetAmounts,
+        txHash: item.transaction.id,
       }));
 
       const withdrawnEvents: any[] = [];
