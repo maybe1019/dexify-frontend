@@ -107,7 +107,11 @@ const DataTable = ({
                     }`}
                     onClick={() => {
                       if (d.link) {
-                        navigate(d.link);
+                        if (d.link.startsWith('/')) {
+                          navigate(d.link);
+                        } else if (d.link.startsWith('http')) {
+                          window.open(d.link, '_blank');
+                        }
                       }
                     }}
                   >
