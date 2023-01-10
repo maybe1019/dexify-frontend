@@ -10,6 +10,8 @@ import { getMinMaxInvestment } from '../../helpers/utils/graphql';
 import { getAumHistoryOf } from '../../helpers/utils/fund';
 import { getUser } from '../../api/user';
 
+import dexifyDexfunds from './dexify_dexfunds.json';
+
 type UserDexfundProps = {
   dexfund: FundData;
   dataLoading?: boolean;
@@ -58,7 +60,10 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
   }, [dexfund]);
 
   return (
-    <div className="card overflow-hidden transition ease-in-out delay-150">
+    <div className="card overflow-hidden transition ease-in-out delay-150 relative">
+      {dexifyDexfunds.includes(dexfund.id) && (
+        <div className="stamp">DEXIFY</div>
+      )}
       <div
         className="header px-2 sm:px-8 py-5 flex gap-2 sm:gap-4 items-center cursor-pointer"
         onClick={() => {
@@ -66,12 +71,12 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
         }}
       >
         {managerImage === '' ? (
-          <div className="skeleton rounded-full w-10 h-10"></div>
+          <div className="skeleton rounded-full w-10 h-10 z-10 relative"></div>
         ) : (
           <img
             src={managerImage}
             alt="manager image"
-            className=" w-10 h-10 rounded-full overflow-hidden"
+            className=" w-10 h-10 rounded-full overflow-hidden z-10 relative"
           />
         )}
         <div className="grow max-w-[calc(100%-180px)]">
