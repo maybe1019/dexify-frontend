@@ -50,7 +50,9 @@ function App() {
     await loadBnbPrices();
 
     const funds = await utils.graphql.getFunds();
-    const tmpData: any[] = funds.map((fund) => utils.fund.formatFundData(fund));
+    let tmpData: any[] = funds.map((fund) => utils.fund.formatFundData(fund));
+    console.log(tmpData);
+    tmpData = tmpData.sort((a, b) => b.aum - a.aum);
     dispatch(setAllFunds(tmpData));
     setLoading(false);
   };
