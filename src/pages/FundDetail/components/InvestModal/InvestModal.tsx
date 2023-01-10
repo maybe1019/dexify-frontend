@@ -98,7 +98,7 @@ export default function InvestModal({
                             setInvestAmount(e.target.value.replace('0', ''));
                             return;
                           }
-                          setInvestAmount(e.target.value);
+                          setInvestAmount(parseFloat(e.target.value));
                         }}
                         className="bg-transparent w-20 outline-none grow py-2 text-xl lg:text-2xl pl-2 text-text-1 dark:text-text-1-dark"
                         placeholder="Input Amount"
