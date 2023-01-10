@@ -51,7 +51,6 @@ function App() {
 
     const funds = await utils.graphql.getFunds();
     let tmpData: any[] = funds.map((fund) => utils.fund.formatFundData(fund));
-    console.log(tmpData);
     tmpData = tmpData.sort((a, b) => b.aum - a.aum);
     dispatch(setAllFunds(tmpData));
     setLoading(false);
