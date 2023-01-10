@@ -219,4 +219,20 @@ input[type=number] {
 }
 .manage-input-container .information-tag:hover .description {
   @apply visible opacity-100;
+}
+
+.stamp {
+  font-family: OldStamper;
+  font-size: 32px;
+  left: 0px;
+  top: 0px;
+  transform: rotateZ(-15deg);
+  position: absolute;
+  opacity: 0.5;
+  @apply text-primary;
+}
+
+@font-face {
+  font-family: OldStamper;
+  src: url(../fonts/old-stamper/old_stamper.ttf);
 }/*# sourceMappingURL=index.css.map */
