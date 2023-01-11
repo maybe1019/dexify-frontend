@@ -61,9 +61,6 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
 
   return (
     <div className="card overflow-hidden transition ease-in-out delay-150 relative">
-      {dexifyDexfunds.includes(dexfund.id) && (
-        <div className="stamp">DEXIFY</div>
-      )}
       <div
         className="header px-2 sm:px-8 py-5 flex gap-2 sm:gap-4 items-center cursor-pointer"
         onClick={() => {
@@ -85,6 +82,16 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
           </p>
           <p className=" text-text-2 dark:text-text-2-dark text-xs">
             {shortenAddress(dexfund.id)}
+            {dexifyDexfunds.includes(dexfund.id) && (
+              <>
+                <span className="text-primary font-bold text-[14px] pl-4">
+                  DEX
+                </span>
+                <span className="text-text-1 dark:text-text-1-dark font-bold text-[14px]">
+                  IFY
+                </span>
+              </>
+            )}
           </p>
         </div>
         <div className="ml-auto">
