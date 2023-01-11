@@ -63,7 +63,7 @@ function AssetsInfo({ fund }: AssetsInfoProps) {
       <DataTable
         data={data}
         fields={fields}
-        pagination={false}
+        pagination={data.length > 5}
         minWidth={450}
         rowCnt={5}
         loading={loading}
