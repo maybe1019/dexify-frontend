@@ -10,7 +10,7 @@ import { getMinMaxInvestment } from '../../helpers/utils/graphql';
 import { getAumHistoryOf } from '../../helpers/utils/fund';
 import { getUser } from '../../api/user';
 
-import dexifyDexfunds from './dexify_dexfunds.json';
+import dexifyDexfunds from '../../helpers/data/dexify_dexfunds.json';
 
 type UserDexfundProps = {
   dexfund: FundData;
