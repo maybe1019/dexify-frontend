@@ -6,6 +6,8 @@ import { getAumHistoryOf } from '../../../../helpers/utils/fund';
 import { formatFloatFixed } from '../../../../helpers/utils/utils';
 import { ComponentSpinner } from '../../../../components/Spinner';
 import { ReactComponent as TwitterIcon } from '../../../../assets/images/svg/twitter-icon.svg';
+import { shortenAddress } from '@usedapp/core';
+import dexifyDexfunds from '../../../../helpers/data/dexify_dexfunds.json';
 
 type AUMChartProps = {
   fund: FundData;
@@ -56,39 +58,56 @@ const AUMChart = ({ fund, managerInfo }: AUMChartProps) => {
 
   return (
     <div className="card overflow-hidden py-7 relative">
-      <div className="flex justify-between items-center mx-10">
+      <div className="flex justify-between items-center mx-4 md:mx-10 flex-wrap md:flex-nowrap gap-2">
         <div className="flex items-center">
-          <img
-            src={
-              managerInfo
-                ? managerInfo.image ||
-                  managerInfo.twitterImage ||
-                  '/images/default-user.png'
-                : '/images/default-user.png'
-            }
-            alt="default-user"
-            className="w-12 h-12 overflow-hidden rounded-full"
-          />
-          <p className="text-base font-bold sm:text-xl mx-4">{fund.name}</p>
+          <div className="w-12 h-12 overflow-hidden rounded-full">
+            <img
+              src={
+                managerInfo
+                  ? managerInfo.image ||
+                    managerInfo.twitterImage ||
+                    '/images/default-user.png'
+                  : '/images/default-user.png'
+              }
+              alt="default-user"
+              className="w-full h-full"
+            />
+          </div>
+          <div className="text-base mx-4 w-60 md:w-80 lg:w-60 xl:w-80 2xl:w-[550px] flex-grow">
+            <div className="font-bold sm:text-xl w-full text-ellipsis overflow-hidden whitespace-nowrap">
+              {fund.name}
+            </div>
+            <div className="text-xs text-text-2 dark:text-text-2-dark mt-1">
+              {shortenAddress(fund.id)}
+              {dexifyDexfunds.includes(fund.id) && (
+                <span className="ml-4 bg-primary/20 px-2 py-1 rounded-md shadow-md shadow-primary/10">
+                  <span className="text-primary font-bold text-[14px]">
+                    DEX
+                  </span>
+                  <span className="text-text-1 dark:text-text-1-dark font-bold text-[14px]">
+                    IFY
+                  </span>
+                </span>
+              )}
+            </div>
+          </div>
         </div>
         {managerInfo && managerInfo.twitterName && (
-          <>
-            <div className="relative flex items-center gap-4">
-              <img
-                src={managerInfo.twitterImage}
-                alt="user"
-                className="w-10 h-10 rounded-full overflow-hidden"
-              />
-              <TwitterIcon
-                width={16}
-                height={16}
-                className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
-              />
-              <div className="font-bold text-lg text-[#03a9f4]">
-                @{managerInfo.twitterScreenName}
-              </div>
+          <div className="relative flex items-center gap-4">
+            <img
+              src={managerInfo.twitterImage}
+              alt="user"
+              className="w-10 h-10 rounded-full overflow-hidden"
+            />
+            <TwitterIcon
+              width={16}
+              height={16}
+              className="bg-bg-2 dark:bg-bg-2-dark rounded-full absolute left-7 top-0 border-2 border-bg-2 dark:border-bg-2-dark"
+            />
+            <div className="font-bold text-lg text-[#03a9f4]">
+              @{managerInfo.twitterScreenName}
             </div>
-          </>
+          </div>
         )}
       </div>
 
