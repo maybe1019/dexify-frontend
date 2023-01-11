@@ -123,7 +123,7 @@
     "name": "ZRX Token",
     "symbol": "ZRX",
     "address": "0x0ddc5e539af1753693e9463ca619406b1b06d66e",
-    "decimals": 18,
+    "decimals": 12,
     "logoURI": "https://s2.coinmarketcap.com/static/cloud/img/dex/default-icon-dark.svg",
     "coingeckoId": "0x"
   },
@@ -147,7 +147,7 @@
     "name": "Dogecoin",
     "symbol": "DOGE",
     "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    "decimals": 18,
+    "decimals": 8,
     "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/74.png",
     "coingeckoId": "dogecoin"
   },
@@ -186,7 +186,7 @@
   {
     "name": "Solana",
     "symbol": "SOL",
-    "address": "0xFEa6aB80cd850c3e63374Bc737479aeEC0E8b9a1",
+    "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
     "decimals": 18,
     "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
     "coingeckoId": "solana"
@@ -238,14 +238,6 @@
     "decimals": 18,
     "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5964.png",
     "coingeckoId": "trust-wallet-token"
-  },
-  {
-    "name": "PAX Gold",
-    "symbol": "PAXG",
-    "address": "0x7950865a9140cB519342433146Ed5b40c6F210f7",
-    "decimals": 18,
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/4705.png",
-    "coingeckoId": "pax-gold"
   },
   {
     "name": "1inch Network",
