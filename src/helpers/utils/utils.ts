@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import { getTokenPriceHistory } from '../../api/token';
 import tokens from '../../config/tokenlists.json';
 import bnbPriceHisotry from '../data/bnb-prices.json';
@@ -208,4 +209,18 @@ export const getChartTimestampPoints = (
   res.push(internal);
 
   return res;
+};
+
+export const formatTokenAmounttoETH = (
+  amount: string,
+  decimals: number,
+): number => {
+  let value = BigNumber.from(amount);
+  const p =
+    '1' +
+    Array(decimals - 4)
+      .fill('0')
+      .join('');
+  value = value.div(BigNumber.from(p));
+  return value.toNumber() / 10000;
 };
