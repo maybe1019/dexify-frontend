@@ -80,17 +80,15 @@ const UserDexfund = ({ dexfund }: UserDexfundProps) => {
           <p className="text-lg font-[500] text-ellipsis overflow-hidden whitespace-nowrap">
             {dexfund.name}
           </p>
-          <p className=" text-text-2 dark:text-text-2-dark text-xs">
+          <p className=" text-text-2 dark:text-text-2-dark text-xs mt-1">
             {shortenAddress(dexfund.id)}
             {dexifyDexfunds.includes(dexfund.id) && (
-              <>
-                <span className="text-primary font-bold text-[14px] pl-4">
-                  DEX
-                </span>
+              <span className="ml-4 bg-primary/20 px-2 py-1 rounded-md shadow-md shadow-primary/10">
+                <span className="text-primary font-bold text-[14px]">DEX</span>
                 <span className="text-text-1 dark:text-text-1-dark font-bold text-[14px]">
                   IFY
                 </span>
-              </>
+              </span>
             )}
           </p>
         </div>
