@@ -9,6 +9,7 @@ import { useSwapData } from '../../../../hooks/useSwapData';
 import { useSwap } from '../../../../hooks/useSwap';
 import { useDispatch } from 'react-redux';
 import { setPageLoading } from '../../../../store/reducers/pageLoadingSlice';
+import { formatTokenAmounttoETH } from '../../../../helpers/utils/utils';
 
 type SwapProps = {
   fundAddress: string;
@@ -157,7 +158,10 @@ function Swap({ fundAddress, onTokensChanged }: SwapProps) {
                   <div className=" absolute skeleton w-full h-full left-0 top-0 z-50"></div>
                 )}
                 {priceRoute
-                  ? parseFloat(formatEther(priceRoute.destAmount)).toFixed(4)
+                  ? formatTokenAmounttoETH(
+                      priceRoute.destAmount,
+                      priceRoute.destDecimals,
+                    ).toFixed(4)
                   : '-'}
               </div>
 
