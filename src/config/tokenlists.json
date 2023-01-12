@@ -184,14 +184,6 @@
     "coingeckoId": "binance-peg-polkadot"
   },
   {
-    "name": "Solana",
-    "symbol": "SOL",
-    "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
-    "decimals": 18,
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
-    "coingeckoId": "solana"
-  },
-  {
     "name": "Avalanche",
     "symbol": "AVAX",
     "address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041",
