@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { parseEther } from '@ethersproject/units';
+import { parseEther, parseUnits } from '@ethersproject/units';
 import axios from 'axios';
 import utils from '../helpers/utils';
 
 const getPriceRoute = async (from: Token, to: Token, amount: number) => {
   try {
     if (amount <= 0) return { priceRoute: '', impactValue: '' };
-    const scaledAmount = parseEther(amount.toString());
+    const scaledAmount = parseUnits(amount.toString(), from.decimals);
     const getPathRequestEndpoint = `https://apiv5.paraswap.io/prices?srcToken=${from.address}&destToken=${to.address}&amount=${scaledAmount}&srcDecimals=${from.decimals}&destDecimals=${to.decimals}&side=SELL&network=56&includeContractMethods=multiSwap`;
     const { data } = await axios.get(getPathRequestEndpoint);
     return { priceRoute: data.priceRoute, impactValue: data.value };
