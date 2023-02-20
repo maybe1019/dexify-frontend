@@ -50,8 +50,8 @@ function App() {
     await loadBnbPrices();
 
     const funds = await utils.graphql.getFunds();
-    let tmpData: any[] = funds.map((fund) => utils.fund.formatFundData(fund));
-    tmpData = tmpData.sort((a, b) => b.aum - a.aum);
+    let tmpData = funds.map((fund) => utils.fund.formatFundData(fund));
+    tmpData = tmpData.sort((a, b) => b.sharePrice - a.sharePrice);
     dispatch(setAllFunds(tmpData));
     setLoading(false);
   };
