@@ -32,7 +32,6 @@ type FundData = {
   manager: string;
   comptrollerId: string;
   aum: number;
-  sharePrice: number;
   topAsset: string;
   topAssetAUM: number;
   investorCnt: number;
@@ -40,9 +39,6 @@ type FundData = {
   aum24H: number;
   aum7D: number;
   aumFirst: number;
-  sharePrice24H: number;
-  sharePrice7D: number;
-  sharePriceFirst: number;
   risk: number;
   denominationAsset: string;
   startTimestamp: number;

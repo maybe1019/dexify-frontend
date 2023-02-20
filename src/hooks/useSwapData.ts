@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { parseUnits } from '@ethersproject/units';
+import { parseEther, parseUnits } from '@ethersproject/units';
 import axios from 'axios';
 import utils from '../helpers/utils';
 

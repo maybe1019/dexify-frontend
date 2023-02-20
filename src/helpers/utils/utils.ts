@@ -69,11 +69,11 @@ export const loadBnbPrices = async () => {
 };
 
 export const getBnbPriceAt = (timestamp: number): number => {
-  if (timestamp < bnbPrices[0][0]) {
-    return bnbPrices[0][1];
+  if (timestamp < bnbPriceHisotry[0][0]) {
+    return bnbPriceHisotry[0][1];
   }
   return (
-    bnbPrices
+    bnbPriceHisotry
       .map((f) => f)
       .reverse()
       .find((f) => f[0] <= timestamp) as Array<number>

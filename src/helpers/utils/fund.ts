@@ -64,10 +64,6 @@ export const formatFundData = (fund: any) => {
     startTimestamp: 0,
     holdings: [],
     comptrollerId: '',
-    sharePrice: 0,
-    sharePrice24H: 0,
-    sharePrice7D: 0,
-    sharePriceFirst: 0,
   };
 
   result.id = fund.id;
@@ -137,33 +133,6 @@ export const formatFundData = (fund: any) => {
       })),
       Date.now() - utils.utils.milliseconds['1D'] * 7,
     );
-  }
-
-  if (fund.shares.totalSupply === '0') {
-    result.sharePrice = 0;
-  } else {
-    result.sharePrice = result.aum / parseFloat(fund.shares.totalSupply);
-  }
-
-  if (fund.sharesInception.length < 2) {
-    result.sharePriceFirst = 0;
-  } else {
-    result.sharePriceFirst =
-      result.aumFirst / parseFloat(fund.sharesInception[1].totalSupply);
-  }
-
-  if (fund.shares7dAgo.length === 0) {
-    result.sharePrice7D = result.sharePriceFirst;
-  } else {
-    result.sharePrice7D =
-      result.aum7D / parseFloat(fund.shares7dAgo[0].totalSupply);
-  }
-
-  if (fund.shares1dAgo.length === 0) {
-    result.sharePrice24H = result.sharePriceFirst;
-  } else {
-    result.sharePrice24H =
-      result.aum24H / parseFloat(fund.shares1dAgo[0].totalSupply);
   }
 
   return result;

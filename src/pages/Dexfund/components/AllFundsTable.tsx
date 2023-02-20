@@ -17,15 +17,13 @@ const AllFundsTable = () => {
     if (allFunds.value.length > 0) {
       const data = allFunds.value.map((f) => {
         const volume24H = formatFloatFixed(
-          f.sharePrice === 0 ? 0 : (f.sharePrice / f.sharePrice24H) * 100 - 100,
+          f.aum === 0 ? 0 : (f.aum / f.aum24H) * 100 - 100,
         );
         const volume7D = formatFloatFixed(
-          f.sharePrice === 0 ? 0 : (f.sharePrice / f.sharePrice7D) * 100 - 100,
+          f.aum === 0 ? 0 : (f.aum / f.aum7D) * 100 - 100,
         );
         const volumeAll = formatFloatFixed(
-          f.sharePrice === 0
-            ? 0
-            : (f.sharePrice / f.sharePriceFirst) * 100 - 100,
+          f.aum === 0 ? 0 : (f.aum / f.aumFirst) * 100 - 100,
         );
         return {
           ...f,

@@ -102,10 +102,6 @@ const Manage = () => {
         denominationAsset: selectedTokenAddress,
         startTimestamp: Date.now(),
         holdings: [],
-        sharePrice: 0,
-        sharePrice24H: 0,
-        sharePrice7D: 0,
-        sharePriceFirst: 0,
       };
       const tmp = allFunds.map((f) => f);
       tmp.push(newFund);
