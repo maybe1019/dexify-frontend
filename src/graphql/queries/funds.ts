@@ -63,7 +63,7 @@ const funds = (): DocumentNode => {
           ...portfolioFragment
           holdings {
             asset {
-              price1dAgo: priceHistory(where:{ timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+              price1dAgo: priceHistory(where:{ timestamp_lte: ${time1dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
                 timestamp
                 price
               }
@@ -83,6 +83,24 @@ const funds = (): DocumentNode => {
               timestamp
             }
           }
+        }
+
+        shares {
+          totalSupply
+        }
+
+        sharesInception: sharesHistory (orderBy: timestamp, orderDirection: asc, first: 2) {
+          totalSupply
+        }
+
+        shares1dAgo: sharesHistory (where: {timestamp_lte: ${time1dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+          totalSupply
+          timestamp
+        }
+
+        shares7dAgo: sharesHistory (where: {timestamp_lte: ${time7dAgo}}, orderBy: timestamp, orderDirection: desc, first: 1) {
+          totalSupply
+          timestamp
         }
       }
     }
